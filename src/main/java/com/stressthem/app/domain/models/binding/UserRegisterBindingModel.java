@@ -2,6 +2,7 @@ package com.stressthem.app.domain.models.binding;
 
 import com.stressthem.app.validation.PasswordMatch;
 import com.stressthem.app.validation.Unique;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@AllArgsConstructor
 public class UserRegisterBindingModel {
 
     @NotNull
@@ -34,6 +35,6 @@ public class UserRegisterBindingModel {
     @Unique(fieldType = "email", message = "User with that email already exists!")
     private String email;
 
-    @Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
+//    @Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
     private String imageUrl;
 }

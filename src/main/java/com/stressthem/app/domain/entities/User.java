@@ -12,17 +12,14 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table
 @Getter
 @Setter
 @NoArgsConstructor
-public class User  extends BaseEntity implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
 
     @Column(unique = true)
     @NotNull
@@ -38,40 +35,44 @@ public class User  extends BaseEntity implements UserDetails {
     @Column
     private String imageUrl;
 
+    //todo try to automate registration time
     @Column
-    @CreatedDate //todo fix this
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")//todo fix this,doesnt show the correct registration time
     private LocalDateTime registeredOn;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
-    private Role role;
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles=new HashSet<>();
 
-    @OneToMany
-    private List<AttackHistory> attacks;
+    @OneToMany(mappedBy = "attacker")
+    private List<AttackHistory> attacks=new ArrayList<>();
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(role);
+        return roles;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

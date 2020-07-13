@@ -2,6 +2,7 @@ package com.stressthem.app.domain.models.binding;
 
 
 import com.stressthem.app.validation.PasswordMatch;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @PasswordMatch(message = "Passwords are not equal!")
 public class PasswordWrapper {
 

@@ -1,5 +1,6 @@
 package com.stressthem.app.domain.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Role  extends BaseEntity implements GrantedAuthority {
     private String role;
 
@@ -20,4 +22,6 @@ public class Role  extends BaseEntity implements GrantedAuthority {
     public String getAuthority() {
         return this.role;
     }
+
+
 }

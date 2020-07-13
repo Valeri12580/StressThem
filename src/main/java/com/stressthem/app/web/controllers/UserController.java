@@ -1,5 +1,6 @@
 package com.stressthem.app.web.controllers;
 
+import com.stressthem.app.domain.models.binding.UserLoginBindingModel;
 import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.services.interfaces.UserService;
@@ -42,7 +43,7 @@ public class UserController {
     public String postRegister(@Valid @ModelAttribute UserRegisterBindingModel user
             , BindingResult result, RedirectAttributes redirectAttributes) {
 
-
+        System.out.println();
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);
             redirectAttributes.addFlashAttribute("user", user);
@@ -54,4 +55,22 @@ public class UserController {
 
         return "redirect:/users/login";
     }
+
+
+
+    @GetMapping("/login")
+    public String login(Model model){
+        if(!model.containsAttribute("user")){
+            model.addAttribute("user",new UserLoginBindingModel());
+        }
+
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String postLogin(UserLoginBindingModel userLoginBindingModel,RedirectAttributes redirectAttributes){
+
+        return null;
+    }
+
 }
