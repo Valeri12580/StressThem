@@ -3,6 +3,8 @@ package com.stressthem.app.domain.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,6 +39,7 @@ public class User  extends BaseEntity implements UserDetails {
     private String imageUrl;
 
     @Column
+    @CreatedDate //todo fix this
     private LocalDateTime registeredOn;
 
     @ManyToOne

@@ -1,6 +1,10 @@
 package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
+import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.services.interfaces.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +19,14 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
+    private UserService userService;
+    private ModelMapper modelMapper;
+
+    @Autowired
+    public UserController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
 
 
     @GetMapping("/register")
@@ -30,13 +42,16 @@ public class UserController {
     public String postRegister(@Valid @ModelAttribute UserRegisterBindingModel user
             , BindingResult result, RedirectAttributes redirectAttributes) {
 
-        System.out.println();
+
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/users/register";
 
         }
-        return "/users/login";
+
+        this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
+
+        return "redirect:/users/login";
     }
 }
