@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.lang.invoke.MethodType;
 
 @Getter
@@ -23,7 +24,10 @@ public class AttackBindingModel {
 
     private MethodType method;
 
+    @Positive(message = "The time must be >0")
+    private int time;
+
     @Min(value = 1,message = "The minimum value is 1")
-    @Min(value = 2,message = "The maximum value is 2")
+    @Max(value = 2,message = "The maximum value is 2")
     int servers;
 }

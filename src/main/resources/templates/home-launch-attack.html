@@ -78,15 +78,15 @@
 
                         </div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="post">
+                            <form class="form-horizontal" th:object="${attack}" th:method="post" th:action="@{/home/launch}">
                                 <div class="row">
                                     <div class="col-lg-7">
                                         <div class="form-group">
                                             <div class="form-material floating">
                                                 <label for="host"><i class="fa fa-terminal"></i> Host</label>
-                                                <input type="text" class="form-control" id="host" name="host"
+                                                <input th:field="*{host}" type="text" class="form-control" id="host" name="host"
                                                        placeholder="0.0.0.0">
-                                                <small class="form-text text-danger">Please enter correct text</small>
+                                                <small th:errors="*{host}" class="form-text text-danger">d</small>
 
                                             </div>
                                         </div>
@@ -95,9 +95,9 @@
                                         <div class="form-group">
                                             <div class="form-material floating">
                                                 <label for="port"><i class="zmdi zmdi-portable-wifi"></i> Port</label>
-                                                <input type="number" class="form-control" id="port" name="port"
+                                                <input  th:field="*{port}" type="number" class="form-control" id="port" name="port"
                                                        placeholder="80">
-                                                <small class="form-text text-danger">Please enter correct text</small>
+                                                <small th:errors="*{port}" class="form-text text-danger">d</small>
 
                                             </div>
                                         </div>
@@ -106,9 +106,9 @@
                                         <div class="form-group">
                                             <div class="form-material floating">
                                                 <label for="time"><i class="fa fa-clock-o"></i> Time</label>
-                                                <input type="number" class="form-control" id="time" name="time"
+                                                <input th:field="*{time}" type="number" class="form-control" id="time" name="time"
                                                        placeholder="60">
-                                                <small class="form-text text-danger">Please enter correct text</small>
+                                                <small th:errors="*{time}" class="form-text text-danger">d</small>
 
 
                                             </div>
@@ -119,9 +119,8 @@
                                     <div class="col-xs-12">
                                         <div>
                                             <label for="method"><i class="zmdi zmdi-view-dashboard"></i> Method</label>
-                                            <select class="form-control" id="method" name="method">
-                                                <option value="test">test</option>
-                                                <option value="test2">test2</option>
+                                            <select  th:field="*{method}" class="form-control" id="method" name="method">
+                                                <option th:each="method:${T(com.stressthem.app.domain.MethodType).values()}" th:text="${method}" th:value="${method}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -129,9 +128,9 @@
                                 <div class="form-group">
                                     <label class="control-label"><i class="fa fa-server"></i> Servers </label>
 
-                                    <input type="number" class="form-control" id="totalservers" name="totalservers"
+                                    <input th:field="*{servers}" type="number" class="form-control" id="totalservers" name="totalservers"
                                            placeholder="1">
-                                    <small class="form-text text-danger">Please enter correct text</small>
+                                    <small th:errors="*{servers}" class="form-text text-danger">d</small>
                                     Your Limit: 0
                                 </div>
 

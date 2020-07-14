@@ -48,6 +48,13 @@ public class HomeController {
     @PostMapping("/launch")
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
                              BindingResult result, RedirectAttributes redirectAttributes,Principal principal){
+
+        System.out.println();
+        if(result.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.attack", result);
+            redirectAttributes.addFlashAttribute("attack",attackBindingModel);
+            return "redirect:/home/launch";
+        }
         //todo optimization and show error if there is no active plan
 
         try{

@@ -1,12 +1,12 @@
 package com.stressthem.app.domain.entities;
 
+import com.stressthem.app.domain.MethodType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.lang.invoke.MethodType;
 import java.time.LocalDateTime;
 
 @Table(name = "attack_history")
@@ -39,6 +39,6 @@ public class Attack extends BaseEntity {
     private boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "attacker_id",referencedColumnName = "id")
+    @JoinColumn(name = "attacker_id", referencedColumnName = "id")
     private User attacker;
 }
