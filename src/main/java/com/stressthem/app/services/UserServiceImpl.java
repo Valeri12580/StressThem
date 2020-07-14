@@ -1,6 +1,5 @@
 package com.stressthem.app.services;
 
-import com.stressthem.app.domain.entities.Role;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.repositories.UserRepository;
@@ -8,15 +7,17 @@ import com.stressthem.app.services.interfaces.RoleService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private RoleService roleService;
     private UserRepository userRepository;
     private ModelMapper modelMapper;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
         if(this.userRepository.count()==0){
             user.setRoles(new HashSet<>(this.roleService.getAllRoles()));
         }else{
-            user.getRoles().add(this.roleService.getRoleByAuthority("USER"));
+            user.getRoles().add(this.roleService.getRoleByName("USER"));
         }
 
         user.setRegisteredOn(LocalDateTime.now());
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel getUserByEmail(String email) {
-        User user = this.userRepository.findUserByEmail(email);
+        User user = this.userRepository.findUserByEmail(email).orElse(null);
         if (user == null) {
             return null;
         }
@@ -61,10 +62,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel getUserByUsername(String username) {
-        User user = this.userRepository.findUserByUsername(username);
+        User user = this.userRepository.findUserByUsername(username).orElse(null);
         if (user == null) {
             return null;
         }
         return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return this.userRepository.findUserByUsername(s).orElseThrow(()->new UsernameNotFoundException("Invalid credentials"));
     }
 }

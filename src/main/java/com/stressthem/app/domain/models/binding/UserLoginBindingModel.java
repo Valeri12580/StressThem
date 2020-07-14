@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserLoginBindingModel {
 
-    private String usernameOrEmail;
+    private String username;
     private String password;
 }

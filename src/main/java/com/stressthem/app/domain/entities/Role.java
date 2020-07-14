@@ -16,11 +16,11 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role  extends BaseEntity implements GrantedAuthority {
-    private String role;
+    private String name;
 
     @Override
     public String getAuthority() {
-        return this.role;
+        return this.name;
     }
 
 

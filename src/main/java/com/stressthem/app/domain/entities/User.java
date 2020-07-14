@@ -40,7 +40,7 @@ public class User extends BaseEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")//todo fix this,doesnt show the correct registration time
     private LocalDateTime registeredOn;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
