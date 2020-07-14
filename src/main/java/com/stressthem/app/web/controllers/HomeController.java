@@ -1,7 +1,10 @@
 package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.binding.AttackBindingModel;
+import com.stressthem.app.domain.models.service.AttackServiceModel;
+import com.stressthem.app.services.interfaces.AttackService;
 import com.stressthem.app.services.interfaces.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +22,14 @@ import java.security.Principal;
 @RequestMapping("/home")
 public class HomeController {
     private UserService userService;
+    private AttackService attackService;
+    private ModelMapper mapper;
 
     @Autowired
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService, AttackService attackService, ModelMapper mapper) {
         this.userService = userService;
+        this.attackService = attackService;
+        this.mapper = mapper;
     }
 
     @GetMapping("/launch")
@@ -40,8 +47,16 @@ public class HomeController {
 
     @PostMapping("/launch")
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
-                             BindingResult result, RedirectAttributes redirectAttributes){
-        System.out.println();
-        return null;
+                             BindingResult result, RedirectAttributes redirectAttributes,Principal principal){
+        //todo optimization and show error if there is no active plan
+
+        try{
+            AttackServiceModel attackServiceModel=this.mapper.map(attackBindingModel,AttackServiceModel.class);
+            attackServiceModel.setTarget(AttackServiceModel.formatTarget(attackBindingModel));
+        this.attackService.launchAttack(attackServiceModel,principal.getName());
+        }catch (Exception ex){
+
+        }
+        return "redirect:/home/launch";
     }
 }

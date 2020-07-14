@@ -31,5 +31,6 @@ public class UserServiceModel extends BaseServiceModel {
 
     private Role role;
 
+    //todo attackservicemodel here
     private List<Attack> attacks;
 }
