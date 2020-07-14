@@ -10,7 +10,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/**").permitAll()
                 .and().formLogin().loginPage("/users/login").loginProcessingUrl("/users/login")
-                .defaultSuccessUrl("/home").failureUrl("/users/login?error")
+                .defaultSuccessUrl("/home/launch").failureUrl("/users/login?error")
                 .and().logout().logoutUrl("/users/logout").logoutSuccessUrl("/index")
         ;
     }

@@ -67,10 +67,6 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String postLogin(UserLoginBindingModel userLoginBindingModel,RedirectAttributes redirectAttributes){
 
-        return null;
-    }
 
 }

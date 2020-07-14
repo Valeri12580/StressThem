@@ -1,8 +1,7 @@
 package com.stressthem.app.domain.models.service;
 
-import com.stressthem.app.domain.entities.AttackHistory;
+import com.stressthem.app.domain.entities.Attack;
 import com.stressthem.app.domain.entities.Role;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,5 +31,5 @@ public class UserServiceModel extends BaseServiceModel {
 
     private Role role;
 
-    private List<AttackHistory> attacks;
+    private List<Attack> attacks;
 }

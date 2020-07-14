@@ -3,7 +3,6 @@ package com.stressthem.app.domain.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,10 +34,14 @@ public class User extends BaseEntity implements UserDetails {
     @Column
     private String imageUrl;
 
-    //todo try to automate registration time
+    //todo try to automate the registration time
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")//todo fix this,doesnt show the correct registration time
     private LocalDateTime registeredOn;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "plan_id",referencedColumnName = "id")
+    private UserActivePlan userActivePlan;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -47,8 +50,9 @@ public class User extends BaseEntity implements UserDetails {
     )
     private Set<Role> roles=new HashSet<>();
 
+
     @OneToMany(mappedBy = "attacker")
-    private List<AttackHistory> attacks=new ArrayList<>();
+    private List<Attack> attacks=new ArrayList<>();
 
 
     @Override

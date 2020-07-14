@@ -17,13 +17,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserActivePlan  extends BaseEntity{
 
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id",referencedColumnName = "id")
+//    private User user;
+
+
     @ManyToOne
     @JoinColumn(name = "plan_id",referencedColumnName = "id")
     private Plan plan;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
-    private User user;
+
 
     @Column
     @Positive

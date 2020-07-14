@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.invoke.MethodType;
 import java.time.LocalDateTime;
 
 @Table(name = "attack_history")
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AttackHistory extends BaseEntity {
+public class Attack extends BaseEntity {
 
     @Column
     @NotNull
@@ -21,7 +22,8 @@ public class AttackHistory extends BaseEntity {
 
     @Column
     @NotNull
-    private String method;
+    @Enumerated(EnumType.STRING)
+    private MethodType method;
 
 
     @Column

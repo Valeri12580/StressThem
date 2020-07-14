@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public boolean hasUserActivePlan(String username) {
+
+        return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan()!=null;
+    }
+
+    @Override
     public UserServiceModel getUserByUsername(String username) {
         User user = this.userRepository.findUserByUsername(username).orElse(null);
         if (user == null) {
