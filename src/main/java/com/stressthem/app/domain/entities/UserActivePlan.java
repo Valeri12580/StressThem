@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,11 +28,15 @@ public class UserActivePlan  extends BaseEntity{
     private Plan plan;
 
 
-
     @Column
     @Positive
     @NotNull
     private int leftDays;
+
+    @Column
+    @PositiveOrZero
+    @NotNull
+    private int leftAttacks;
 
     @Column
     private LocalDateTime startedOn;

@@ -33,6 +33,7 @@ public class AttackServiceImpl implements AttackService {
         Attack attack=this.modelMapper.map(attackServiceModel,Attack.class);
 
         attack.setAttacker(this.modelMapper.map(this.userService.getUserByUsername(username),User.class));
+        //todo decrease daily attack with -1
         return this.modelMapper.map(this.attackRepository.save(attack),AttackServiceModel.class);
     }
 
