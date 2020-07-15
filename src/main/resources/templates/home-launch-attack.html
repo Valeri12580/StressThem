@@ -40,7 +40,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>TARGET</th>
+                            <th>HOST</th>
+                            <th>PORT</th>
                             <th>METHOD</th>
                             <th>SERVERS</th>
                             <th>EXPIRES</th>
@@ -48,23 +49,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Na detelin neta</td>
-                            <td>Layer 7</td>
-                            <td>1</td>
-                            <td>02/07/2020</td>
-                            <td>Running</td>
+                        <tr th:each="attack,stats:${attacksHistory}">
+                            <td th:text="${stats.index+1}"></td>
+                            <td th:text="${attack.host}">Na detelin neta</td>
+                            <td th:text="${attack.port}">Na detelin neta</td>
+                            <td th:text="${attack.method.toString()}"></td>
+                            <td th:text="${attack.servers}"></td>
+                            <td>Time</td>
+                            <td >Is active</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Test</td>
-                            <td>DDOS</td>
-                            <td>2</td>
-                            <td>03/07/2020</td>
-                            <td>Running</td>
-                        </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -140,7 +133,7 @@
                                         <button class="btn btn-primary rounded-pill btn-sm btn-block waves-effect waves-light m-1"
                                                 id=" hit" type="submit"><i class="fa fa-bolt"></i> Send
                                         </button>
-
+                                        <small th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}" class="form-text text-danger">d</small>
                                     </div>
                                 </div>
 

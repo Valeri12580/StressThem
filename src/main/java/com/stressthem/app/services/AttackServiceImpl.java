@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AttackServiceImpl implements AttackService {
@@ -32,5 +34,12 @@ public class AttackServiceImpl implements AttackService {
 
         attack.setAttacker(this.modelMapper.map(this.userService.getUserByUsername(username),User.class));
         return this.modelMapper.map(this.attackRepository.save(attack),AttackServiceModel.class);
+    }
+
+    @Override
+    public List<AttackServiceModel> getAllAttacksForCurrentUser(String username) {
+        List<Attack>attacks=this.attackRepository.findAllByAttacker_Username(username);
+
+        return Arrays.asList(this.modelMapper.map(attacks, AttackServiceModel[].class));
     }
 }

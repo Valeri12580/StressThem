@@ -2,6 +2,7 @@ package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.binding.AttackBindingModel;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
+import com.stressthem.app.domain.models.view.AttackViewModel;
 import com.stressthem.app.services.interfaces.AttackService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/home")
@@ -33,37 +35,42 @@ public class HomeController {
     }
 
     @GetMapping("/launch")
-    public String homeLaunch(Model model, Principal principal){
-        if(principal!=null){
-            model.addAttribute("hasUserActivePlan",this.userService.hasUserActivePlan(principal.getName()));
+    public String homeLaunch(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("hasUserActivePlan", this.userService.hasUserActivePlan(principal.getName()));
+
+            model.addAttribute("attacksHistory", Arrays.asList(this.mapper
+                    .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class)));
         }
 
-        if(!model.containsAttribute("attack")){
-            model.addAttribute("attack",new AttackBindingModel());
+        if (!model.containsAttribute("attack")) {
+            model.addAttribute("attack", new AttackBindingModel());
         }
+
+
 
         return "home-launch-attack";
     }
 
     @PostMapping("/launch")
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
-                             BindingResult result, RedirectAttributes redirectAttributes,Principal principal){
+                             BindingResult result, RedirectAttributes redirectAttributes, Principal principal) {
 
-        System.out.println();
-        if(result.hasErrors()){
+        if (!this.userService.hasUserActivePlan(principal.getName())) {
+            result.reject("errorCode1", "You dont have active plan!");
+        }
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.attack", result);
-            redirectAttributes.addFlashAttribute("attack",attackBindingModel);
+            redirectAttributes.addFlashAttribute("attack", attackBindingModel);
             return "redirect:/home/launch";
         }
-        //todo optimization and show error if there is no active plan
+        //todo optimization and server,time validation to be dynamic created
 
-        try{
-            AttackServiceModel attackServiceModel=this.mapper.map(attackBindingModel,AttackServiceModel.class);
-            attackServiceModel.setTarget(AttackServiceModel.formatTarget(attackBindingModel));
-        this.attackService.launchAttack(attackServiceModel,principal.getName());
-        }catch (Exception ex){
 
-        }
+        AttackServiceModel attackServiceModel = this.mapper.map(attackBindingModel, AttackServiceModel.class);
+
+        this.attackService.launchAttack(attackServiceModel, principal.getName());
+
         return "redirect:/home/launch";
     }
 }

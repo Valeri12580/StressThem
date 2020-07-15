@@ -8,6 +8,8 @@ public interface UserService {
 
     UserServiceModel getUserByUsername(String username);
     UserServiceModel getUserByEmail(String email);
-
+    long getUsersCount();
     boolean hasUserActivePlan(String username);
+
+
 }

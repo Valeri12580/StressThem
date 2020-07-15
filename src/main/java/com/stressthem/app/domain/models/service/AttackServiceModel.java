@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AttackServiceModel extends BaseServiceModel {
 
-    private String target;
+    private String host;
+    private String port;
 
 
     private MethodType method;
@@ -31,7 +32,7 @@ public class AttackServiceModel extends BaseServiceModel {
     //todo userservicemodel here
     private User attacker;
 
-    public static String formatTarget(AttackBindingModel attack ){
-        return String.format("%s:%s",attack.getHost(),attack.getPort());
-    }
+//    public static String formatTarget(AttackBindingModel attack ){
+//        return String.format("%s:%s",attack.getHost(),attack.getPort());
+//    }
 }

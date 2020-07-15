@@ -18,7 +18,11 @@ public class Attack extends BaseEntity {
 
     @Column
     @NotNull
-    private String target;
+    private String host;
+
+    @Column
+    @NotNull
+    private String port;
 
     @Column
     @NotNull

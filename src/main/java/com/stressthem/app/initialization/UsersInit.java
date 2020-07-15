@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsersInit implements CommandLineRunner {
     private UserService userService;
+
     private ModelMapper modelMapper;
 
     @Autowired
@@ -23,11 +24,15 @@ public class UsersInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        UserRegisterBindingModel user=new UserRegisterBindingModel("Valeri12580",
-                new PasswordWrapper("12345678","12345678"),
-                "valeri125@dir.bg","https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg");
+        if(this.userService.getUsersCount()==0){
+            UserRegisterBindingModel user=new UserRegisterBindingModel("Valeri12580",
+                    new PasswordWrapper("12345678","12345678"),
+                    "valeri125@dir.bg","https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg");
 
-        this.userService.register(this.modelMapper.map(user,UserServiceModel.class));
+            this.userService.register(this.modelMapper.map(user,UserServiceModel.class));
+
+        }
+
 
     }
 }

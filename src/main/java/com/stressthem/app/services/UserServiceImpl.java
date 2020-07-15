@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public long getUsersCount() {
+
+        return this.userRepository.count();
+    }
+
+    @Override
     public boolean hasUserActivePlan(String username) {
 
         return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan()!=null;
