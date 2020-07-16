@@ -22,4 +22,6 @@ public class PlanViewModel {
     private double maxBootTimeInSeconds;
 
     private int maxBootsPerDay;
+
+    private int servers;
 }

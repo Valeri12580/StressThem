@@ -7,9 +7,12 @@ import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(value = 2)
 public class UsersInit implements CommandLineRunner {
     private UserService userService;
 

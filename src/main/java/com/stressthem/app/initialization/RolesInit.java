@@ -4,11 +4,13 @@ import com.stressthem.app.domain.entities.Role;
 import com.stressthem.app.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Order(value = 1)
 public class RolesInit implements CommandLineRunner {
 
     private  final RoleRepository roleRepository;

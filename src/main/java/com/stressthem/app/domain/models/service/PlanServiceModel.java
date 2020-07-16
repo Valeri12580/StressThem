@@ -1,10 +1,6 @@
 package com.stressthem.app.domain.models.service;
 
-import com.stressthem.app.domain.entities.User;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -13,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class PlanServiceModel extends BaseServiceModel {
 
 
@@ -33,7 +30,10 @@ public class PlanServiceModel extends BaseServiceModel {
     @NonNull
     private LocalDateTime createdOn;
 
+    @NonNull
+    private int servers;
 
+    @NotNull
     private UserServiceModel author;
 
 }

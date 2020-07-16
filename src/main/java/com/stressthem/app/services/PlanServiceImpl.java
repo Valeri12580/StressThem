@@ -11,6 +11,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PlanServiceImpl implements PlanService {
     private ModelMapper modelMapper;
@@ -35,5 +41,12 @@ public class PlanServiceImpl implements PlanService {
         planRepository.save(plan);
 
         return this.modelMapper.map(plan,PlanServiceModel.class);
+    }
+
+    @Override
+    public List<PlanServiceModel> getAllPlans() {
+        return Arrays.stream(this.modelMapper.map(this.planRepository.findAll(), PlanServiceModel[].class))
+                .sorted(Comparator.comparing(PlanServiceModel::getPrice)).collect(Collectors.toList());
+
     }
 }

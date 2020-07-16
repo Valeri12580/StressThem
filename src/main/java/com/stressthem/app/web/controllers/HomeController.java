@@ -64,7 +64,7 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("attack", attackBindingModel);
             return "redirect:/home/launch";
         }
-        //todo optimization and server,time validation to be dynamic created
+        //todo optimization and server,time validation to be dynamic created,max attack per day validation
 
 
         AttackServiceModel attackServiceModel = this.mapper.map(attackBindingModel, AttackServiceModel.class);

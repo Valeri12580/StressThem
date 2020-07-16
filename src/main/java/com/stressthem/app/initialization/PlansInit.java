@@ -8,12 +8,15 @@ import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
+@Order(value = 3)
 public class PlansInit implements CommandLineRunner {
     private PlanRepository planRepository;
     private UserRepository userRepository;
@@ -28,10 +31,15 @@ public class PlansInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Plan plan=new Plan("Test",new BigDecimal("1500.25"),
-                60,30,75,LocalDateTime.now());
-        User user=this.userRepository.findUserByUsername("valeri12580").get();
-        plan.setAuthor(user);
-        this.planRepository.save(plan);
+        if(this.planRepository.count()==0){
+            Plan plan=new Plan("Starter",new BigDecimal("15"),30,200,45,1,LocalDateTime.now());
+            Plan planTwo=new Plan("Standart",new BigDecimal("30"),60,400,90,1,LocalDateTime.now());
+            User user=this.userRepository.findUserByUsername("valeri12580").get();
+            plan.setAuthor(user);
+            planTwo.setAuthor(user);
+            this.planRepository.saveAll(List.of(plan,planTwo));
+        }
+
+
     }
 }
