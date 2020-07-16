@@ -36,7 +36,7 @@ public class UserActivePlan  extends BaseEntity{
     @Column
     @PositiveOrZero
     @NotNull
-    private int leftAttacks;
+    private int leftAttacksForTheDay;
 
     @Column
     private LocalDateTime startedOn;

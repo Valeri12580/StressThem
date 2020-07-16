@@ -1,6 +1,9 @@
 package com.stressthem.app.services;
 
+import com.stressthem.app.domain.entities.Plan;
 import com.stressthem.app.domain.entities.User;
+import com.stressthem.app.domain.entities.UserActivePlan;
+import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.repositories.UserRepository;
 import com.stressthem.app.services.interfaces.RoleService;
@@ -70,6 +73,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean hasUserActivePlan(String username) {
 
         return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan()!=null;
+    }
+
+    @Override
+    public UserServiceModel purchasePlan(PlanServiceModel planServiceModel, String username) {
+        User user=this.modelMapper.map(this.getUserByUsername(username),User.class);
+        Plan plan=this.modelMapper.map(planServiceModel,Plan.class);
+        if(user.getUserActivePlan()!=null){
+            //todo throw new error
+        }
+        //todo dobavi cascade type za da moje kogato se iztrie usera,da mu se trie i aktivniq plan
+        UserActivePlan userActivePlan=new UserActivePlan();
+        user.setUserActivePlan();
+        return null;
+
     }
 
     @Override

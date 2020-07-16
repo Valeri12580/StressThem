@@ -1,5 +1,6 @@
 package com.stressthem.app.services.interfaces;
 
+import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 
 public interface UserService {
@@ -10,6 +11,8 @@ public interface UserService {
     UserServiceModel getUserByEmail(String email);
     long getUsersCount();
     boolean hasUserActivePlan(String username);
+
+    UserServiceModel purchasePlan(PlanServiceModel planServiceModel,String username);
 
 
 }

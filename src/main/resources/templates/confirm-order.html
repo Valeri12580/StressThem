@@ -1,101 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>index</title>
-    <meta name="description" content="Test">
-    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-List.css">
-    <link rel="stylesheet" href="../static/assets/css/beautiful-dismissable-alert.css">
-    <link rel="stylesheet" href="../static/assets/css/Beautiful-Modern-Looking-Pricing.css">
-    <link rel="stylesheet" href="../static/assets/css/Contact-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions-1.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions.css">
-    <link rel="stylesheet" href="../static/assets/css/Features-Blue.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Basic.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Dark.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Navigation-with-Button.css">
-    <link rel="stylesheet" href="../static/assets/css/News-Cards.css">
-    <link rel="stylesheet" href="../static/assets/css/Pretty-Registration-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Projects-Horizontal.css">
-    <link rel="stylesheet" href="../static/assets/css/User-Information-Panel---Lite--Secondary-User-Panel-Footer.css">
+<head th:insert="~{fragments/head}">
+
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-        <div class="container"><a class="navbar-brand" href="#">Stressed Down</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/home">Home</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/buy">Buy</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/faq">FAQ</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/news">News</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/contact">Contact Us</a></li>
-                </ul>
-                <div class="dropdown show border rounded" style="margin-right: 30px;"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#">Hello {username}</a>
-                    <div class="dropdown-menu show" role="menu"><a class="dropdown-item" role="presentation" href="/profile">Profile</a><a class="dropdown-item" role="presentation" href="/admin">Admin Panel</a></div>
-                </div><span class="navbar-text actions"> <a class="btn btn-light btn btn-primary rounded-pill" role="button" href="/users/logout">Logout</a></span></div>
-        </div>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
     </nav>
     <div class="container mb-5 mt-5">
         <div class="row card-deck flex-column flex-md-row mb-3">
             <div class="col-lg-6 offset-lg-3">
-                <div class="card card-pricing text-center px-3 mb-4"><span class="h6 w-60 mx-auto px-4 py-1 bg-primary text-white shadow-sm">Diamond<br></span>
+                <div class="card card-pricing text-center px-3 mb-4"><span class="h6 w-60 mx-auto px-4 py-1 bg-primary text-white shadow-sm" th:text="${plan.type}"><br></span>
                     <div class="bg-transparent card-header pt-4 border-0">
-                        <h1 class="h1 font-weight-normal text-primary text-center mb-0">$<span class="price">5000</span><span class="h6 text-muted ml-2">/pm</span></h1>
+                        <h1 class="h1 font-weight-normal text-primary text-center mb-0"><span class="price" th:text="|  ${plan.price} EUR|"></span><span class="h6 text-muted ml-2"></span></h1>
                     </div>
                     <div class="card-body pt-0">
-                        <ul class="list-unstyled mb-4">
-                            <li>1 byte/sec</li>
-                            <li>test</li>
-                            <li>Free nudes</li>
-                            <li>Cancel anytime</li>
-                        </ul><button class="btn btn-outline-primary mb-3" type="button">Purchase</button></div>
+                        <form th:method="post" th:action="@{/plans/confirm/{id}(id=${id})}">
+                            <ul class="list-unstyled mb-4">
+                                <li th:text="|Duration: ${plan.durationInDays} days.| "></li>
+                                <li th:text="|Max boot time: ${plan.maxBootTimeInSeconds} seconds.|">Max Boot Time</li>
+                                <li th:text="|Max boots per day: ${plan.maxBootsPerDay}|"></li>
+                                <li th:text="|Concurrent attacks: ${plan.servers}|"></li>
+                            </ul><button class="btn btn-outline-primary mb-3 rounded-pill w-25" type="submit">Purchase</button>
+                        </form>
+                       </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="footer-basic">
-        <footer>
-            <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="/home">Home</a></li>
-                <li class="list-inline-item"><a href="/buy">Buy</a></li>
-                <li class="list-inline-item"><a href="/faq">FAQ</a></li>
-                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="/news">News</a></li>
-                <li class="list-inline-item"><a href="/contact">Contact Us</a></li>
-            </ul>
-            <p class="copyright">Stress Down © 2020</p>
+        <footer th:insert="~{fragments/footer}">
+
         </footer>
     </div>
-    <script src="../static/assets/js/jquery.min.js"></script>
-    <script src="../static/assets/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="../static/assets/js/three.r95.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="../static/assets/js/vanta.net.min.js"></script>
-    <script src="../static/assets/js/app.js"></script>
-    <script src="../static/assets/js/Profile-Edit-Form.js"></script>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
 </body>
 
 </html>

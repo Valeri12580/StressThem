@@ -9,4 +9,8 @@ public interface PlanService {
     PlanServiceModel register(PlanServiceModel planServiceModel,String username);
 
     List<PlanServiceModel>getAllPlans();
+
+    PlanServiceModel getPlanById(String id);
+
+
 }

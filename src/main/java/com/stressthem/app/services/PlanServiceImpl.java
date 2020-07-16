@@ -49,4 +49,11 @@ public class PlanServiceImpl implements PlanService {
                 .sorted(Comparator.comparing(PlanServiceModel::getPrice)).collect(Collectors.toList());
 
     }
+
+    @Override
+    public PlanServiceModel getPlanById(String id) {
+        return this.modelMapper.map(this.planRepository.findById(id).get(),PlanServiceModel.class);
+    }
+
+
 }
