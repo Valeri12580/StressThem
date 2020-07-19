@@ -16,5 +16,4 @@ public class AttackViewModel {
     private MethodType method;
     private int servers;
     private LocalDateTime expiresOn;
-    private boolean isActive;
 }

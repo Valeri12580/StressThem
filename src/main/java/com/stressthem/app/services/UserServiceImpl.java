@@ -3,13 +3,15 @@ package com.stressthem.app.services;
 import com.stressthem.app.domain.entities.Plan;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.entities.UserActivePlan;
-import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.repositories.UserRepository;
+import com.stressthem.app.services.interfaces.PlanService;
 import com.stressthem.app.services.interfaces.RoleService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,18 +19,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private RoleService roleService;
+    private PlanService planService;
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleService roleService, UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.roleService = roleService;
+        this.planService = planService;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
@@ -39,17 +45,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if(user.getImageUrl()==null || user.getImageUrl().equals("")){
+        if (user.getImageUrl() == null || user.getImageUrl().equals("")) {
             user.setImageUrl("\\assets\\img\\default_user_icon.png");
         }
 
-        if(this.userRepository.count()==0){
+        if (this.userRepository.count() == 0) {
             user.setRoles(new HashSet<>(this.roleService.getAllRoles()));
-        }else{
-            user.getRoles().add(this.roleService.getRoleByName("USER"));
+        } else {
+            user.setRoles(Set.of(this.roleService.getRoleByName("USER")));
         }
 
-        user.setRegisteredOn(LocalDateTime.now());
+        user.setRegisteredOn(LocalDateTime.now(ZoneId.systemDefault()));
         this.userRepository.save(user);
         return this.modelMapper.map(user, UserServiceModel.class);
     }
@@ -72,21 +78,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean hasUserActivePlan(String username) {
 
-        return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan()!=null;
+        return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan() != null;
     }
 
     @Override
-    public UserServiceModel purchasePlan(PlanServiceModel planServiceModel, String username) {
-        User user=this.modelMapper.map(this.getUserByUsername(username),User.class);
-        Plan plan=this.modelMapper.map(planServiceModel,Plan.class);
-        if(user.getUserActivePlan()!=null){
-            //todo throw new error
-        }
-        //todo dobavi cascade type za da moje kogato se iztrie usera,da mu se trie i aktivniq plan
-        UserActivePlan userActivePlan=new UserActivePlan();
-        user.setUserActivePlan();
-        return null;
+    public UserServiceModel purchasePlan(String id, String username) {
+        User user = this.modelMapper.map(this.getUserByUsername(username), User.class);
+        Plan plan = this.planService.getPlanEntity(id);
 
+        if (user.getUserActivePlan() != null) {
+            throw new UserPlanActivationException("You have already activate plan!");
+        }
+//todo poradi nqkakva prichina se iztrivat rolite kogato se zakupi plan
+        UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
+                LocalDateTime.now(ZoneId.systemDefault()));
+        user.setUserActivePlan(userActivePlan);
+        this.userRepository.save(user);
+        return this.modelMapper.map(user, UserServiceModel.class);
+
+    }
+
+    @Override
+    public int getUserAvailableAttacks(String username) {
+        User user = this.userRepository.findUserByUsername(username).get();
+        if(user.getUserActivePlan()==null){
+            return 0;
+        }
+        return user.getUserActivePlan().getLeftAttacksForTheDay();
     }
 
     @Override
@@ -100,6 +118,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return this.userRepository.findUserByUsername(s).orElseThrow(()->new UsernameNotFoundException("Invalid credentials"));
+        return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
     }
 }

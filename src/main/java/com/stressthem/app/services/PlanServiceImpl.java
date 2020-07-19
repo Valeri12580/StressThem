@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +52,11 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public PlanServiceModel getPlanById(String id) {
         return this.modelMapper.map(this.planRepository.findById(id).get(),PlanServiceModel.class);
+    }
+
+    @Override
+    public Plan getPlanEntity(String id) {
+        return this.planRepository.findById(id).get();
     }
 
 

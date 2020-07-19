@@ -17,8 +17,14 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class UserActivePlan  extends BaseEntity{
+    public UserActivePlan(Plan plan, @Positive @NotNull int leftDays, @PositiveOrZero @NotNull int leftAttacksForTheDay, LocalDateTime startedOn) {
+        this.plan = plan;
+        this.leftDays = leftDays;
+        this.leftAttacksForTheDay = leftAttacksForTheDay;
+        this.startedOn = startedOn;
+    }
 
-//    @OneToOne(cascade = CascadeType.ALL)
+    //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_id",referencedColumnName = "id")
 //    private User user;
 
@@ -34,10 +40,13 @@ public class UserActivePlan  extends BaseEntity{
     private int leftDays;
 
     @Column
-    @PositiveOrZero
+    @PositiveOrZero(message = "Your daily limit is reached!")
     @NotNull
     private int leftAttacksForTheDay;
 
     @Column
     private LocalDateTime startedOn;
+
+
+
 }

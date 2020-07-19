@@ -38,9 +38,6 @@ public class Attack extends BaseEntity {
     @NotNull
     private LocalDateTime expiresOn;
 
-    @Column
-    @NotNull
-    private boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "attacker_id", referencedColumnName = "id")

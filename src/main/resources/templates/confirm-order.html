@@ -24,6 +24,8 @@
                                 <li th:text="|Max boots per day: ${plan.maxBootsPerDay}|"></li>
                                 <li th:text="|Concurrent attacks: ${plan.servers}|"></li>
                             </ul><button class="btn btn-outline-primary mb-3 rounded-pill w-25" type="submit">Purchase</button>
+                            <small th:if="${activationError}" th:text="${activationError}" class="form-text text-center text-danger">Invalid username or
+                                password!</small>
                         </form>
                        </div>
                 </div>

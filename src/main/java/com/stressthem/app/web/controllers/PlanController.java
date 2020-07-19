@@ -1,16 +1,15 @@
 package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.view.PlanViewModel;
+import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.services.interfaces.PlanService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -47,8 +46,21 @@ public class PlanController {
 
     }
     @PostMapping("/confirm/{id}")
-    public String postConfirm(@PathVariable  String id, Principal principal){
+    public String postConfirm(@PathVariable("id")  String id, Principal principal
+    , RedirectAttributes redirectAttributes){
+        try{
+            this.userService.purchasePlan(id,principal.getName());
+        }catch (UserPlanActivationException ex){
+            redirectAttributes.addFlashAttribute("activationError",ex.getMessage());
 
+            return String.format("redirect:/plans/confirm/%s",id);
+        }
+
+        return "redirect:/home/launch";
     }
 
+
+
 }
+
+//todo optinal v service and error handler here!

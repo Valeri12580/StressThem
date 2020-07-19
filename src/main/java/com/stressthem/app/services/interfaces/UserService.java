@@ -12,7 +12,9 @@ public interface UserService {
     long getUsersCount();
     boolean hasUserActivePlan(String username);
 
-    UserServiceModel purchasePlan(PlanServiceModel planServiceModel,String username);
+    UserServiceModel purchasePlan(String id,String username);
+
+    int getUserAvailableAttacks(String username);
 
 
 }

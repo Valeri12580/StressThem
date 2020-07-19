@@ -2,12 +2,14 @@ package com.stressthem.app.domain.models.service;
 
 import com.stressthem.app.domain.entities.Attack;
 import com.stressthem.app.domain.entities.Role;
+import com.stressthem.app.domain.entities.UserActivePlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,8 +30,10 @@ public class UserServiceModel extends BaseServiceModel {
 
     private LocalDateTime registeredOn;
 
+    //todo useractiveplanservice model
+    private UserActivePlan userActivePlan;
 
-    private Role role;
+    private Set<Role> roles;
 
     //todo attackservicemodel here
     private List<Attack> attacks;

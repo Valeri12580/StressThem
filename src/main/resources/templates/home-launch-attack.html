@@ -51,12 +51,12 @@
                         <tbody>
                         <tr th:each="attack,stats:${attacksHistory}">
                             <td th:text="${stats.index+1}"></td>
-                            <td th:text="${attack.host}">Na detelin neta</td>
-                            <td th:text="${attack.port}">Na detelin neta</td>
+                            <td th:text="${attack.host}"></td>
+                            <td th:text="${attack.port}"></td>
                             <td th:text="${attack.method.toString()}"></td>
                             <td th:text="${attack.servers}"></td>
-                            <td>Time</td>
-                            <td >Is active</td>
+                            <td th:text="${#temporals.format(attack.expiresOn, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                            <td  th:text="${#temporals.createNow()>attack.expiresOn ? 'Inactive':'Active'}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -124,7 +124,7 @@
                                     <input th:field="*{servers}" type="number" class="form-control" id="totalservers" name="totalservers"
                                            placeholder="1">
                                     <small th:errors="*{servers}" class="form-text text-danger">d</small>
-                                    Your Limit: 0
+                                    <th:block th:if="${availableAttacks!=0}" th:text="|Your limit: ${availableAttacks}|"></th:block>
                                 </div>
 
 

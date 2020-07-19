@@ -41,6 +41,7 @@ public class HomeController {
 
             model.addAttribute("attacksHistory", Arrays.asList(this.mapper
                     .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class)));
+            model.addAttribute("availableAttacks",this.userService.getUserAvailableAttacks(principal.getName()));
         }
 
         if (!model.containsAttribute("attack")) {
@@ -68,6 +69,7 @@ public class HomeController {
 
 
         AttackServiceModel attackServiceModel = this.mapper.map(attackBindingModel, AttackServiceModel.class);
+        attackServiceModel=this.attackService.setAttackExpiredOn(attackBindingModel.getTime(),attackServiceModel);
 
         this.attackService.launchAttack(attackServiceModel, principal.getName());
 

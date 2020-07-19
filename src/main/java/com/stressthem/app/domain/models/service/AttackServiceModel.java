@@ -1,12 +1,12 @@
 package com.stressthem.app.domain.models.service;
 
+import com.stressthem.app.domain.MethodType;
 import com.stressthem.app.domain.entities.User;
-import com.stressthem.app.domain.models.binding.AttackBindingModel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.lang.invoke.MethodType;
 import java.time.LocalDateTime;
 
 
@@ -21,13 +21,12 @@ public class AttackServiceModel extends BaseServiceModel {
 
     private MethodType method;
 
-
     private int servers;
 
 
     private LocalDateTime expiresOn;
 
-    private boolean isActive;
+
 
     //todo userservicemodel here
     private User attacker;

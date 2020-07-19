@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -32,8 +33,8 @@ public class PlansInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if(this.planRepository.count()==0){
-            Plan plan=new Plan("Starter",new BigDecimal("15"),30,200,45,1,LocalDateTime.now());
-            Plan planTwo=new Plan("Standart",new BigDecimal("30"),60,400,90,1,LocalDateTime.now());
+            Plan plan=new Plan("Starter",new BigDecimal("15"),30,200,45,1,LocalDateTime.now(ZoneId.systemDefault()));
+            Plan planTwo=new Plan("Standart",new BigDecimal("30"),60,400,90,1,LocalDateTime.now(ZoneId.systemDefault()));
             User user=this.userRepository.findUserByUsername("valeri12580").get();
             plan.setAuthor(user);
             planTwo.setAuthor(user);
