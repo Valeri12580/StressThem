@@ -1,20 +1,21 @@
-package com.stressthem.app.domain.models.binding;
+package com.stressthem.app.domain.models.view;
 
-import com.stressthem.app.validation.PasswordMatch;
+import com.stressthem.app.domain.entities.Role;
+import com.stressthem.app.domain.models.binding.PasswordWrapper;
 import com.stressthem.app.validation.Unique;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserRegisterBindingModel {
+public class ProfileEditViewModel {
+    private String id;
 
     @NotNull
     @Size(min = 2, max = 15, message = "Username length must be minimum 2 characters and maximum 15 characters!")
@@ -22,17 +23,22 @@ public class UserRegisterBindingModel {
     @Unique(fieldType = "username", message = "User with that username already exists!")
     private String username;
 
-
-
-    @Valid
-    private PasswordWrapper passwordWrapper;
-
-
     @Email(message = "The email is not valid!")
     @Unique(fieldType = "email", message = "User with that email already exists!")
     @NotBlank(message = "Cannot be empty!")
     private String email;
 
-//    @Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
+    //@Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
     private String imageUrl;
+
+    @Valid
+    private PasswordWrapper passwordWrapper;
+
+    private Set<Role> roles;
+
+    private PlanViewModel plan;
+
+
+
+
 }

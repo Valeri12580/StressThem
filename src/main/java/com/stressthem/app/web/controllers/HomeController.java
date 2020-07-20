@@ -1,5 +1,6 @@
 package com.stressthem.app.web.controllers;
 
+import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.binding.AttackBindingModel;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
 import com.stressthem.app.domain.models.view.AttackViewModel;
@@ -7,6 +8,7 @@ import com.stressthem.app.services.interfaces.AttackService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,13 +37,16 @@ public class HomeController {
     }
 
     @GetMapping("/launch")
-    public String homeLaunch(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("hasUserActivePlan", this.userService.hasUserActivePlan(principal.getName()));
+    public String homeLaunch(Model model,Authentication authentication) {
+        String userId=((User)authentication.getPrincipal()).getId();
+        String username=((User)authentication.getPrincipal()).getUsername();
+        if (username != null) {
+            model.addAttribute("hasUserActivePlan", this.userService.hasUserActivePlan(username));
 
             model.addAttribute("attacksHistory", Arrays.asList(this.mapper
-                    .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class)));
-            model.addAttribute("availableAttacks",this.userService.getUserAvailableAttacks(principal.getName()));
+                    .map(this.attackService.getAllAttacksForCurrentUser(username), AttackViewModel[].class)));
+            model.addAttribute("availableAttacks",this.userService.getUserAvailableAttacks(username));
+            model.addAttribute("userId",userId);
         }
 
         if (!model.containsAttribute("attack")) {

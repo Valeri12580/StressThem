@@ -45,9 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getImageUrl() == null || user.getImageUrl().equals("")) {
-            user.setImageUrl("\\assets\\img\\default_user_icon.png");
-        }
+
 
         if (this.userRepository.count() == 0) {
             user.setRoles(new HashSet<>(this.roleService.getAllRoles()));
@@ -58,6 +56,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRegisteredOn(LocalDateTime.now(ZoneId.systemDefault()));
         this.userRepository.save(user);
         return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel findUserById(String id) {
+        //todo vsichki trqbva da stanat kato tova
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("The user is not available"));
+        return this.modelMapper.map(user,UserServiceModel.class);
     }
 
     @Override
@@ -108,6 +113,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserServiceModel updateUser(UserServiceModel userServiceModel) {
+        User user=this.userRepository.findById(userServiceModel.getId()).orElseThrow(()->new UsernameNotFoundException("The user is not found"));
+
+        modifyUser(userServiceModel,user);
+
+        this.userRepository.save(user);
+        return userServiceModel;
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        this.userRepository.deleteById(id);
+    }
+
+    @Override
     public UserServiceModel getUserByUsername(String username) {
         User user = this.userRepository.findUserByUsername(username).orElse(null);
         if (user == null) {
@@ -119,5 +139,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+    }
+
+    private void  modifyUser(UserServiceModel modified,User main){
+        main.setUsername(modified.getUsername());
+        main.setEmail(modified.getEmail());
+        main.setImageUrl(modified.getImageUrl());
+        main.setPassword(modified.getPassword());
+
     }
 }

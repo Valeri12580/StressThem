@@ -26,7 +26,7 @@
                         class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"
                         sec:authentication="name"></a>
                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" role="presentation" th:href="@{/users/profile}">Profile</a>
+                        <a class="dropdown-item" role="presentation" th:href="@{/users/profile/{id}(id=${userId})}">Profile</a>
                         <a sec:authorize="hasAnyAuthority('ROOT','ADMIN')" class="dropdown-item" role="presentation"
                            th:href="@{/admin/user-roles}">Admin Panel</a></div>
                 </div>

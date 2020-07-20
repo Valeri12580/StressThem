@@ -7,6 +7,8 @@ public interface UserService {
 
     UserServiceModel register(UserServiceModel userServiceModel);
 
+    UserServiceModel findUserById(String id);
+
     UserServiceModel getUserByUsername(String username);
     UserServiceModel getUserByEmail(String email);
     long getUsersCount();
@@ -15,6 +17,11 @@ public interface UserService {
     UserServiceModel purchasePlan(String id,String username);
 
     int getUserAvailableAttacks(String username);
+
+    UserServiceModel updateUser(UserServiceModel userServiceModel);
+
+
+    void deleteUser(String id);
 
 
 }

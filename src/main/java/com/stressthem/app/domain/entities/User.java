@@ -51,8 +51,12 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Role> roles;
 
 
-    @OneToMany(mappedBy = "attacker")
+    @OneToMany(mappedBy = "attacker",cascade = CascadeType.ALL)
     private List<Attack> attacks=new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
+    private List<Plan>plans;
 
 
     @Override

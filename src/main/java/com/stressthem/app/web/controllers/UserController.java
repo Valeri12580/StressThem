@@ -3,18 +3,17 @@ package com.stressthem.app.web.controllers;
 import com.stressthem.app.domain.models.binding.UserLoginBindingModel;
 import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.domain.models.view.ProfileEditViewModel;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -66,6 +65,45 @@ public class UserController {
 
         return "login";
     }
+
+
+    @GetMapping("/profile/{id}")
+    public String profileEdit(@PathVariable String id, Model model){
+        ProfileEditViewModel profile=this.modelMapper.map(this.userService.findUserById(id),ProfileEditViewModel.class);
+        if(!model.containsAttribute("userEdit")){
+            //todo custom mapping
+            model.addAttribute("userEdit",profile);
+        }
+
+        return "profile-edit";
+    }
+
+    @PostMapping("/profile/{id}")
+    public String postProfileEdit(@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
+            ,RedirectAttributes redirectAttributes){
+        if(result.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userEdit", result);
+            redirectAttributes.addFlashAttribute("userEdit", profileEditViewModel);
+
+        }else{
+            this.userService.updateUser(this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
+            redirectAttributes.addFlashAttribute("editUser",profileEditViewModel);
+        }
+
+        //todo fix profie edit when changing only one field-to be changed ony that
+        return String.format("redirect:/users/profile/%s",profileEditViewModel.getId());
+    }
+
+    @GetMapping("/profile/delete/{id}")
+    public String deleteProfile(@PathVariable String id, HttpSession session){
+
+
+        this.userService.deleteUser(id);
+        session.invalidate();
+
+        return "redirect:/index";
+    }
+
 
 
 
