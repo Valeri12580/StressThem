@@ -19,18 +19,18 @@ public class ApplicationBeanConfiguration {
     public ModelMapper modelMapper(){
         ModelMapper mapper=new ModelMapper();
 
-        PropertyMap<UserServiceModel, ProfileEditViewModel>editMap= new PropertyMap<>() {
-            @Override
-            protected void configure() {
-//                map().setPasswordWrapper(new PasswordWrapper(source.getPassword(), source.getPassword()));
-                map().getPasswordWrapper().setPassword(source.getPassword());
-                map().getPasswordWrapper().setConfirmPassword(source.getPassword());
-            }
-        };
+//        PropertyMap<UserServiceModel, ProfileEditViewModel>editMap= new PropertyMap<>() {
+//            @Override
+//            protected void configure() {
 
-
-
-        mapper.addMappings(editMap);
+//                map().getPasswordWrapper().setPassword(source.getPassword());
+//                map().getPasswordWrapper().setConfirmPassword(source.getPassword());
+//            }
+//        };
+//
+//
+//
+//        mapper.addMappings(editMap);
 
 
         return mapper;

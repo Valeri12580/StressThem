@@ -2,6 +2,9 @@ package com.stressthem.app.services.interfaces;
 
 import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import org.springframework.validation.BindingResult;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -20,6 +23,9 @@ public interface UserService {
 
     UserServiceModel updateUser(UserServiceModel userServiceModel);
 
+    void changeUserRole(String username,String roleName);
+
+    List<UserServiceModel>getAllUsers();
 
     void deleteUser(String id);
 

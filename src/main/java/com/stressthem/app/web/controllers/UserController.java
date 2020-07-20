@@ -78,6 +78,7 @@ public class UserController {
         return "profile-edit";
     }
 
+
     @PostMapping("/profile/{id}")
     public String postProfileEdit(@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
             ,RedirectAttributes redirectAttributes){
@@ -90,7 +91,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("editUser",profileEditViewModel);
         }
 
-        //todo fix profie edit when changing only one field-to be changed ony that
+        //todo fix profie edit when changing only one field-to be changed ony that fix this!!!
         return String.format("redirect:/users/profile/%s",profileEditViewModel.getId());
     }
 

@@ -8,4 +8,6 @@ public interface RoleService {
     Role getRoleByName(String authority);
 
     List<Role> getAllRoles();
+
+
 }

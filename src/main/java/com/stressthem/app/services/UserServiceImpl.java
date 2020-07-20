@@ -17,10 +17,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -120,6 +122,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         this.userRepository.save(user);
         return userServiceModel;
+    }
+
+    @Override
+    public void changeUserRole(String username, String roleName) {
+
+    }
+
+    @Override
+    public List<UserServiceModel> getAllUsers() {
+        return List.of(this.modelMapper.map(this.userRepository.findAll(),UserServiceModel[].class));
     }
 
     @Override
