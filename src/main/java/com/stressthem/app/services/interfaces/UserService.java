@@ -4,6 +4,7 @@ import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import org.springframework.validation.BindingResult;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -23,7 +24,7 @@ public interface UserService {
 
     UserServiceModel updateUser(UserServiceModel userServiceModel);
 
-    void changeUserRole(String username,String roleName);
+    void changeUserRole(String username, String roleName,String type, Principal principal);
 
     List<UserServiceModel>getAllUsers();
 

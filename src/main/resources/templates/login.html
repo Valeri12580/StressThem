@@ -24,9 +24,8 @@
         </div>
         <small th:if="${param.error!=null}" class="form-text text-center text-danger">Invalid username or
             password!</small>
-        <a class="forgot" href="#"
-           style="color: #ebebeb;">Forgot
-            your email or password?</a></form>
+        <a class="forgot" th:href="@{/users/register}"
+           style="color: #ebebeb;">Dont have account?</a></form>
 </div>
 <div class="footer-basic">
     <footer th:insert="~{fragments/footer}">

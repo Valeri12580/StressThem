@@ -1,9 +1,11 @@
 package com.stressthem.app.services;
 
 import com.stressthem.app.domain.entities.Plan;
+import com.stressthem.app.domain.entities.Role;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.entities.UserActivePlan;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.exceptions.ChangeRoleException;
 import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.repositories.UserRepository;
 import com.stressthem.app.services.interfaces.PlanService;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -96,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user.getUserActivePlan() != null) {
             throw new UserPlanActivationException("You have already activate plan!");
         }
-//todo poradi nqkakva prichina se iztrivat rolite kogato se zakupi plan
+
         UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
                 LocalDateTime.now(ZoneId.systemDefault()));
         user.setUserActivePlan(userActivePlan);
@@ -125,7 +128,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void changeUserRole(String username, String roleName) {
+    public void changeUserRole(String username, String roleName,String type, Principal principal) {
+        User user=this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
+        Role role=this.roleService.getRoleByName(roleName);
+
+        if(principal.getName().equals(username)){
+            throw new ChangeRoleException("You can only change other user roles");
+        }
+
+        if(type.equals("Add")){
+            if(user.getRoles().contains(role)){
+                throw new ChangeRoleException("This user already have that role");
+            }
+
+            user.getRoles().add(role);
+
+        }else if(type.equals("Remove")){
+            if(!user.getRoles().contains(role)){
+                throw new ChangeRoleException("This user doesn't have that role");
+            }
+
+            user.getRoles().remove(role);
+        }
+
+        this.userRepository.save(user);
+
 
     }
 
