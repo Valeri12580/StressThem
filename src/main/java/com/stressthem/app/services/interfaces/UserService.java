@@ -28,7 +28,9 @@ public interface UserService {
 
     List<UserServiceModel>getAllUsers();
 
-    void deleteUser(String id);
+    void deleteUserById(String id);
+
+    void deleteUserByUsername(String username,Principal principal);
 
 
 }

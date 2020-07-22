@@ -31,7 +31,8 @@ public class User extends BaseEntity implements UserDetails {
     @Email
     private String email;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
+    //todo Data truncation: Data too long for column 'image_url' at row 1
     private String imageUrl;
 
     //todo try to automate the registration time

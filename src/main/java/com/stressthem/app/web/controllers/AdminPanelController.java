@@ -3,6 +3,7 @@ package com.stressthem.app.web.controllers;
 import com.stressthem.app.domain.entities.Role;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.exceptions.ChangeRoleException;
+import com.stressthem.app.exceptions.UserDeletionException;
 import com.stressthem.app.services.interfaces.RoleService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.springframework.stereotype.Controller;
@@ -46,5 +47,22 @@ public class AdminPanelController {
         }
 
         return "redirect:/admin/user-roles";
+    }
+
+    @GetMapping("/delete-user")
+    public String deleteUser(Model model){
+        model.addAttribute("users", this.userService.getAllUsers().stream().map(UserServiceModel::getUsername).collect(Collectors.toList()));
+
+        return "admin-panel-delete-user";
+    }
+
+    @PostMapping("/delete-user")
+    public String postDeleteUser(@RequestParam String username,Principal principal,RedirectAttributes redirectAttributes){
+        try {
+            this.userService.deleteUserByUsername(username,principal);
+        }catch (UserDeletionException ex){
+            redirectAttributes.addFlashAttribute("error",ex.getMessage());
+        }
+        return "redirect:/admin/delete-user";
     }
 }

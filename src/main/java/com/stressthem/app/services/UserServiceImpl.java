@@ -6,6 +6,7 @@ import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.entities.UserActivePlan;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.exceptions.ChangeRoleException;
+import com.stressthem.app.exceptions.UserDeletionException;
 import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.repositories.UserRepository;
 import com.stressthem.app.services.interfaces.PlanService;
@@ -127,6 +128,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userServiceModel;
     }
 
+
     @Override
     public void changeUserRole(String username, String roleName,String type, Principal principal) {
         User user=this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
@@ -162,8 +164,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void deleteUser(String id) {
+    public void deleteUserById(String id) {
         this.userRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteUserByUsername(String username,Principal principal) {
+        String id =this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found")).getId();
+        if(username.equals(principal.getName())){
+            throw new UserDeletionException("You cant delete yourself");
+        }
+        this.deleteUserById(id);
+
     }
 
     @Override
@@ -177,7 +189,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+        return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     private void  modifyUser(UserServiceModel modified,User main){

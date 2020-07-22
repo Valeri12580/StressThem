@@ -99,7 +99,7 @@ public class UserController {
     public String deleteProfile(@PathVariable String id, HttpSession session){
 
 
-        this.userService.deleteUser(id);
+        this.userService.deleteUserById(id);
         session.invalidate();
 
         return "redirect:/index";
