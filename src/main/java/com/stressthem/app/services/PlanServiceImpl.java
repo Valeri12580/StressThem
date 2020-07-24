@@ -54,10 +54,7 @@ public class PlanServiceImpl implements PlanService {
         return this.modelMapper.map(this.planRepository.findById(id).get(),PlanServiceModel.class);
     }
 
-    @Override
-    public Plan getPlanEntity(String id) {
-        return this.planRepository.findById(id).get();
-    }
+
 
 
 }

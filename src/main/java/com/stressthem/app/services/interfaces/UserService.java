@@ -1,8 +1,6 @@
 package com.stressthem.app.services.interfaces;
 
-import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
-import org.springframework.validation.BindingResult;
 
 import java.security.Principal;
 import java.util.List;
@@ -18,7 +16,7 @@ public interface UserService {
     long getUsersCount();
     boolean hasUserActivePlan(String username);
 
-    UserServiceModel purchasePlan(String id,String username);
+    UserServiceModel purchasePlan(String id,String username,String cryptocurrency);
 
     int getUserAvailableAttacks(String username);
 

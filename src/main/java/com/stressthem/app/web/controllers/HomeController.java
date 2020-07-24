@@ -3,19 +3,19 @@ package com.stressthem.app.web.controllers;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.binding.AttackBindingModel;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
+import com.stressthem.app.domain.models.view.AnnouncementViewModel;
 import com.stressthem.app.domain.models.view.AttackViewModel;
+import com.stressthem.app.services.interfaces.AnnouncementService;
 import com.stressthem.app.services.interfaces.AttackService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -28,16 +28,18 @@ public class HomeController {
     private UserService userService;
     private AttackService attackService;
     private ModelMapper mapper;
+    private AnnouncementService announcementService;
 
     @Autowired
-    public HomeController(UserService userService, AttackService attackService, ModelMapper mapper) {
+    public HomeController(UserService userService, AttackService attackService, ModelMapper mapper, AnnouncementService announcementService) {
         this.userService = userService;
         this.attackService = attackService;
         this.mapper = mapper;
+        this.announcementService = announcementService;
     }
 
     @GetMapping("/launch")
-    public String homeLaunch(Model model,Authentication authentication) {
+    public String launch(Model model, Authentication authentication) {
         String userId=((User)authentication.getPrincipal()).getId();
         String username=((User)authentication.getPrincipal()).getUsername();
         if (username != null) {
@@ -62,6 +64,7 @@ public class HomeController {
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
                              BindingResult result, RedirectAttributes redirectAttributes, Principal principal) {
 
+
         if (!this.userService.hasUserActivePlan(principal.getName())) {
             result.reject("errorCode1", "You dont have active plan!");
         }
@@ -79,5 +82,24 @@ public class HomeController {
         this.attackService.launchAttack(attackServiceModel, principal.getName());
 
         return "redirect:/home/launch";
+    }
+
+
+    @GetMapping("/announcements")
+    public String announcements(Model model){
+        model.addAttribute("announcements",
+                Arrays.asList(this.mapper.map(this.announcementService.getAllAnnouncements(),
+                        AnnouncementViewModel[].class)));
+
+
+        return "home-announcements";
+    }
+
+    @GetMapping("/announcements/delete/{id}")
+    public String deleteAnnouncement(@PathVariable("id")String id ,Authentication authentication){
+
+
+        this.announcementService.deleteAnnouncementById(id);
+        return "redirect:/home/announcements";
     }
 }

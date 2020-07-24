@@ -20,7 +20,7 @@
             <div class="row articles">
                 <div th:each="article:${articles}" class="col-sm-6 col-md-4 item">
                     <a th:href="@{/articles/{id}(id=${article.id})}">
-                    <img class="img-fluid" style="width: 240px ;height: 160px" th:src="${article.imageUrl ?: 'assets\img\no_image.png'}">
+                    <img class="img-fluid" style="width: 240px ;height: 160px" th:src="${article.imageUrl ?: '\assets\img\no_image.png'}">
                     </a>
                     <h3 class="name" th:text="${article.title}"></h3>
                     <p class="description" th:text="${#strings.substring(article.description,0,10)+'...'}"></p>

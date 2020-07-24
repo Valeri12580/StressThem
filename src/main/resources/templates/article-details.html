@@ -17,7 +17,7 @@
                     <div class="intro">
                         <h1 class="text-center" th:text="${article.title}"></h1>
                         <p class="text-center"><span class="by">Published</span> <span class="date" th:text="${#temporals.format(article.addedOn, 'dd-MM-yyyy HH:mm:ss')}"> </span></p>
-                        <img class="img-fluid" th:src="${article.imageUrl ?: 'assets\img\no_image.png'}">
+                        <img class="img-fluid" th:src="${article.imageUrl ?: '\assets\img\no_image.png'}">
                     </div>
                     <div class="text">
                         <p th:text="${article.description}"></p>

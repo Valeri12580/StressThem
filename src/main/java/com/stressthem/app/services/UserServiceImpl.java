@@ -1,17 +1,13 @@
 package com.stressthem.app.services;
 
-import com.stressthem.app.domain.entities.Plan;
-import com.stressthem.app.domain.entities.Role;
-import com.stressthem.app.domain.entities.User;
-import com.stressthem.app.domain.entities.UserActivePlan;
+import com.stressthem.app.domain.entities.*;
+import com.stressthem.app.domain.models.service.TransactionServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.exceptions.ChangeRoleException;
 import com.stressthem.app.exceptions.UserDeletionException;
 import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.repositories.UserRepository;
-import com.stressthem.app.services.interfaces.PlanService;
-import com.stressthem.app.services.interfaces.RoleService;
-import com.stressthem.app.services.interfaces.UserService;
+import com.stressthem.app.services.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -34,14 +29,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private RoleService roleService;
     private PlanService planService;
     private UserRepository userRepository;
+    private TransactionService transactionService;
+    private CryptocurrencyService cryptocurrencyService;
     private ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, TransactionService transactionService, CryptocurrencyService cryptocurrencyService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.roleService = roleService;
         this.planService = planService;
         this.userRepository = userRepository;
+        this.transactionService = transactionService;
+        this.cryptocurrencyService = cryptocurrencyService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -93,9 +92,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserServiceModel purchasePlan(String id, String username) {
+    public UserServiceModel purchasePlan(String id, String username, String cryptocurrency) {
+
         User user = this.modelMapper.map(this.getUserByUsername(username), User.class);
-        Plan plan = this.planService.getPlanEntity(id);
+        Plan plan = this.modelMapper.map(this.planService.getPlanById(id),Plan.class);
+        Cryptocurrency chosenCryptocurrency=this.modelMapper.map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency),Cryptocurrency.class);
 
         if (user.getUserActivePlan() != null) {
             throw new UserPlanActivationException("You have already activate plan!");
@@ -104,7 +105,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
                 LocalDateTime.now(ZoneId.systemDefault()));
         user.setUserActivePlan(userActivePlan);
+
         this.userRepository.save(user);
+        this.transactionService.saveTransaction(new TransactionServiceModel(user,plan,chosenCryptocurrency,LocalDateTime.now(ZoneId.systemDefault())));
         return this.modelMapper.map(user, UserServiceModel.class);
 
     }

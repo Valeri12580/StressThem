@@ -1,96 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>index</title>
-    <meta name="description" content="Test">
-    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-List.css">
-    <link rel="stylesheet" href="../static/assets/css/beautiful-dismissable-alert.css">
-    <link rel="stylesheet" href="../static/assets/css/Beautiful-Modern-Looking-Pricing.css">
-    <link rel="stylesheet" href="../static/assets/css/Contact-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions-1.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions.css">
-    <link rel="stylesheet" href="../static/assets/css/Features-Blue.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Basic.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Dark.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Navigation-with-Button.css">
-    <link rel="stylesheet" href="../static/assets/css/News-Cards.css">
-    <link rel="stylesheet" href="../static/assets/css/Pretty-Registration-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Projects-Horizontal.css">
-    <link rel="stylesheet" href="../static/assets/css/User-Information-Panel---Lite--Secondary-User-Panel-Footer.css">
+<head th:insert="~{fragments/head}">
+
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-        <div class="container"><a class="navbar-brand" href="#">Stressed Down</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/home">Home</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/buy">Buy</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/faq">FAQ</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/news">News</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/contact">Contact Us</a></li>
-                </ul><span class="navbar-text" style="margin-right: 20px;color: #465765;">Hello {username}</span><span class="navbar-text actions"> <a class="btn btn-light btn btn-primary rounded-pill" role="button" href="/users/logout">Logout</a></span></div>
-        </div>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
     </nav>
     <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item"><a class="nav-link" href="/home/launh">Launch Attack</a></li>
-                <li class="nav-item"><a class="nav-link active" href="#">Announcements</a></li>
-            </ul>
+        <div class="card-header" th:insert="~{fragments/authenticated/subnav/home-sub-nav}">
+
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row" th:each="announcement:${announcements}">
                 <div class="col">
-                    <h4>Launch Attack</h4>
-                    <p><strong>Time</strong></p>
-                    <p>Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p><button class="btn btn-primary rounded-pill" type="button">Delete</button></div>
+                    <h4 th:text="${announcement.title}"></h4>
+                    <p th:text="${#temporals.format(announcement.addedOn, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                    <p th:text="${announcement.description}"></p>
+                    <a th:href="@{/home/announcements/delete/{id}(id=${announcement.id})}"
+                       sec:authorize="hasAnyAuthority('ADMIN','ROOT')" class="btn btn-primary rounded-pill" type="button">Delete</a></div>
             </div>
         </div>
     </div>
     <div class="footer-basic">
-        <footer>
-            <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="/home">Home</a></li>
-                <li class="list-inline-item"><a href="/buy">Buy</a></li>
-                <li class="list-inline-item"><a href="/faq">FAQ</a></li>
-                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="/news">News</a></li>
-                <li class="list-inline-item"><a href="/contact">Contact Us</a></li>
-            </ul>
-            <p class="copyright">Stress Down © 2020</p>
+        <footer th:insert="~{fragments/footer}">
+
         </footer>
     </div>
-    <script src="../static/assets/js/jquery.min.js"></script>
-    <script src="../static/assets/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="../static/assets/js/three.r95.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="../static/assets/js/vanta.net.min.js"></script>
-    <script src="../static/assets/js/app.js"></script>
-    <script src="../static/assets/js/Profile-Edit-Form.js"></script>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
 </body>
 
 </html>
