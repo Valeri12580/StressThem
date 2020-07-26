@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +38,8 @@ public class PlanServiceImpl implements PlanService {
         planServiceModel.setAuthor(author);
 
         Plan plan=this.modelMapper.map(planServiceModel,Plan.class);
+
+        plan.setCreatedOn(LocalDateTime.now(ZoneId.systemDefault()));
 
         planRepository.save(plan);
 

@@ -9,19 +9,19 @@ import javax.validation.ConstraintValidatorContext;
 
 
 @Component
-public class UniqueValidator implements ConstraintValidator<Unique,String> {
+public class UniqueUserValidator implements ConstraintValidator<UniqueUser,String> {
     private UserService userService;
     private String type;
 
 
     @Autowired
-    public UniqueValidator(UserService userService) {
+    public UniqueUserValidator(UserService userService) {
         this.userService = userService;
     }
 
 
     @Override
-    public void initialize(Unique constraintAnnotation) {
+    public void initialize(UniqueUser constraintAnnotation) {
         this.type=constraintAnnotation.fieldType();
     }
 

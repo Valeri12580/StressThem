@@ -1,7 +1,6 @@
 package com.stressthem.app.domain.models.binding;
 
-import com.stressthem.app.validation.PasswordMatch;
-import com.stressthem.app.validation.Unique;
+import com.stressthem.app.validation.UniqueUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class UserRegisterBindingModel {
     @NotNull
     @Size(min = 2, max = 15, message = "Username length must be minimum 2 characters and maximum 15 characters!")
     @Pattern(regexp = "^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", message = "The username can contain:alphanumeric characters, underscore and dot,Underscore and dot can't be at the end or start of a username,underscore and dot can't be next to each other ,underscore or dot can't be used multiple times in a row ")
-    @Unique(fieldType = "username", message = "User with that username already exists!")
+    @UniqueUser(fieldType = "username", message = "User with that username already exists!")
     private String username;
 
 
@@ -29,7 +28,7 @@ public class UserRegisterBindingModel {
 
 
     @Email(message = "The email is not valid!")
-    @Unique(fieldType = "email", message = "User with that email already exists!")
+    @UniqueUser(fieldType = "email", message = "User with that email already exists!")
     @NotBlank(message = "Cannot be empty!")
     private String email;
 

@@ -96,7 +96,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User user = this.modelMapper.map(this.getUserByUsername(username), User.class);
         Plan plan = this.modelMapper.map(this.planService.getPlanById(id),Plan.class);
-        Cryptocurrency chosenCryptocurrency=this.modelMapper.map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency),Cryptocurrency.class);
+        Cryptocurrency chosenCryptocurrency=this.modelMapper
+                .map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency),Cryptocurrency.class);
 
         if (user.getUserActivePlan() != null) {
             throw new UserPlanActivationException("You have already activate plan!");

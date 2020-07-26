@@ -10,7 +10,12 @@ public interface CryptocurrencyService {
 
     CryptocurrencyServiceModel getCryptocurrencyByName(String name);
 
+    CryptocurrencyServiceModel registerCryptocurrency(CryptocurrencyServiceModel cryptocurrencyServiceModel,String username);
+
     void deleteById(String id);
+
+
+
 
 
 }

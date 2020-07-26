@@ -12,4 +12,6 @@ public interface ArticleService {
     void deleteArticleById(String id);
 
     ArticleServiceModel getArticleById(String id) throws NotFoundException;
+
+    ArticleServiceModel registerArticle(ArticleServiceModel articleServiceModel,String username);
 }

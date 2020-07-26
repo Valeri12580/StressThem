@@ -66,7 +66,7 @@ public class HomeController {
 
 
         if (!this.userService.hasUserActivePlan(principal.getName())) {
-            result.reject("errorCode1", "You dont have active plan!");
+            result.reject("errorCode1", "You dont have an active plan!");
         }
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.attack", result);

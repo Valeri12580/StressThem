@@ -7,8 +7,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Documented
-@Constraint(validatedBy = UniqueValidator.class)
-public @interface Unique {
+@Constraint(validatedBy = UniqueUserValidator.class)
+public @interface UniqueUser {
     String message() default "Error!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

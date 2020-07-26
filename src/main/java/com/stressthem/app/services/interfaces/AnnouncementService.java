@@ -8,4 +8,6 @@ public interface AnnouncementService {
     List<AnnouncementServiceModel>getAllAnnouncements();
 
     void deleteAnnouncementById(String id);
+
+    AnnouncementServiceModel registerAnnouncement(AnnouncementServiceModel announcementServiceModel,String username);
 }

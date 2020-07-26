@@ -1,72 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>index</title>
-    <meta name="description" content="Test">
-    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="../static/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Article-List.css">
-    <link rel="stylesheet" href="../static/assets/css/beautiful-dismissable-alert.css">
-    <link rel="stylesheet" href="../static/assets/css/Beautiful-Modern-Looking-Pricing.css">
-    <link rel="stylesheet" href="../static/assets/css/Contact-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Data-Table.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions-1.css">
-    <link rel="stylesheet" href="../static/assets/css/FAQ-Frequentlly-Asked-Questions.css">
-    <link rel="stylesheet" href="../static/assets/css/Features-Blue.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Basic.css">
-    <link rel="stylesheet" href="../static/assets/css/Footer-Dark.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Login-Form-Clean.css">
-    <link rel="stylesheet" href="../static/assets/css/Navigation-with-Button.css">
-    <link rel="stylesheet" href="../static/assets/css/News-Cards.css">
-    <link rel="stylesheet" href="../static/assets/css/Pretty-Registration-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form-1.css">
-    <link rel="stylesheet" href="../static/assets/css/Profile-Edit-Form.css">
-    <link rel="stylesheet" href="../static/assets/css/Projects-Horizontal.css">
-    <link rel="stylesheet" href="../static/assets/css/User-Information-Panel---Lite--Secondary-User-Panel-Footer.css">
+<head th:insert="~{fragments/head}">
+
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-        <div class="container"><a class="navbar-brand" href="#">Stressed Down</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/index">Home</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/pricing">Pricing</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/faq">FAQ</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/contact">Contact Us</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/news">News</a></li>
-                </ul><span class="navbar-text actions"> <a class="login" href="#">Log In</a><a class="btn btn-light btn btn-primary rounded-pill" role="button" href="#">Register</a></span></div>
-        </div>
-    </nav><div class="container" style="padding-top:40px;padding-bottom:40px;">
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="container" style="padding-top:40px;padding-bottom:40px;">
     <div class="container">
         <div class="panel-group" id="accordion">
             <div class="faqHeader">General questions</div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Is account registration required?</a></h4></div>
+                    <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseOne">Is account registration required?</a></h4></div>
                 <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">Yes</div>
                 </div>
             </div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven">What is the currency used for all transactions?</a></h4></div>
+                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse"
+                                               data-parent="#accordion" href="#collapseEleven">What is the currency used
+                        for all transactions?</a></h4></div>
                 <div id="collapseEleven" class="panel-collapse collapse">
                     <div class="panel-body">You can pay only with cryptocurrencies.</div>
                 </div>
@@ -74,40 +34,27 @@
             <div class="faqHeader">Stresser</div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">How powerfull are the attacks?</a></h4></div>
+                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse"
+                                               data-parent="#accordion" href="#collapseTwo">How powerful are the
+                        attacks?</a></h4></div>
                 <div id="collapseTwo" class="panel-collapse collapse">
-                    <div class="panel-body">Very powerfull.</div>
+                    <div class="panel-body">Very powerful.</div>
                 </div>
             </div>
-            
-          
+
+
         </div>
     </div>
 </div>
-    <div class="footer-basic">
-        <footer>
-            <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="/index">Home</a></li>
-                <li class="list-inline-item"><a href="/users/register">Register</a></li>
-                <li class="list-inline-item"><a href="/users/login">Login</a></li>
-                <li class="list-inline-item"><a href="/pricing">Pricing</a></li>
-                <li class="list-inline-item"><a href="/faq">FAQ</a></li>
-                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="/news">News</a></li>
-                <li class="list-inline-item"><a href="/contact">Contact Us</a></li>
-            </ul>
-            <p class="copyright">Stress Down © 2020</p>
-        </footer>
-    </div>
-    <script src="../static/assets/js/jquery.min.js"></script>
-    <script src="../static/assets/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="../static/assets/js/three.r95.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="../static/assets/js/vanta.net.min.js"></script>
-    <script src="../static/assets/js/app.js"></script>
-    <script src="../static/assets/js/Profile-Edit-Form.js"></script>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
 </body>
 
 </html>
