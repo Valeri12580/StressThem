@@ -30,8 +30,8 @@ public class Transaction extends BaseEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "payment_currency_id",referencedColumnName = "id")
-    private Cryptocurrency paymentCurrency;
+    @JoinColumn(name = "payment_method_id",referencedColumnName = "id")
+    private Cryptocurrency paymentMethod;
 
     @NotNull
     @Column

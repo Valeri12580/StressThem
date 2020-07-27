@@ -40,7 +40,7 @@ public class AttackServiceImpl implements AttackService {
 
         attack.setAttacker(user);
         //todo decrease daily attack with -1
-        this.userActivePlanService.updateLeftAttacksForTheDay(user.getUserActivePlan());
+        this.userActivePlanService.decreaseLeftAttacksForTheDay(user.getUserActivePlan());
         return this.modelMapper.map(this.attackRepository.save(attack),AttackServiceModel.class);
     }
 

@@ -14,7 +14,7 @@ public class UserActivePlanServiceImpl implements UserActivePlanService {
     }
 
     @Override
-    public void updateLeftAttacksForTheDay(UserActivePlan userActivePlan) {
+    public void decreaseLeftAttacksForTheDay(UserActivePlan userActivePlan) {
         //todo validation for daily limit attacks,impelement constraint validator
         int leftAttacks=userActivePlan.getLeftAttacksForTheDay();
 
@@ -25,5 +25,19 @@ public class UserActivePlanServiceImpl implements UserActivePlanService {
         }
 
         userActivePlanRepository.save(userActivePlan);
+    }
+
+    @Override
+    public void decreaseLeftDays() {
+        this.userActivePlanRepository.decreaseLeftDays();
+        System.out.println("Decrease days!");
+
+    }
+
+
+    @Override
+    public void clearExpiredPlans(){
+        System.out.println("Clear");
+        this.userActivePlanRepository.deleteAllExpiredPlans(0);
     }
 }
