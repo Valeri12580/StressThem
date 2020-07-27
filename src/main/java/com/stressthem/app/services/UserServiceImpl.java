@@ -33,9 +33,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private CryptocurrencyService cryptocurrencyService;
     private ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
+    private UserActivePlanService userActivePlanService;
 
     @Autowired
-    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, TransactionService transactionService, CryptocurrencyService cryptocurrencyService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, TransactionService transactionService, CryptocurrencyService cryptocurrencyService, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserActivePlanService userActivePlanService) {
         this.roleService = roleService;
         this.planService = planService;
         this.userRepository = userRepository;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.cryptocurrencyService = cryptocurrencyService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.userActivePlanService = userActivePlanService;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean hasUserActivePlan(String username) {
 
-        return this.userRepository.findUserByUsername(username).orElse(null).getUserActivePlan() != null;
+        return this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found")).getUserActivePlan() != null;
     }
 
     @Override
@@ -105,9 +107,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
                 LocalDateTime.now(ZoneId.systemDefault()));
-        user.setUserActivePlan(userActivePlan);
+        userActivePlan.setUser(user);
 
-        this.userRepository.save(user);
+        this.userActivePlanService.saveActivatedPlan(userActivePlan);
         this.transactionService.saveTransaction(new TransactionServiceModel(user,plan,chosenCryptocurrency,LocalDateTime.now(ZoneId.systemDefault())));
         return this.modelMapper.map(user, UserServiceModel.class);
 
@@ -115,7 +117,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public int getUserAvailableAttacks(String username) {
-        User user = this.userRepository.findUserByUsername(username).get();
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
         if(user.getUserActivePlan()==null){
             return 0;
         }

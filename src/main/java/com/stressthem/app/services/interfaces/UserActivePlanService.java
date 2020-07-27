@@ -8,4 +8,8 @@ public interface UserActivePlanService {
     void decreaseLeftDays();
 
     void clearExpiredPlans();
+
+    void saveActivatedPlan(UserActivePlan userActivePlan);
+
+    void refreshDailyAttacks();
 }

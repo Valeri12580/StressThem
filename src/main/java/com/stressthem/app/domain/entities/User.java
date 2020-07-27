@@ -40,8 +40,7 @@ public class User extends BaseEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")//todo fix this,doesnt show the correct registration time
     private LocalDateTime registeredOn;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "plan_id",referencedColumnName = "id")
+    @OneToOne(mappedBy = "user")
     private UserActivePlan userActivePlan;
 
     @ManyToMany(fetch = FetchType.EAGER)

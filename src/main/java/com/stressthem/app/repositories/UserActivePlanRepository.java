@@ -21,4 +21,9 @@ public interface UserActivePlanRepository extends JpaRepository<UserActivePlan,S
     @Modifying
     @Query("delete FROM  UserActivePlan uap WHERE uap.leftDays=:leftDays")
     void deleteAllExpiredPlans(@Param("leftDays") int leftDays);
+
+    @Transactional
+    @Modifying
+    @Query("update UserActivePlan uap set uap.leftAttacksForTheDay=(select p.maxBootsPerDay from Plan p where uap.plan.id=p.id)")
+    void refreshDailyAttacks();
 }

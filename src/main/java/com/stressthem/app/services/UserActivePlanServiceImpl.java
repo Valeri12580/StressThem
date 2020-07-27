@@ -30,14 +30,22 @@ public class UserActivePlanServiceImpl implements UserActivePlanService {
     @Override
     public void decreaseLeftDays() {
         this.userActivePlanRepository.decreaseLeftDays();
-        System.out.println("Decrease days!");
 
     }
 
 
     @Override
     public void clearExpiredPlans(){
-        System.out.println("Clear");
         this.userActivePlanRepository.deleteAllExpiredPlans(0);
+    }
+
+    @Override
+    public void saveActivatedPlan(UserActivePlan userActivePlan) {
+        this.userActivePlanRepository.save(userActivePlan);
+    }
+
+    @Override
+    public void refreshDailyAttacks() {
+        this.userActivePlanRepository.refreshDailyAttacks();
     }
 }

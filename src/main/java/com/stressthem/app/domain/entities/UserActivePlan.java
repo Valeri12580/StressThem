@@ -24,9 +24,9 @@ public class UserActivePlan  extends BaseEntity{
         this.startedOn = startedOn;
     }
 
-    //    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id",referencedColumnName = "id")
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 
 
     @ManyToOne

@@ -16,17 +16,19 @@ public class PlanSchedulerImpl implements PlanScheduler {
         this.userActivePlanService = userActivePlanService;
     }
 
-    //"0 0 0 ? * *"
+
     @Override
-    @Scheduled(cron ="* * * * * ? " )
+    @Scheduled(cron ="0 0 0 ? * *" )
     public void decreaseLeftDays() {
         this.userActivePlanService.decreaseLeftDays();
         this.userActivePlanService.clearExpiredPlans();
 
     }
 
-    @Override
-    public void refreshLeftAttacks() {
 
+    @Override
+    @Scheduled(cron = "0 5 0 ? * *")
+    public void refreshLeftAttacks() {
+        this.userActivePlanService.refreshDailyAttacks();
     }
 }
