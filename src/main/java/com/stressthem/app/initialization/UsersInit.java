@@ -28,12 +28,18 @@ public class UsersInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if(this.userService.getUsersCount()==0){
-            UserRegisterBindingModel user=new UserRegisterBindingModel("Valeri12580",
+            UserRegisterBindingModel admin=new UserRegisterBindingModel("Valeri12580",
                     new PasswordWrapper("12345678","12345678"),
                     "valeri125@dir.bg","https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg");
 
-            this.userService.register(this.modelMapper.map(user,UserServiceModel.class));
 
+
+            UserRegisterBindingModel user=new UserRegisterBindingModel("test",
+                    new PasswordWrapper("test1234","test1234"),
+                    "test@dir.bg","");
+
+            this.userService.register(this.modelMapper.map(admin,UserServiceModel.class));
+            this.userService.register(this.modelMapper.map(user,UserServiceModel.class));
         }
 
 

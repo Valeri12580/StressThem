@@ -8,6 +8,7 @@ import com.stressthem.app.services.interfaces.PlanService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ public class PlanController {
     }
 
     @GetMapping("/confirm/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String confirm(@PathVariable("id") String id, Model model) {
         model.addAttribute("plan", this.planService.getPlanById(id));
         model.addAttribute("crypto", this.cryptocurrencyService.getAllCryptocurrencies().stream()

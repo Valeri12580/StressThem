@@ -47,28 +47,13 @@
     </div>
 </div>
 <div class="footer-basic">
-    <footer>
-        <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i
-                class="icon ion-social-facebook"></i></a></div>
-        <ul class="list-inline">
-            <li class="list-inline-item"><a href="/home">Home</a></li>
-            <li class="list-inline-item"><a href="/buy">Buy</a></li>
-            <li class="list-inline-item"><a href="/faq">FAQ</a></li>
-            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-            <li class="list-inline-item"><a href="/news">News</a></li>
-            <li class="list-inline-item"><a href="/contact">Contact Us</a></li>
-        </ul>
-        <p class="copyright">Stress Down © 2020</p>
+    <footer th:insert="~{fragments/footer}">
+
     </footer>
 </div>
-<script src="../static/assets/js/jquery.min.js"></script>
-<script src="../static/assets/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="../static/assets/js/three.r95.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-<script src="../static/assets/js/vanta.net.min.js"></script>
-<script src="../static/assets/js/app.js"></script>
-<script src="../static/assets/js/Profile-Edit-Form.js"></script>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package com.stressthem.app.domain.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
 
     @Column(unique = true)
