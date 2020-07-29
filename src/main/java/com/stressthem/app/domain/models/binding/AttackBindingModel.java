@@ -28,6 +28,5 @@ public class AttackBindingModel {
     private int time;
 
     @Min(value = 1, message = "The minimum value is 1")
-    @Max(value = 2, message = "The maximum value is 2")
     int servers;
 }

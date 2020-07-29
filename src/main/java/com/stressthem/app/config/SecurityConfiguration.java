@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/users/login", "/users/register", "/index")
+        http.authorizeRequests().antMatchers("/users/login", "/users/register", "/index","/")
                 .anonymous().antMatchers("/plans", "/articles", "/faq", "/contact", "/currencies").permitAll()
                 .antMatchers("/home/**","/plans/**").authenticated()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN", "ROOT")

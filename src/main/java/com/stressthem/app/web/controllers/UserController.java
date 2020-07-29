@@ -82,6 +82,7 @@ public class UserController {
     @PostMapping("/profile/{id}")
     public String postProfileEdit(@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
             ,RedirectAttributes redirectAttributes){
+
         if(result.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userEdit", result);
             redirectAttributes.addFlashAttribute("userEdit", profileEditViewModel);

@@ -11,7 +11,6 @@ import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,21 +39,20 @@ public class HomeController {
 
     @GetMapping("/launch")
     public String launch(Model model, Authentication authentication) {
-        String userId=((User)authentication.getPrincipal()).getId();
-        String username=((User)authentication.getPrincipal()).getUsername();
+        String userId = ((User) authentication.getPrincipal()).getId();
+        String username = ((User) authentication.getPrincipal()).getUsername();
         if (username != null) {
             model.addAttribute("hasUserActivePlan", this.userService.hasUserActivePlan(username));
 
             model.addAttribute("attacksHistory", Arrays.asList(this.mapper
                     .map(this.attackService.getAllAttacksForCurrentUser(username), AttackViewModel[].class)));
-            model.addAttribute("availableAttacks",this.userService.getUserAvailableAttacks(username));
-            model.addAttribute("userId",userId);
+            model.addAttribute("availableAttacks", this.userService.getUserAvailableAttacks(username));
+            model.addAttribute("userId", userId);
         }
 
         if (!model.containsAttribute("attack")) {
             model.addAttribute("attack", new AttackBindingModel());
         }
-
 
 
         return "home-launch-attack";
@@ -64,20 +62,22 @@ public class HomeController {
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
                              BindingResult result, RedirectAttributes redirectAttributes, Principal principal) {
 
-
         if (!this.userService.hasUserActivePlan(principal.getName())) {
             result.reject("errorCode1", "You dont have an active plan!");
+        } else {
+            this.attackService.validateAttack(attackBindingModel.getTime(), attackBindingModel.getServers(), principal.getName(),
+                    result);
         }
+
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.attack", result);
             redirectAttributes.addFlashAttribute("attack", attackBindingModel);
             return "redirect:/home/launch";
         }
-        //todo optimization and server,time validation to be dynamic created,max attack per day validation
 
 
         AttackServiceModel attackServiceModel = this.mapper.map(attackBindingModel, AttackServiceModel.class);
-        attackServiceModel=this.attackService.setAttackExpiredOn(attackBindingModel.getTime(),attackServiceModel);
+        attackServiceModel = this.attackService.setAttackExpiredOn(attackBindingModel.getTime(), attackServiceModel);
 
         this.attackService.launchAttack(attackServiceModel, principal.getName());
 
@@ -86,7 +86,7 @@ public class HomeController {
 
 
     @GetMapping("/announcements")
-    public String announcements(Model model){
+    public String announcements(Model model) {
         model.addAttribute("announcements",
                 Arrays.asList(this.mapper.map(this.announcementService.getAllAnnouncements(),
                         AnnouncementViewModel[].class)));
@@ -96,7 +96,7 @@ public class HomeController {
     }
 
     @GetMapping("/announcements/delete/{id}")
-    public String deleteAnnouncement(@PathVariable("id")String id ,Authentication authentication){
+    public String deleteAnnouncement(@PathVariable("id") String id, Authentication authentication) {
 
 
         this.announcementService.deleteAnnouncementById(id);

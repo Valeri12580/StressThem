@@ -8,3 +8,7 @@ VANTA.NET({
   scaleMobile: 1.00
 })
 
+
+$("#deleteAttackHistory").click(function () {
+fetch()
+})
