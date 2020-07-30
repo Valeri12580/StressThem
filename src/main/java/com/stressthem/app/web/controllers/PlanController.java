@@ -6,6 +6,7 @@ import com.stressthem.app.exceptions.UserPlanActivationException;
 import com.stressthem.app.services.interfaces.CryptocurrencyService;
 import com.stressthem.app.services.interfaces.PlanService;
 import com.stressthem.app.services.interfaces.UserService;
+import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +40,7 @@ public class PlanController {
     }
 
 
+    @PageTitle("All plans")
     @GetMapping
     public String plans(Model model) {
         List<PlanViewModel> plans = List.of(this.modelMapper.map(this.planService.getAllPlans(), PlanViewModel[].class));
@@ -48,6 +50,7 @@ public class PlanController {
         return "pricing";
     }
 
+    @PageTitle("Confirm order")
     @GetMapping("/confirm/{id}")
     @PreAuthorize("isAuthenticated()")
     public String confirm(@PathVariable("id") String id, Model model) {

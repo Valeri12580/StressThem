@@ -32,7 +32,7 @@
                                 <small  th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="form-text text-danger"></small></div>
                             <div class="form-group"><input th:field="*{imageUrl}" class="form-control" type="text"
                                                            name="imageUrl"
-                                                           placeholder="Image url" required="">
+                                                           placeholder="Image url">
                                 <small  th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="form-text text-danger"></small></div>
                             <div class="form-group"><textarea th:field="*{description}" class="form-control"
                                                               name="description" placeholder="Description"

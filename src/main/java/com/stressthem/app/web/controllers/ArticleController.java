@@ -2,6 +2,7 @@ package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.view.ArticleViewModel;
 import com.stressthem.app.services.interfaces.ArticleService;
+import com.stressthem.app.web.annotations.PageTitle;
 import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class ArticleController {
         this.modelMapper = modelMapper;
     }
 
+    @PageTitle("Articles")
     @GetMapping
     public String allArticles(Model model){
         List<ArticleViewModel> articles = Arrays.asList(this.modelMapper.map(this.articleService.getAllArticles(), ArticleViewModel[].class));
@@ -34,7 +36,8 @@ public class ArticleController {
 
         return "articles";
     }
-    
+
+    @PageTitle("Articles")
     @GetMapping("/{id}")
     public String articleDetails(@PathVariable String id, Model model) throws NotFoundException {
         ArticleViewModel article = this.modelMapper.map(this.articleService.getArticleById(id), ArticleViewModel.class);

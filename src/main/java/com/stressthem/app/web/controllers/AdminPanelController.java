@@ -9,6 +9,7 @@ import com.stressthem.app.domain.models.service.*;
 import com.stressthem.app.exceptions.ChangeRoleException;
 import com.stressthem.app.exceptions.UserDeletionException;
 import com.stressthem.app.services.interfaces.*;
+import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +46,7 @@ public class AdminPanelController {
         this.planService = planService;
     }
 
-
+    @PageTitle("Change roles")
     @GetMapping("/user-roles")
     public String changeRole(Model model) {
         //todo admin home page is user roles-to be restricted only to root admins
@@ -55,7 +56,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("/user-roles")
-    public String postChangeRoles(@RequestParam String username, @RequestParam String role, @RequestParam String type
+    public String postChangeRole(@RequestParam String username, @RequestParam String role, @RequestParam String type
             , Principal principal, RedirectAttributes redirectAttributes) {
         try {
             this.userService.changeUserRole(username, role, type, principal);
@@ -66,6 +67,7 @@ public class AdminPanelController {
         return "redirect:/admin/user-roles";
     }
 
+    @PageTitle("Delete user")
     @GetMapping("/delete-user")
     public String deleteUser(Model model) {
         model.addAttribute("users", this.userService.getAllUsers().stream().map(UserServiceModel::getUsername).collect(Collectors.toList()));
@@ -83,6 +85,7 @@ public class AdminPanelController {
         return "redirect:/admin/delete-user";
     }
 
+    @PageTitle("Add announcement")
     @GetMapping("/add-announcement")
     public String addAnnouncement(Model model) {
         if (!model.containsAttribute("announcement")) {
@@ -110,6 +113,7 @@ public class AdminPanelController {
         return "redirect:/admin/add-announcement";
     }
 
+    @PageTitle("Add article")
     @GetMapping("/add-article")
     public String addArticle(Model model) {
         if (!model.containsAttribute("article")) {
@@ -122,7 +126,6 @@ public class AdminPanelController {
 
 
     @PostMapping("/add-article")
-    //todo unique articles only
     public String postAddArticle(@Valid @ModelAttribute ArticleBindingModel articleBindingModel, BindingResult bindingResult
             , RedirectAttributes redirectAttributes, Principal principal) {
 
@@ -136,6 +139,7 @@ public class AdminPanelController {
         return "redirect:/admin/add-article";
     }
 
+    @PageTitle("Add cryptocurrency")
     @GetMapping("/add-cryptocurrency")
     public String addCryptocurrency(Model model) {
         if (!model.containsAttribute("cryptocurrency")) {
@@ -160,6 +164,7 @@ public class AdminPanelController {
         return "redirect:/admin/add-cryptocurrency";
     }
 
+    @PageTitle("Add plan")
     @GetMapping("/add-plan")
     public String addPlan(Model model){
         if(!model.containsAttribute("plan")){
@@ -172,7 +177,6 @@ public class AdminPanelController {
 
 
     @PostMapping("/add-plan")
-    //todo unique plans
     public String postAddPlan(@Valid @ModelAttribute PlanBindingModel planBindingModel,BindingResult result,RedirectAttributes redirectAttributes,
                               Principal principal){
 

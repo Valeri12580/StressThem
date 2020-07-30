@@ -24,7 +24,7 @@ public class Cryptocurrency extends BasePublishEntity {
         this.imageUrl = imageUrl;
     }
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     @NotNull
     private String imageUrl;
 

@@ -2,6 +2,7 @@ package com.stressthem.app.web.controllers;
 
 import com.stressthem.app.domain.models.view.CryptocurrencyViewModel;
 import com.stressthem.app.services.interfaces.CryptocurrencyService;
+import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class CurrencyController {
         this.modelMapper = modelMapper;
     }
 
+    @PageTitle("All currencies")
     @GetMapping
     public String currencies(Model model){
         model.addAttribute("cryptos", Arrays.asList(this.modelMapper.map(this.cryptocurrencyService.getAllCryptocurrencies(), CryptocurrencyViewModel[].class)));

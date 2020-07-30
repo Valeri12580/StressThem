@@ -8,6 +8,7 @@ import com.stressthem.app.domain.models.view.AttackViewModel;
 import com.stressthem.app.services.interfaces.AnnouncementService;
 import com.stressthem.app.services.interfaces.AttackService;
 import com.stressthem.app.services.interfaces.UserService;
+import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -37,6 +38,7 @@ public class HomeController {
         this.announcementService = announcementService;
     }
 
+    @PageTitle("Launch attack")
     @GetMapping("/launch")
     public String launch(Model model, Authentication authentication) {
         String userId = ((User) authentication.getPrincipal()).getId();
@@ -85,6 +87,7 @@ public class HomeController {
     }
 
 
+    @PageTitle("Announcements")
     @GetMapping("/announcements")
     public String announcements(Model model) {
         model.addAttribute("announcements",

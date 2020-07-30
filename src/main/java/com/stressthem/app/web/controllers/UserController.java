@@ -5,6 +5,7 @@ import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.domain.models.view.ProfileEditViewModel;
 import com.stressthem.app.services.interfaces.UserService;
+import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ public class UserController {
     }
 
 
+    @PageTitle("Register")
     @GetMapping("/register")
     public String register(Model model) {
         if (!model.containsAttribute("user")) {
@@ -56,7 +58,7 @@ public class UserController {
     }
 
 
-
+    @PageTitle("Login")
     @GetMapping("/login")
     public String login(Model model){
         if(!model.containsAttribute("user")){
@@ -67,6 +69,7 @@ public class UserController {
     }
 
 
+    @PageTitle("Profile")
     @GetMapping("/profile/{id}")
     public String profileEdit(@PathVariable String id, Model model){
         ProfileEditViewModel profile=this.modelMapper.map(this.userService.findUserById(id),ProfileEditViewModel.class);
@@ -96,6 +99,7 @@ public class UserController {
         return String.format("redirect:/users/profile/%s",profileEditViewModel.getId());
     }
 
+    //todo post maybe?
     @GetMapping("/profile/delete/{id}")
     public String deleteProfile(@PathVariable String id, HttpSession session){
 
