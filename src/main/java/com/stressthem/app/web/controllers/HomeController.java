@@ -11,6 +11,7 @@ import com.stressthem.app.services.interfaces.UserService;
 import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/home")
@@ -36,6 +38,20 @@ public class HomeController {
         this.attackService = attackService;
         this.mapper = mapper;
         this.announcementService = announcementService;
+    }
+
+    @ResponseBody
+    @GetMapping("/launch/refresh")
+    public ResponseEntity<List<AttackViewModel>>getAllAttacksForCurrentUser(Principal principal){
+        return ResponseEntity.ok(Arrays.asList(this.mapper
+                .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class)));
+    }
+
+
+    @GetMapping("/launch/clear")
+    public ResponseEntity<String>clearAllAttacksForCurrentUser(Principal principal){
+        this.attackService.clearAttacks(principal.getName());
+        return ResponseEntity.ok().build();
     }
 
     @PageTitle("Launch attack")

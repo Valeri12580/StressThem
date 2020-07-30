@@ -32,7 +32,7 @@
                         <div class="card-options">
                             <button id="refreshAttackHistory"  class="btn btn-light"><i class="fa fa-refresh"></i> Refresh
                             </button>
-                            <button id="deleteAttackHistory" class="btn btn-light"><i class="fa fa-trash"></i> Clear</button>
+                            <button id="clearAttackHistory" class="btn btn-light"><i class="fa fa-trash"></i> Clear</button>
                         </div>
                     </div>
                     <table id="attackHistory"  class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -47,7 +47,7 @@
                             <th>STATUS</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="attackHistoryTBody">
                         <tr th:each="attack,stats:${attacksHistory}">
                             <td th:text="${stats.index+1}"></td>
                             <td th:text="${attack.host}"></td>

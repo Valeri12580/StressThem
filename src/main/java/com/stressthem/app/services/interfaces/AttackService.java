@@ -14,5 +14,7 @@ public interface AttackService {
 
     AttackServiceModel setAttackExpiredOn(int seconds,AttackServiceModel attackServiceModel);
 
+    void clearAttacks(String username);
+
     void validateAttack(int time, int servers, String username, BindingResult bindingResult);
 }

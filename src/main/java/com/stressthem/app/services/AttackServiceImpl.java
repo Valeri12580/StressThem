@@ -61,6 +61,12 @@ public class AttackServiceImpl implements AttackService {
     }
 
     @Override
+    public void clearAttacks(String username) {
+        String userId=this.userService.getUserByUsername(username).getId();
+        this.attackRepository.deleteAllAttacksForUser(userId);
+    }
+
+    @Override
     public void validateAttack(int time, int servers, String username, BindingResult bindingResult) {
         UserActivePlan userActivePlan = this.userService.getUserByUsername(username).getUserActivePlan();
         double includedMaxBootTimeInPlan = userActivePlan.getPlan().getMaxBootTimeInSeconds();
