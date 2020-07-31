@@ -4,6 +4,7 @@ import com.stressthem.app.domain.entities.Plan;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.exceptions.PlanNotFoundException;
 import com.stressthem.app.repositories.PlanRepository;
 import com.stressthem.app.services.interfaces.PlanService;
 import com.stressthem.app.services.interfaces.UserService;
@@ -55,7 +56,8 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanServiceModel getPlanById(String id) {
-        return this.modelMapper.map(this.planRepository.findById(id).get(),PlanServiceModel.class);
+        return this.modelMapper.map(this.planRepository.findById(id)
+                .orElseThrow(()->new PlanNotFoundException("The plan is not available")),PlanServiceModel.class);
     }
 
 

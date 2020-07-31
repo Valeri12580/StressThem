@@ -21,6 +21,7 @@ let attacks=fetch("http://localhost:8080/home/launch/refresh")
       $("#attackHistoryTBody").empty();
 
       array.forEach((e,i)=>{
+
         let tr=document.createElement("tr")
 
           let index=document.createElement("td");
@@ -38,7 +39,7 @@ let attacks=fetch("http://localhost:8080/home/launch/refresh")
           servers.textContent=e["servers"];
           expires.textContent=moment(e["expiresOn"]).format("DD-MM-YYYY HH:mm:ss");
           status.textContent=moment().isAfter(moment(e["expiresOn"]))?"Inactive":"Active"
-          
+
 
           $(tr).append(index)
           $(tr).append(host)
