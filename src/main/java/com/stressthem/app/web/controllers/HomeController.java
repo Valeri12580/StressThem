@@ -44,7 +44,7 @@ public class HomeController {
     @GetMapping("/launch/refresh")
     public ResponseEntity<List<AttackViewModel>>getAllAttacksForCurrentUser(Principal principal){
         return ResponseEntity.ok(Arrays.asList(this.mapper
-                .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class)));
+                .map(this.attackService.getAllAttacksForCurrentUser(principal.getName()), AttackViewModel[].class) ));
     }
 
 

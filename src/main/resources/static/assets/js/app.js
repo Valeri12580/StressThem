@@ -36,9 +36,9 @@ let attacks=fetch("http://localhost:8080/home/launch/refresh")
           port.textContent=e["port"];
           method.textContent=e["method"];
           servers.textContent=e["servers"];
-          expires.textContent=e["expiresOn"];
-          status.textContent=e["status"];
-
+          expires.textContent=moment(e["expiresOn"]).format("DD-MM-YYYY HH:mm:ss");
+          status.textContent=moment().isAfter(moment(e["expiresOn"]))?"Inactive":"Active"
+          
 
           $(tr).append(index)
           $(tr).append(host)
