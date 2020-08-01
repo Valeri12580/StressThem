@@ -1,7 +1,6 @@
 package com.stressthem.app.unit.services;
 
 import com.stressthem.app.domain.entities.Plan;
-import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.service.PlanServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.exceptions.PlanNotFoundException;
@@ -16,12 +15,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class PlanServiceTest {
@@ -62,11 +64,11 @@ public class PlanServiceTest {
                 new BigDecimal("15"), 30, 200, 45, LocalDateTime.now(ZoneId.systemDefault()), 1);
         this.expectedOne.setId("1");
 
-        this.expectedTwo = new PlanServiceModel("Standart", new BigDecimal("30"), 60, 400, 90,LocalDateTime.now(ZoneId.systemDefault()) ,1);
+        this.expectedTwo = new PlanServiceModel("Standart", new BigDecimal("30"), 60, 400, 90, LocalDateTime.now(ZoneId.systemDefault()), 1);
         this.expectedTwo.setId("2");
 
 
-        this.user=new UserServiceModel();
+        this.user = new UserServiceModel();
         user.setId("1");
         user.setUsername("valeri");
     }
@@ -80,7 +82,7 @@ public class PlanServiceTest {
 
         PlanServiceModel actual = this.planService.getPlanById("1");
 
-        Assertions.assertEquals(expectedOne, actual);
+        assertEquals(expectedOne, actual);
 
     }
 
@@ -88,7 +90,7 @@ public class PlanServiceTest {
     public void getPlanByIdShouldThrowException_WhenDataIsInvalid() {
         Mockito.when(planRepository.findById("2")).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(PlanNotFoundException.class, () -> {
+        assertThrows(PlanNotFoundException.class, () -> {
             planService.getPlanById("2");
         });
 
@@ -96,45 +98,37 @@ public class PlanServiceTest {
 
     @Test
     public void getAllPlansShouldReturnAllAvailablePlans() {
-////        Mockito.when(planRepository.findAll()).thenReturn(List.of(planOne,planTwo));
-////
-////        Mockito.when(modelMapper.map(planOne,PlanServiceModel.class)).thenReturn(expectedOne);
-////
-////        Mockito.when(modelMapper.map(planTwo,PlanServiceModel.class)).thenReturn(expectedTwo);
-////
-////        List<PlanServiceModel>expected=List.of(expectedOne,expectedTwo);
-////        List<PlanServiceModel>actual=this.planService.getAllPlans();
-////
-////        Assertions.assertEquals(actual.size(), 2);
-////        Assertions.assertEquals(actual,expected);
-//
-//
-        Mockito.when(planRepository.findAll()).thenReturn(List.of(planOne,planTwo));
 
-        Mockito.when(List.of(modelMapper.map(planRepository.findAll(),PlanServiceModel[].class)))
-                .thenReturn(List.of(expectedOne,expectedTwo));
+        Mockito.when(planRepository.findAll()).thenReturn(List.of(planOne, planTwo));
 
-        List<PlanServiceModel>expected=List.of(expectedOne,expectedTwo);
-        List<PlanServiceModel>actual=this.planService.getAllPlans();
-
-        Assertions.assertEquals(actual.size(), 2);
-        Assertions.assertEquals(actual,expected);
+        Mockito.when(modelMapper.map(planRepository.findAll(), PlanServiceModel[].class))
+                .thenReturn(List.of(expectedOne, expectedTwo).toArray(PlanServiceModel[]::new));
 
 
+        List<PlanServiceModel> expected = List.of(expectedOne, expectedTwo);
+        List<PlanServiceModel> actual = this.planService.getAllPlans();
+
+        assertEquals(actual.size(), 2);
+        assertEquals(actual, expected);
 
     }
 
     @Test
-    public void registerPlanShouldRegisterNewPlan(){
-        PlanServiceModel input=this.expectedOne;
+    public void registerPlanShouldRegisterNewPlan() {
+        PlanServiceModel input = this.expectedOne;
 
         Mockito.when(userService.getUserByUsername("valeri")).thenReturn(user);
-        Mockito.when(modelMapper.map(input,Plan.class)).thenReturn(planOne);
+        Mockito.when(modelMapper.map(input, Plan.class)).thenReturn(planOne);
 
-        planService.register(input,"valeri");
+        planService.register(input, "valeri");
 
+        Mockito.verify(planRepository).save(planOne);
+    }
 
-        Assertions.assertEquals(1,this.planRepository.count());
-
+    @Test
+    @WithMockUser(roles = {"ADMIN","ROOT"})
+    public void deletePlanByIdShouldDeletePlan(){
+        this.planService.deletePlanById("1");
+        Mockito.verify(this.planRepository).deleteById("1");
     }
 }

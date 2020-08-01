@@ -3,6 +3,7 @@ package com.stressthem.app.services;
 import com.stressthem.app.domain.entities.Cryptocurrency;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.service.CryptocurrencyServiceModel;
+import com.stressthem.app.exceptions.CryptocurrencyNotFoundException;
 import com.stressthem.app.repositories.CryptocurrencyRepository;
 import com.stressthem.app.services.interfaces.CryptocurrencyService;
 import com.stressthem.app.services.interfaces.UserService;
@@ -37,7 +38,7 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService {
 
     @Override
     public CryptocurrencyServiceModel getCryptocurrencyByName(String name) {
-        return this.modelMapper.map(this.cryptocurrencyRepository.findByTitle(name),CryptocurrencyServiceModel.class);
+        return this.modelMapper.map(this.cryptocurrencyRepository.findByTitle(name).orElseThrow(()->new CryptocurrencyNotFoundException("Cryptocurrency is not found")),CryptocurrencyServiceModel.class);
     }
 
     @Override

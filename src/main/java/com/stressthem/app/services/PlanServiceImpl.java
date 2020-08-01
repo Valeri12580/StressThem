@@ -60,7 +60,10 @@ public class PlanServiceImpl implements PlanService {
                 .orElseThrow(()->new PlanNotFoundException("The plan is not available")),PlanServiceModel.class);
     }
 
-
+    @Override
+    public void deletePlanById(String id) {
+        this.planRepository.deleteById(id);
+    }
 
 
 }

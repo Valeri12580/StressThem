@@ -76,6 +76,12 @@ public class PlanController {
         return "redirect:/home/launch";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deletePlan(@PathVariable("id")String id){
+        this.planService.deletePlanById(id);
+        return "redirect:/plans";
+    }
+
 
 }
 

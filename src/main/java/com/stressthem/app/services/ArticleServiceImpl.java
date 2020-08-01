@@ -3,6 +3,7 @@ package com.stressthem.app.services;
 import com.stressthem.app.domain.entities.Article;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.models.service.ArticleServiceModel;
+import com.stressthem.app.exceptions.ArticleNotFoundException;
 import com.stressthem.app.repositories.ArticleRepository;
 import com.stressthem.app.services.interfaces.ArticleService;
 import com.stressthem.app.services.interfaces.UserService;
@@ -21,6 +22,7 @@ public class ArticleServiceImpl  implements ArticleService {
     private ArticleRepository articleRepository;
     private ModelMapper modelMapper;
     private UserService userService;
+
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository, ModelMapper modelMapper, UserService userService) {
         this.articleRepository = articleRepository;
@@ -39,8 +41,8 @@ public class ArticleServiceImpl  implements ArticleService {
     }
 
     @Override
-    public ArticleServiceModel getArticleById(String id) throws NotFoundException {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new NotFoundException("The article is not found"));
+    public ArticleServiceModel getArticleById(String id)  {
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException("The article is not found"));
 
         return this.modelMapper.map(article,ArticleServiceModel.class);
     }
