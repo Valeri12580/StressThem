@@ -41,9 +41,10 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public AnnouncementServiceModel registerAnnouncement(AnnouncementServiceModel announcementServiceModel, String username) {
-        //todo unique announcements!!!!
+
         User user=this.modelMapper.map(this.userService.getUserByUsername(username),User.class);
         Announcement announcement=this.modelMapper.map(announcementServiceModel,Announcement.class);
+
         announcement.setAddedOn(LocalDateTime.now(ZoneId.systemDefault()));
         announcement.setAuthor(user);
         this.announcementRepository.save(announcement);

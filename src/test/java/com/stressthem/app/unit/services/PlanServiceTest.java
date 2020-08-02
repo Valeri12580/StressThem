@@ -102,7 +102,7 @@ public class PlanServiceTest {
         Mockito.when(planRepository.findAll()).thenReturn(List.of(planOne, planTwo));
 
         Mockito.when(modelMapper.map(planRepository.findAll(), PlanServiceModel[].class))
-                .thenReturn(List.of(expectedOne, expectedTwo).toArray(PlanServiceModel[]::new));
+                .thenReturn(new PlanServiceModel[]{expectedOne,expectedTwo});
 
 
         List<PlanServiceModel> expected = List.of(expectedOne, expectedTwo);

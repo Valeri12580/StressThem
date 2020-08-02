@@ -44,6 +44,7 @@ public class AttackServiceImpl implements AttackService {
         attack.setAttacker(user);
 
         this.userActivePlanService.decreaseLeftAttacksForTheDay(user.getUserActivePlan());
+
         return this.modelMapper.map(this.attackRepository.save(attack), AttackServiceModel.class);
     }
 
@@ -59,6 +60,7 @@ public class AttackServiceImpl implements AttackService {
         attackServiceModel.setExpiresOn(LocalDateTime.now(ZoneId.systemDefault()).plusSeconds(seconds));
         return attackServiceModel;
     }
+
 
     @Override
     public void clearAttacks(String username) {
