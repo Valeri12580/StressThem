@@ -16,5 +16,5 @@ public interface AttackService {
 
     void clearAttacks(String username);
 
-    void validateAttack(int time, int servers, String username, BindingResult bindingResult);
+    void validateAttack(int time, int servers, String username);
 }

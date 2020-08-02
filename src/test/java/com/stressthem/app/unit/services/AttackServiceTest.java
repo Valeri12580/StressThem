@@ -8,6 +8,7 @@ import com.stressthem.app.domain.models.service.AttackServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.repositories.AttackRepository;
 import com.stressthem.app.services.AttackServiceImpl;
+import com.stressthem.app.services.UserActivePlanServiceImpl;
 import com.stressthem.app.services.interfaces.UserActivePlanService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,11 +36,13 @@ public class AttackServiceTest {
     @Mock
     private AttackRepository attackRepository;
 
+
+
     @Mock
     private UserService userService;
 
     @Mock
-    private UserActivePlanService userActivePlanService;
+    private UserActivePlanServiceImpl userActivePlanService;
 
     @InjectMocks
     private AttackServiceImpl attackService;
@@ -103,10 +107,23 @@ public class AttackServiceTest {
 
     @Test
     public void launchAttackShouldLaunchAttack(){
-        Mockito.when(modelMapper.map(new AttackServiceModel(),Attack.class)).thenReturn(attack);
+        AttackServiceModel attackServiceModel=new AttackServiceModel();
+        attackServiceModel.setId("1");
+
+        Mockito.when(modelMapper.map(attackServiceModel,Attack.class)).thenReturn(attack);
+
         Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+
         Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(userEntity);
-        Mockito.when(userActivePlanService.decreaseLeftAttacksForTheDay(userEntity.getUserActivePlan())).thenCallRealMethod();
+
+        attackService.launchAttack(attackServiceModel,"valeri");
+
+        Mockito.verify(attackRepository).save(attack);
+    }
+
+    @Test
+    public void validateAttackShouldValidate(){
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
     }
 
 }

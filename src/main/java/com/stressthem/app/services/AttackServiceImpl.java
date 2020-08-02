@@ -11,7 +11,6 @@ import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -64,28 +63,34 @@ public class AttackServiceImpl implements AttackService {
 
     @Override
     public void clearAttacks(String username) {
-        String userId=this.userService.getUserByUsername(username).getId();
+        String userId = this.userService.getUserByUsername(username).getId();
         this.attackRepository.deleteAllAttacksForUser(userId);
     }
 
     @Override
-    public void validateAttack(int time, int servers, String username, BindingResult bindingResult) {
+    public void validateAttack(int time, int servers, String username) {
+        StringBuilder errorMessages = new StringBuilder();
         UserActivePlan userActivePlan = this.userService.getUserByUsername(username).getUserActivePlan();
+
         double includedMaxBootTimeInPlan = userActivePlan.getPlan().getMaxBootTimeInSeconds();
         int includedMaxServersInPlan = userActivePlan.getPlan().getServers();
 
         if (time > includedMaxBootTimeInPlan) {
-            bindingResult.reject("invalidTime",
-                    String.format("The maximum time included in your plan is: %.0f seconds", includedMaxBootTimeInPlan));
+            errorMessages.append(String.format("The maximum time included in your plan is: %.0f seconds\n", includedMaxBootTimeInPlan));
+
         }
 
         if (servers > includedMaxServersInPlan) {
-            bindingResult.reject("invalidServers",
-                    String.format("The maximum included servers in your plan is: %d", includedMaxServersInPlan));
+            errorMessages.append(
+                    String.format("The maximum included servers in your plan is: %d\n", includedMaxServersInPlan));
         }
 
         if (userActivePlan.getLeftAttacksForTheDay() <= 0) {
-            bindingResult.reject("noLeftAttacks", "You dont have available attacks for today");
+            errorMessages.append("You dont have available attacks for today\n");
+        }
+
+        if(errorMessages.length()!=0){
+            throw new IllegalArgumentException(errorMessages.toString());
         }
 
     }

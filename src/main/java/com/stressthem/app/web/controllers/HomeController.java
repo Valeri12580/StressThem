@@ -80,11 +80,16 @@ public class HomeController {
     public String postLaunch(@Valid @ModelAttribute AttackBindingModel attackBindingModel,
                              BindingResult result, RedirectAttributes redirectAttributes, Principal principal) {
 
+        //todo da stanat na edno v validateAttack
         if (!this.userService.hasUserActivePlan(principal.getName())) {
             result.reject("errorCode1", "You dont have an active plan!");
         } else {
-            this.attackService.validateAttack(attackBindingModel.getTime(), attackBindingModel.getServers(), principal.getName(),
-                    result);
+
+            try{
+                this.attackService.validateAttack(attackBindingModel.getTime(), attackBindingModel.getServers(), principal.getName());
+            }catch (IllegalArgumentException ex){
+                result.reject("global",ex.getMessage());
+            }
         }
 
         if (result.hasErrors()) {
