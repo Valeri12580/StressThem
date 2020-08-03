@@ -78,7 +78,7 @@ public class AdminPanelController {
     @PostMapping("/delete-user")
     public String postDeleteUser(@RequestParam String username, Principal principal, RedirectAttributes redirectAttributes) {
         try {
-            this.userService.deleteUserByUsername(username, principal);
+            this.userService.deleteUserByUsername(username, principal.getName());
         } catch (UserDeletionException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
         }

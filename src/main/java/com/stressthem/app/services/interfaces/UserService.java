@@ -28,7 +28,7 @@ public interface UserService {
 
     void deleteUserById(String id);
 
-    void deleteUserByUsername(String username,Principal principal);
+    void deleteUserByUsername(String username,String currentName);
 
 
 }

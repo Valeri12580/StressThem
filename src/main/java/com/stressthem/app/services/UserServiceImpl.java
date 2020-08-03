@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserServiceModel findUserById(String id) {
         //todo vsichki trqbva da stanat kato tova
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("The user is not available"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return this.modelMapper.map(user,UserServiceModel.class);
     }
 
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserServiceModel updateUser(UserServiceModel userServiceModel) {
-        User user=this.userRepository.findById(userServiceModel.getId()).orElseThrow(()->new UsernameNotFoundException("The user is not found"));
+        User user=this.userRepository.findById(userServiceModel.getId()).orElseThrow(()->new UsernameNotFoundException("User  not found"));
 
         modifyUser(userServiceModel,user);
 
@@ -180,12 +180,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void deleteUserByUsername(String username,Principal principal) {
-        String id =this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found")).getId();
-        if(username.equals(principal.getName())){
+    public void deleteUserByUsername(String username, String currentName) {
+        String id =this.userRepository.findUserByUsername(username)
+                .orElseThrow(()->new UsernameNotFoundException("User not found")).getId();
+        if(username.equals(currentName)){
             throw new UserDeletionException("You cant delete yourself");
         }
-        this.deleteUserById(id);
+        userRepository.deleteById(id);
 
     }
 
