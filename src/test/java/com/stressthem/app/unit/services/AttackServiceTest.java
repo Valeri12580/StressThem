@@ -2,6 +2,7 @@ package com.stressthem.app.unit.services;
 
 import com.stressthem.app.domain.MethodType;
 import com.stressthem.app.domain.entities.Attack;
+import com.stressthem.app.domain.entities.Plan;
 import com.stressthem.app.domain.entities.User;
 import com.stressthem.app.domain.entities.UserActivePlan;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
@@ -14,6 +15,9 @@ import com.stressthem.app.services.interfaces.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,10 +25,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.BindingResult;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -53,17 +60,21 @@ public class AttackServiceTest {
     private Attack attackTwo;
     private User userEntity;
 
+    private Plan plan;
+
     @BeforeEach
     public void init() {
+        plan=new Plan("VIP", BigDecimal.valueOf(15),15,50,15,2,LocalDateTime.now(ZoneId.systemDefault()));
         userEntity = new User();
         userEntity.setId("1");
         userEntity.setUsername("valeri");
-        userEntity.setUserActivePlan(new UserActivePlan(null,15,15,null));
+        userEntity.setUserActivePlan(new UserActivePlan(plan,15,15,null));
 
 
         userServiceModel = new UserServiceModel();
         userServiceModel.setId("1");
         userServiceModel.setUsername("valeri");
+        userServiceModel.setUserActivePlan(new UserActivePlan(plan,15,15,null));
 
         attack = new Attack("193.156.83.136", "3500", MethodType.SSDP, 2, LocalDateTime.now(), userEntity);
         attackTwo = new Attack("191.156.83.136", "8080", MethodType.TCP, 1, LocalDateTime.now(), userEntity);
@@ -125,5 +136,36 @@ public class AttackServiceTest {
     public void validateAttackShouldValidate(){
         Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
     }
+
+    @Test
+    public void validateAttackShouldNotThrowError_DataValid(){
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+        attackService.validateAttack(15,1,"valeri");
+
+    }
+
+    private static Stream<Arguments> provideArgumentsForValidateAttack_Throw(){
+        return Stream.of(Arguments.of(400,1),Arguments.of(15,30));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideArgumentsForValidateAttack_Throw")
+    public void validateAttackShouldThrowError_DataInvalid(int time,int servers){
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+        assertThrows(IllegalArgumentException.class,()->{
+           attackService.validateAttack(time,servers,"valeri");
+        });
+    }
+
+
+    @Test
+    public void validateAttackShouldThrowError_UserEmptyDailyAttacks(){
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+        userServiceModel.getUserActivePlan().setLeftAttacksForTheDay(0);
+        assertThrows(IllegalArgumentException.class,()->{
+            attackService.validateAttack(15,1,"valeri");
+        });
+    }
+
 
 }

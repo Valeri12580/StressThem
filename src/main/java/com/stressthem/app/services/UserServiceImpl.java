@@ -90,14 +90,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean hasUserActivePlan(String username) {
 
-        return this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found")).getUserActivePlan() != null;
+        return this.userRepository.findUserByUsername(username).
+                orElseThrow(()->new UsernameNotFoundException("User not found"))
+                .getUserActivePlan() != null;
     }
 
     @Override
     public UserServiceModel purchasePlan(String id, String username, String cryptocurrency) {
 
-        User user = this.modelMapper.map(this.getUserByUsername(username), User.class);
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(()->new UsernameNotFoundException("User not found"));
+
         Plan plan = this.modelMapper.map(this.planService.getPlanById(id),Plan.class);
+
         Cryptocurrency chosenCryptocurrency=this.modelMapper
                 .map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency),Cryptocurrency.class);
 

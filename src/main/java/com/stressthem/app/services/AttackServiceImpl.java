@@ -70,6 +70,7 @@ public class AttackServiceImpl implements AttackService {
     @Override
     public void validateAttack(int time, int servers, String username) {
         StringBuilder errorMessages = new StringBuilder();
+
         UserActivePlan userActivePlan = this.userService.getUserByUsername(username).getUserActivePlan();
 
         double includedMaxBootTimeInPlan = userActivePlan.getPlan().getMaxBootTimeInSeconds();

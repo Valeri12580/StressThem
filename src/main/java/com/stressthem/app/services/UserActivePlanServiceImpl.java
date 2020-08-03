@@ -15,7 +15,6 @@ public class UserActivePlanServiceImpl implements UserActivePlanService {
 
     @Override
     public void decreaseLeftAttacksForTheDay(UserActivePlan userActivePlan) {
-        //todo validation for daily limit attacks,impelement constraint validator
         int leftAttacks=userActivePlan.getLeftAttacksForTheDay();
 
         if(leftAttacks<=0){
