@@ -136,16 +136,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         modifyUser(userServiceModel,user);
 
         this.userRepository.save(user);
-        return userServiceModel;
+        return this.modelMapper.map(user,UserServiceModel.class);
     }
 
 
     @Override
-    public void changeUserRole(String username, String roleName,String type, Principal principal) {
+    public void changeUserRole(String username, String roleName,String type, String administrator) {
         User user=this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
         Role role=this.roleService.getRoleByName(roleName);
 
-        if(principal.getName().equals(username)){
+        if(administrator.equals(username)){
             throw new ChangeRoleException("You can only change other user roles");
         }
 

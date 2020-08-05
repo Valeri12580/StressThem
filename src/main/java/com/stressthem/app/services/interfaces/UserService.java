@@ -22,7 +22,7 @@ public interface UserService {
 
     UserServiceModel updateUser(UserServiceModel userServiceModel);
 
-    void changeUserRole(String username, String roleName,String type, Principal principal);
+    void changeUserRole(String username, String roleName,String type, String administrator);
 
     List<UserServiceModel>getAllUsers();
 

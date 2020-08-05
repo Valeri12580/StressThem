@@ -59,7 +59,7 @@ public class AdminPanelController {
     public String postChangeRole(@RequestParam String username, @RequestParam String role, @RequestParam String type
             , Principal principal, RedirectAttributes redirectAttributes) {
         try {
-            this.userService.changeUserRole(username, role, type, principal);
+            this.userService.changeUserRole(username, role, type, principal.getName());
         } catch (ChangeRoleException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
         }
