@@ -15,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //@WebMvcTest(controllers = HomeControllerTest.class)
 public class HomeControllerTest extends ControllerTestBase {
@@ -29,19 +28,13 @@ public class HomeControllerTest extends ControllerTestBase {
 
 
 
-
-    @Test
-    public void home_announcementShouldReturnCorrect() throws Exception {
-//        AnnouncementServiceModel announcementServiceModel=new AnnouncementServiceModel();
-//        announcementServiceModel.setTitle("test");
-//        announcementServiceModel.setDescription("First test");
-
-        Mockito.when(announcementService.getAllAnnouncements()).thenReturn(List.of(new AnnouncementServiceModel(),new AnnouncementServiceModel()));
-        Mockito.when(modelMapper.map(announcementService.getAllAnnouncements(), AnnouncementViewModel[].class))
-                .thenReturn(new AnnouncementViewModel[]{new AnnouncementViewModel(),new AnnouncementViewModel()});
-
-        super.mockMvc.perform(get("/announcements"))
-                .andExpect(view().name("home-announcements"))
-                .andExpect(model().attribute("announcements",announcementService.getAllAnnouncements()));
-    }
+//    @Test
+//    public void home_announcementShouldReturnCorrect() throws Exception {
+//        Mockito.when(modelMapper.map(announcementService.getAllAnnouncements(), AnnouncementViewModel[].class))
+//                .thenReturn(new AnnouncementViewModel[]{new AnnouncementViewModel(),new AnnouncementViewModel()});
+//
+//        super.mockMvc.perform(get("/home/announcements"))
+//                .andExpect(view().name("home-announcements"))
+//                .andExpect(status().isOk());
+//    }
 }

@@ -17,10 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,13 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-
-
-        if (this.userRepository.count() == 0) {
-            user.setRoles(new HashSet<>(this.roleService.getAllRoles()));
-        } else {
-            user.setRoles(Set.of(this.roleService.getRoleByName("USER")));
-        }
+        user.setRoles(Set.of(this.roleService.getRoleByName("USER")));
 
         user.setRegisteredOn(LocalDateTime.now(ZoneId.systemDefault()));
         this.userRepository.save(user);
@@ -69,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceModel findUserById(String id) {
         //todo vsichki trqbva da stanat kato tova
         User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return this.modelMapper.map(user,UserServiceModel.class);
+        return this.modelMapper.map(user, UserServiceModel.class);
     }
 
     @Override
@@ -91,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean hasUserActivePlan(String username) {
 
         return this.userRepository.findUserByUsername(username).
-                orElseThrow(()->new UsernameNotFoundException("User not found"))
+                orElseThrow(() -> new UsernameNotFoundException("User not found"))
                 .getUserActivePlan() != null;
     }
 
@@ -99,12 +91,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceModel purchasePlan(String id, String username, String cryptocurrency) {
 
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(()->new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        Plan plan = this.modelMapper.map(this.planService.getPlanById(id),Plan.class);
+        Plan plan = this.modelMapper.map(this.planService.getPlanById(id), Plan.class);
 
-        Cryptocurrency chosenCryptocurrency=this.modelMapper
-                .map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency),Cryptocurrency.class);
+        Cryptocurrency chosenCryptocurrency = this.modelMapper
+                .map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency), Cryptocurrency.class);
 
         if (user.getUserActivePlan() != null) {
             throw new UserPlanActivationException("You have already activate plan!");
@@ -115,15 +107,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userActivePlan.setUser(user);
 
         this.userActivePlanService.saveActivatedPlan(userActivePlan);
-        this.transactionService.saveTransaction(new TransactionServiceModel(user,plan,chosenCryptocurrency,LocalDateTime.now(ZoneId.systemDefault())));
+        this.transactionService.saveTransaction(new TransactionServiceModel(user, plan, chosenCryptocurrency, LocalDateTime.now(ZoneId.systemDefault())));
         return this.modelMapper.map(user, UserServiceModel.class);
 
     }
 
     @Override
     public int getUserAvailableAttacks(String username) {
-        User user = this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-        if(user.getUserActivePlan()==null){
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (user.getUserActivePlan() == null) {
             return 0;
         }
         return user.getUserActivePlan().getLeftAttacksForTheDay();
@@ -131,33 +123,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserServiceModel updateUser(UserServiceModel userServiceModel) {
-        User user=this.userRepository.findById(userServiceModel.getId()).orElseThrow(()->new UsernameNotFoundException("User  not found"));
+        User user = this.userRepository.findById(userServiceModel.getId()).orElseThrow(() -> new UsernameNotFoundException("User  not found"));
 
-        modifyUser(userServiceModel,user);
+        modifyUser(userServiceModel, user);
 
         this.userRepository.save(user);
-        return this.modelMapper.map(user,UserServiceModel.class);
+        return this.modelMapper.map(user, UserServiceModel.class);
     }
 
 
     @Override
-    public void changeUserRole(String username, String roleName,String type, String administrator) {
-        User user=this.userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-        Role role=this.roleService.getRoleByName(roleName);
+    public void changeUserRole(String username, String roleName, String type, String administrator) {
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Role role = this.roleService.getRoleByName(roleName);
 
-        if(administrator.equals(username)){
+        if (administrator.equals(username)) {
             throw new ChangeRoleException("You can only change other user roles");
         }
 
-        if(type.equals("Add")){
-            if(user.getRoles().contains(role)){
+        if (type.equals("Add")) {
+            if (user.getRoles().contains(role)) {
                 throw new ChangeRoleException("This user already have that role");
             }
 
             user.getRoles().add(role);
 
-        }else if(type.equals("Remove")){
-            if(!user.getRoles().contains(role)){
+        } else if (type.equals("Remove")) {
+            if (!user.getRoles().contains(role)) {
                 throw new ChangeRoleException("This user doesn't have that role");
             }
 
@@ -171,7 +163,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserServiceModel> getAllUsers() {
-        return List.of(this.modelMapper.map(this.userRepository.findAll(),UserServiceModel[].class));
+        return List.of(this.modelMapper.map(this.userRepository.findAll(), UserServiceModel[].class));
     }
 
     @Override
@@ -181,9 +173,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUserByUsername(String username, String currentName) {
-        String id =this.userRepository.findUserByUsername(username)
-                .orElseThrow(()->new UsernameNotFoundException("User not found")).getId();
-        if(username.equals(currentName)){
+        String id = this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found")).getId();
+        if (username.equals(currentName)) {
             throw new UserDeletionException("You cant delete yourself");
         }
         userRepository.deleteById(id);
@@ -204,7 +196,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private void  modifyUser(UserServiceModel modified,User main){
+    private void modifyUser(UserServiceModel modified, User main) {
         main.setUsername(modified.getUsername());
         main.setEmail(modified.getEmail());
         main.setImageUrl(modified.getImageUrl());

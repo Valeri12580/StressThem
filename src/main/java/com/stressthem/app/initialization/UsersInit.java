@@ -1,45 +1,56 @@
 package com.stressthem.app.initialization;
 
-import com.stressthem.app.domain.models.binding.PasswordWrapper;
-import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
-import com.stressthem.app.domain.models.service.UserServiceModel;
-import com.stressthem.app.services.interfaces.UserService;
-import org.modelmapper.ModelMapper;
+import com.stressthem.app.domain.entities.User;
+import com.stressthem.app.repositories.UserRepository;
+import com.stressthem.app.services.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Order(value = 2)
 public class UsersInit implements CommandLineRunner {
-    private UserService userService;
 
-    private ModelMapper modelMapper;
+    private UserRepository userRepository;
+
+    private PasswordEncoder passwordEncoder;
+
+    private RoleService roleService;
 
     @Autowired
-    public UsersInit(UserService userService, ModelMapper modelMapper) {
-        this.userService = userService;
-        this.modelMapper = modelMapper;
+    public UsersInit(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        if(this.userService.getUsersCount()==0){
-            UserRegisterBindingModel admin=new UserRegisterBindingModel("Valeri12580",
-                    new PasswordWrapper("12345678","12345678"),
-                    "valeri125@dir.bg","https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg");
+        if (this.userRepository.count() == 0) {
+
+            User admin = new User("valeri12580", passwordEncoder.encode("12345678"), "valeri125@dir.bg",
+                    "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
+                    LocalDateTime.now(ZoneId.systemDefault()), null, new HashSet<>(this.roleService.getAllRoles()),
+                    null, null);
 
 
+            User user = new User("test",
+                    passwordEncoder.encode("test1234"),
+                    "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(this.roleService.getRoleByName("USER")), null, null);
 
-            UserRegisterBindingModel user=new UserRegisterBindingModel("test",
-                    new PasswordWrapper("test1234","test1234"),
-                    "test@dir.bg","");
 
-            this.userService.register(this.modelMapper.map(admin,UserServiceModel.class));
-            this.userService.register(this.modelMapper.map(user,UserServiceModel.class));
+            userRepository.save(admin);
+            userRepository.save(user);
+
+
         }
 
 
