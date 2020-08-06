@@ -13,10 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(ArticleController.class)
+
 public class ArticleControllerTest extends ControllerTestBase {
 
     @MockBean
@@ -25,12 +27,15 @@ public class ArticleControllerTest extends ControllerTestBase {
     @MockBean
     private ArticleService articleService;
 
-    @MockBean
-    private ArticleRepository articleRepository;
 
 
     @Test
     public void testAllArticles() throws Exception {
+
+        Mockito.when(this.articleService.getAllArticles()).thenReturn(List.of(new ArticleServiceModel(),new ArticleServiceModel()));
+        Mockito.when(modelMapper.map(this.articleService.getAllArticles(),ArticleViewModel[].class)).thenReturn(
+                new ArticleViewModel[]{new ArticleViewModel(),new ArticleViewModel()}
+        );
         super.mockMvc.perform(get("/articles"))
                 .andExpect(view().name("articles"))
                 .andExpect(model().attributeExists("articles"));
@@ -52,12 +57,12 @@ public class ArticleControllerTest extends ControllerTestBase {
     }
 
     @Test
-    @WithMockUser(username = "valeri12580")
+    @WithMockUser(username = "valeri125800",authorities = {"ROOT"})
     public void testArticleDelete() throws Exception {
 
 
         super.mockMvc.perform(get("/articles/delete/1")).
-                andExpect(redirectedUrl("/articles"));
+                andExpect(redirectedUrl("/articles?favicon=%5Cassets%5Cimg%5Cfavicon.png"));
 
     }
 
