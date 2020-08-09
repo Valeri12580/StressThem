@@ -39,13 +39,13 @@ public class UsersInit implements CommandLineRunner {
             User admin = new User("valeri12580", passwordEncoder.encode("12345678"), "valeri125@dir.bg",
                     "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
                     LocalDateTime.now(ZoneId.systemDefault()), null, new HashSet<>(this.roleService.getAllRoles()),
-                    null, null,null,null,null,null);
+                    null, null,null,null,null);
 
 
             User user = new User("test",
                     passwordEncoder.encode("test1234"),
                     "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(this.roleService.getRoleByName("USER")), null, null
-            ,null,null,null,null);
+            ,null,null,null);
 
 
             userRepository.save(admin);

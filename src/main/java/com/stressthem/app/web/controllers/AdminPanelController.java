@@ -49,7 +49,6 @@ public class AdminPanelController {
     @PageTitle("Change roles")
     @GetMapping("/user-roles")
     public String changeRole(Model model) {
-        //todo admin home page is user roles-to be restricted only to root admins
         model.addAttribute("users", this.userService.getAllUsers().stream().map(UserServiceModel::getUsername).collect(Collectors.toList()));
         model.addAttribute("roles", this.roleService.getAllRoles().stream().map(Role::getName).filter(e -> !e.equals("USER")).collect(Collectors.toList()));
         return "admin-panel-user-roles";
@@ -150,7 +149,6 @@ public class AdminPanelController {
     }
 
     @PostMapping("/add-cryptocurrency")
-    //todo unique cryptos only
     public String postAddCryptocurrency(@Valid @ModelAttribute CryptocurrencyBindingModel cryptocurrencyBindingModel, BindingResult bindingResult,
                                         RedirectAttributes redirectAttributes, Principal principal) {
         if(bindingResult.hasErrors()){

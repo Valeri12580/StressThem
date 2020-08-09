@@ -11,10 +11,10 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CryptocurrencyBindingModel {
 
-    @Size(min = 1,max=15,message = "The length must be between 1 and 15 characters")
+    @Size(min = 1,max=20,message = "The length must be between 1 and 20 characters")
     private String title;
 
-    @Size(min = 10,max=50,message = "The length must be between 1 and 15 characters")
+    @Size(min = 10,max=30,message = "The length must be between 1 and 30 characters")
     private String description;
 
     //@Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")

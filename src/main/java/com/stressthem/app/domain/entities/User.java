@@ -69,8 +69,6 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
     private List<Cryptocurrency>cryptocurrencies;
 
-    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
-    private List<Logger>loggers;
 
 
     @Override
