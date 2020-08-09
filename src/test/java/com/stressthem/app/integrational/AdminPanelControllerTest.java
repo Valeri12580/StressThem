@@ -46,6 +46,8 @@ public class AdminPanelControllerTest extends ControllerTestBase {
     @Autowired
     private CryptocurrencyRepository cryptocurrencyRepository;
 
+    private  Role adminRole ;
+
     @BeforeEach
     public void init() {
 
@@ -55,7 +57,7 @@ public class AdminPanelControllerTest extends ControllerTestBase {
 
 
         Role rootRole = new Role("ROOT");
-        Role adminRole = new Role("ADMIN");
+        adminRole = new Role("ADMIN");
         Role userRole = new Role("USER");
 
         roleRepository.saveAll(List.of(rootRole, adminRole, userRole));
@@ -265,6 +267,44 @@ public class AdminPanelControllerTest extends ControllerTestBase {
                 .andExpect(redirectedUrl("/admin/add-plan?favicon=%5Cassets%5Cimg%5Cfavicon.png"));
 
         assertEquals(0,planRepository.count());
+
+    }
+
+    @Test
+    @WithMockUser(username = "valeri12580",authorities = {"ADMIN","ROOT","USER"})
+    public void testChangeRoles_Loadpage() throws Exception {
+        super.mockMvc.perform(get("/admin/user-roles"))
+                .andExpect(view().name("admin-panel-user-roles"))
+                .andExpect(model().attributeExists("users","roles"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "valeri12580",authorities = {"ADMIN","ROOT","USER"})
+    public void testChangeRoleShouldChangeRole_ValidData() throws Exception {
+        super.mockMvc.perform(post("/admin/user-roles").with(csrf())
+                .param("username","test")
+                .param("role","ADMIN")
+        .param("type","Add"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/user-roles?favicon=%5Cassets%5Cimg%5Cfavicon.png"));
+
+        assertEquals( 2,userRepository.findUserByUsername("test").get().getRoles().size());
+
+    }
+
+    @Test
+    @WithMockUser(username = "valeri12580",authorities = {"ADMIN","ROOT","USER"})
+    public void testChangeRoleShouldNotChangeRole_InvalidData() throws Exception {
+        super.mockMvc.perform(post("/admin/user-roles").with(csrf())
+                .param("username","valeri12580")
+                .param("role","ADMIN")
+                .param("type","Add"))
+                .andExpect(flash().attributeExists("error"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/user-roles?favicon=%5Cassets%5Cimg%5Cfavicon.png"));
+
+
 
     }
 
