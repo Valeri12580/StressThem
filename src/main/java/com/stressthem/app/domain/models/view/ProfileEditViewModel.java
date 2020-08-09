@@ -28,7 +28,7 @@ public class ProfileEditViewModel {
     @NotBlank(message = "Cannot be empty!")
     private String email;
 
-    //@Pattern(regexp = "(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
+    @Pattern(regexp = "(^$)|(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)",flags ={Pattern.Flag.CASE_INSENSITIVE} , message = "The image url is not valid!Should start with https:// and ends with jpg|gif|png.")
     private String imageUrl;
 
     @Valid

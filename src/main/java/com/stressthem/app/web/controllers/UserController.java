@@ -63,9 +63,9 @@ public class UserController {
 
     @PageTitle("Login")
     @GetMapping("/login")
-    public String login(Model model){
-        if(!model.containsAttribute("user")){
-            model.addAttribute("user",new UserLoginBindingModel());
+    public String login(Model model) {
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new UserLoginBindingModel());
         }
 
         return "login";
@@ -74,11 +74,11 @@ public class UserController {
 
     @PageTitle("Profile")
     @GetMapping("/profile/{username}")
-    public String profileEdit(@PathVariable String username, Model model){
-        ProfileEditViewModel profile=this.modelMapper.map(this.userService.getUserByUsername(username),ProfileEditViewModel.class);
-        if(!model.containsAttribute("userEdit")){
+    public String profileEdit(@PathVariable String username, Model model) {
+        ProfileEditViewModel profile = this.modelMapper.map(this.userService.getUserByUsername(username), ProfileEditViewModel.class);
+        if (!model.containsAttribute("userEdit")) {
             //todo custom mapping
-            model.addAttribute("userEdit",profile);
+            model.addAttribute("userEdit", profile);
         }
 
         return "profile-edit";
@@ -86,39 +86,36 @@ public class UserController {
 
 
     @PostMapping("/profile/{username}")
-    public String postProfileEdit(@PathVariable String username,@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
-            ,RedirectAttributes redirectAttributes){
+    public String postProfileEdit(@PathVariable String username, @Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel, BindingResult result
+            , RedirectAttributes redirectAttributes) {
 
         try {
-            userService.validateUsers( username,this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
-        }catch (DuplicatedEmailException ex){
-            result.rejectValue("email","error1",ex.getMessage());
-        }catch (DuplicatedUsernameException ex){
-            result.rejectValue("username","error",ex.getMessage());
+            userService.validateUsers(username, this.modelMapper.map(profileEditViewModel, UserServiceModel.class));
+        } catch (DuplicatedEmailException ex) {
+            result.rejectValue("email", "error1", ex.getMessage());
+        } catch (DuplicatedUsernameException ex) {
+            result.rejectValue("username", "error", ex.getMessage());
         }
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userEdit", result);
             redirectAttributes.addFlashAttribute("userEdit", profileEditViewModel);
-            return String.format("redirect:/users/profile/%s",username);
+            return String.format("redirect:/users/profile/%s", username);
         }
-        UserServiceModel updated=this.userService.updateUser(username,this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
-        //todo fix profie edit when changing only one field-to be changed ony that fix this!!!
+        this.userService.updateUser(username, this.modelMapper.map(profileEditViewModel, UserServiceModel.class));
         SecurityContextHolder.clearContext();
         return "redirect:/users/login";
     }
 
 
     @GetMapping("/profile/delete/{id}")
-    public String deleteProfile(@PathVariable String id, HttpSession session){
+    public String deleteProfile(@PathVariable String id, HttpSession session) {
 
         this.userService.deleteUserById(id);
         session.invalidate();
 
         return "redirect:/index";
     }
-
-
 
 
 }
