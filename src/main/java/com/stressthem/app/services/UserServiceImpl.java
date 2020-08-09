@@ -3,9 +3,7 @@ package com.stressthem.app.services;
 import com.stressthem.app.domain.entities.*;
 import com.stressthem.app.domain.models.service.TransactionServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
-import com.stressthem.app.exceptions.ChangeRoleException;
-import com.stressthem.app.exceptions.UserDeletionException;
-import com.stressthem.app.exceptions.UserPlanActivationException;
+import com.stressthem.app.exceptions.*;
 import com.stressthem.app.repositories.UserRepository;
 import com.stressthem.app.services.interfaces.*;
 import org.modelmapper.ModelMapper;
@@ -122,8 +120,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserServiceModel updateUser(UserServiceModel userServiceModel) {
-        User user = this.userRepository.findById(userServiceModel.getId()).orElseThrow(() -> new UsernameNotFoundException("User  not found"));
+    public UserServiceModel updateUser(String username, UserServiceModel userServiceModel) {
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User  not found"));
 
         modifyUser(userServiceModel, user);
 
@@ -131,6 +129,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return this.modelMapper.map(user, UserServiceModel.class);
     }
 
+    public void validateUsers(String oldUsername, UserServiceModel modified){
+        User main = this.userRepository.findUserByUsername(oldUsername).orElseThrow(() -> new UsernameNotFoundException("User  not found"));
+
+        User userWithEmail=userRepository.findUserByEmail(modified.getEmail()).orElse(null);
+        User userWithUsername=userRepository.findUserByUsername(modified.getUsername()).orElse(null);
+
+        if(userWithEmail!=null && !userWithEmail.getId().equals(main.getId())){
+            throw new DuplicatedEmailException("User with this email already exists");
+        }
+
+        if(userWithUsername!=null && !userWithUsername.getId().equals(main.getId())){
+            throw new DuplicatedUsernameException("User with this name already exists");
+        }
+    }
+
+    private void modifyUser(UserServiceModel modified, User main) {
+
+
+        main.setUsername(modified.getUsername());
+        main.setEmail(modified.getEmail());
+        main.setImageUrl(modified.getImageUrl());
+       main.setPassword(passwordEncoder.encode(modified.getPassword()));
+
+    }
 
     @Override
     public void changeUserRole(String username, String roleName, String type, String administrator) {
@@ -196,11 +218,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private void modifyUser(UserServiceModel modified, User main) {
-        main.setUsername(modified.getUsername());
-        main.setEmail(modified.getEmail());
-        main.setImageUrl(modified.getImageUrl());
-        main.setPassword(modified.getPassword());
 
-    }
 }

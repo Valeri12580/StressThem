@@ -74,7 +74,7 @@
         </div>
         <div class="col-md-8">
             <h1 class="text-center" style="font-size: 25px;">Profile edit</h1>
-            <form th:method="post" th:object="${userEdit}" th:action="@{/users/profile/{id}(id=${userEdit.id})}">
+            <form th:method="post" th:object="${userEdit}" th:action="@{/users/profile/{username}(username=${userEdit.username})}">
 
 
                 <div class="form-group"><label>Username</label><input  th:field="*{username}"
@@ -96,6 +96,7 @@
                         th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"
                         class="form-text text-danger"></small></div>
                 <div class="form-row">
+                    <h1>Write your current/new password!</h1>
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group"><label>Password </label><input th:field="*{passwordWrapper.password}"
 

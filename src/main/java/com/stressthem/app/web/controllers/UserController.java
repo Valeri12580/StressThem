@@ -4,10 +4,13 @@ import com.stressthem.app.domain.models.binding.UserLoginBindingModel;
 import com.stressthem.app.domain.models.binding.UserRegisterBindingModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.domain.models.view.ProfileEditViewModel;
+import com.stressthem.app.exceptions.DuplicatedEmailException;
+import com.stressthem.app.exceptions.DuplicatedUsernameException;
 import com.stressthem.app.services.interfaces.UserService;
 import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -82,21 +85,27 @@ public class UserController {
     }
 
 
-    @PostMapping("/profile/{id}")
-    public String postProfileEdit(@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
+    @PostMapping("/profile/{username}")
+    public String postProfileEdit(@PathVariable String username,@Valid @ModelAttribute("userEdit") ProfileEditViewModel profileEditViewModel,BindingResult result
             ,RedirectAttributes redirectAttributes){
+
+        try {
+            userService.validateUsers( username,this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
+        }catch (DuplicatedEmailException ex){
+            result.rejectValue("email","error1",ex.getMessage());
+        }catch (DuplicatedUsernameException ex){
+            result.rejectValue("username","error",ex.getMessage());
+        }
 
         if(result.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userEdit", result);
             redirectAttributes.addFlashAttribute("userEdit", profileEditViewModel);
-
-        }else{
-            this.userService.updateUser(this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
-            redirectAttributes.addFlashAttribute("editUser",profileEditViewModel);
+            return String.format("redirect:/users/profile/%s",username);
         }
-
+        UserServiceModel updated=this.userService.updateUser(username,this.modelMapper.map(profileEditViewModel,UserServiceModel.class));
         //todo fix profie edit when changing only one field-to be changed ony that fix this!!!
-        return String.format("redirect:/users/profile/%s",profileEditViewModel.getId());
+        SecurityContextHolder.clearContext();
+        return "redirect:/users/login";
     }
 
 

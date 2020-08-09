@@ -18,18 +18,19 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 public class ApplicationBeanConfiguration {
 
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
 
-//        PropertyMap<UserServiceModel, ProfileEditViewModel>editMap= new PropertyMap<>() {
-//            @Override
-//            protected void configure() {
-//
-//                map().getPasswordWrapper().setPassword(source.getPassword());
-//                map().getPasswordWrapper().setConfirmPassword(source.getPassword());
-//            }
-//        };
+        PropertyMap<UserServiceModel, ProfileEditViewModel>editMap= new PropertyMap<>() {
+            @Override
+            protected void configure() {
+
+                map().getPasswordWrapper().setPassword(source.getPassword());
+                map().getPasswordWrapper().setConfirmPassword(source.getPassword());
+            }
+        };
 
 
 //        PropertyMap<AttackServiceModel, AttackViewModel>myMap=new PropertyMap<AttackServiceModel, AttackViewModel>() {
@@ -44,7 +45,7 @@ public class ApplicationBeanConfiguration {
 //
 //        };
 
-//        mapper.addMappings(myMap);
+        mapper.addMappings(editMap);
 
 
 

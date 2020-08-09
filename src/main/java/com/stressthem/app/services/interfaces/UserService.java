@@ -2,7 +2,6 @@ package com.stressthem.app.services.interfaces;
 
 import com.stressthem.app.domain.models.service.UserServiceModel;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -20,7 +19,7 @@ public interface UserService {
 
     int getUserAvailableAttacks(String username);
 
-    UserServiceModel updateUser(UserServiceModel userServiceModel);
+    UserServiceModel updateUser(String username, UserServiceModel userServiceModel);
 
     void changeUserRole(String username, String roleName,String type, String administrator);
 
@@ -29,6 +28,8 @@ public interface UserService {
     void deleteUserById(String id);
 
     void deleteUserByUsername(String username,String currentName);
+
+    void validateUsers(String username, UserServiceModel modified);
 
 
 }
