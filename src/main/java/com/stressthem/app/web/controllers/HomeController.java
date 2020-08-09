@@ -120,8 +120,7 @@ public class HomeController {
     }
 
     @GetMapping("/announcements/delete/{id}")
-    public String deleteAnnouncement(@PathVariable("id") String id, Authentication authentication) {
-
+    public String deleteAnnouncement(@PathVariable("id") String id) {
 
         this.announcementService.deleteAnnouncementById(id);
         return "redirect:/home/announcements";

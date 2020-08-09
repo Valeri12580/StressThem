@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 @PreAuthorize("hasAnyAuthority('ROOT','ADMIN')")
 public class AdminPanelController {
-    private UserService userService;
-    private RoleService roleService;
-    private AnnouncementService announcementService;
-    private ModelMapper modelMapper;
-    private ArticleService articleService;
-    private CryptocurrencyService cryptocurrencyService;
-    private PlanService planService;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final AnnouncementService announcementService;
+    private final ModelMapper modelMapper;
+    private final ArticleService articleService;
+    private final CryptocurrencyService cryptocurrencyService;
+    private final PlanService planService;
 
     @Autowired
     public AdminPanelController(UserService userService, RoleService roleService, AnnouncementService announcementService, ModelMapper modelMapper, ArticleService articleService, CryptocurrencyService cryptocurrencyService, PlanService planService) {

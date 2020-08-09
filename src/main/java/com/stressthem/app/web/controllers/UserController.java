@@ -70,9 +70,9 @@ public class UserController {
 
 
     @PageTitle("Profile")
-    @GetMapping("/profile/{id}")
-    public String profileEdit(@PathVariable String id, Model model){
-        ProfileEditViewModel profile=this.modelMapper.map(this.userService.findUserById(id),ProfileEditViewModel.class);
+    @GetMapping("/profile/{username}")
+    public String profileEdit(@PathVariable String username, Model model){
+        ProfileEditViewModel profile=this.modelMapper.map(this.userService.getUserByUsername(username),ProfileEditViewModel.class);
         if(!model.containsAttribute("userEdit")){
             //todo custom mapping
             model.addAttribute("userEdit",profile);
@@ -99,10 +99,9 @@ public class UserController {
         return String.format("redirect:/users/profile/%s",profileEditViewModel.getId());
     }
 
-    //todo post maybe?
+
     @GetMapping("/profile/delete/{id}")
     public String deleteProfile(@PathVariable String id, HttpSession session){
-
 
         this.userService.deleteUserById(id);
         session.invalidate();

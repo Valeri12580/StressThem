@@ -46,7 +46,7 @@ public class PlanController {
         List<PlanViewModel> plans = List.of(this.modelMapper.map(this.planService.getAllPlans(), PlanViewModel[].class));
         model.addAttribute("plans", plans);
         System.out.println();
-        //todo debugni za da vidish dto-tata v planservicemodel kak se predstavqt
+
         return "pricing";
     }
 
@@ -77,7 +77,7 @@ public class PlanController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePlan(@PathVariable("id")String id){
+    public String deletePlan(@PathVariable("id") String id) {
         this.planService.deletePlanById(id);
         return "redirect:/plans";
     }
