@@ -1,2 +1,0 @@
-# StressThem
-SoftUni project
