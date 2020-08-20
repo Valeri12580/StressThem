@@ -44,6 +44,7 @@ public class AttackServiceImpl implements AttackService {
 
         this.userActivePlanService.decreaseLeftAttacksForTheDay(user.getUserActivePlan());
 
+
         return this.modelMapper.map(this.attackRepository.save(attack), AttackServiceModel.class);
     }
 
