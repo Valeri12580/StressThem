@@ -31,7 +31,5 @@ public class AttackServiceModel extends BaseServiceModel {
     //todo userservicemodel here
     private User attacker;
 
-//    public static String formatTarget(AttackBindingModel attack ){
-//        return String.format("%s:%s",attack.getHost(),attack.getPort());
-//    }
+
 }

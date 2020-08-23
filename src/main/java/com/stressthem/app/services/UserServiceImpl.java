@@ -129,17 +129,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return this.modelMapper.map(user, UserServiceModel.class);
     }
 
-    public void validateUsers(String oldUsername, UserServiceModel modified){
+    public void validateUsers(String oldUsername, UserServiceModel modified) {
         User main = this.userRepository.findUserByUsername(oldUsername).orElseThrow(() -> new UsernameNotFoundException("User  not found"));
 
-        User userWithEmail=userRepository.findUserByEmail(modified.getEmail()).orElse(null);
-        User userWithUsername=userRepository.findUserByUsername(modified.getUsername()).orElse(null);
+        User userWithEmail = userRepository.findUserByEmail(modified.getEmail()).orElse(null);
+        User userWithUsername = userRepository.findUserByUsername(modified.getUsername()).orElse(null);
 
-        if(userWithEmail!=null && !userWithEmail.getId().equals(main.getId())){
+        if (userWithEmail != null && !userWithEmail.getId().equals(main.getId())) {
             throw new DuplicatedEmailException("User with this email already exists");
         }
 
-        if(userWithUsername!=null && !userWithUsername.getId().equals(main.getId())){
+        if (userWithUsername != null && !userWithUsername.getId().equals(main.getId())) {
             throw new DuplicatedUsernameException("User with this name already exists");
         }
     }
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         main.setUsername(modified.getUsername());
         main.setEmail(modified.getEmail());
         main.setImageUrl(modified.getImageUrl());
-       main.setPassword(passwordEncoder.encode(modified.getPassword()));
+        main.setPassword(passwordEncoder.encode(modified.getPassword()));
 
     }
 

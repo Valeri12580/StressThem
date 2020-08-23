@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.http.HttpClient;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -57,5 +58,9 @@ public class ApplicationBeanConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+//    @Bean
+//    public HttpClient httpClient(){
+//        return httpClient().newBuilder().build();
+//    }
 
 }

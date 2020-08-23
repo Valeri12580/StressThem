@@ -6,12 +6,15 @@ import com.stressthem.app.domain.entities.UserActivePlan;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
 import com.stressthem.app.repositories.AttackRepository;
 import com.stressthem.app.services.interfaces.AttackService;
+import com.stressthem.app.services.interfaces.ServerConnection;
 import com.stressthem.app.services.interfaces.UserActivePlanService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -24,17 +27,30 @@ public class AttackServiceImpl implements AttackService {
     private AttackRepository attackRepository;
     private UserService userService;
     private UserActivePlanService userActivePlanService;
+    private ServerConnection serverConnection;
 
     @Autowired
-    public AttackServiceImpl(ModelMapper modelMapper, AttackRepository attackRepository, UserService userService, UserActivePlanService userActivePlanService) {
+    public AttackServiceImpl(ModelMapper modelMapper, AttackRepository attackRepository, UserService userService, UserActivePlanService userActivePlanService, ServerConnection serverConnection) {
         this.modelMapper = modelMapper;
         this.attackRepository = attackRepository;
         this.userService = userService;
         this.userActivePlanService = userActivePlanService;
+        this.serverConnection = serverConnection;
     }
 
     @Override
     public AttackServiceModel launchAttack(AttackServiceModel attackServiceModel, String username) {
+
+        try {
+            serverConnection.sendRequest(attackServiceModel.getHost(),attackServiceModel.getPort(),String.valueOf(15),String.valueOf(2),2);
+        } catch (URISyntaxException e) {
+
+            System.out.println("ERR");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Attack attack = this.modelMapper.map(attackServiceModel, Attack.class);
 
