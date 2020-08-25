@@ -22,6 +22,7 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
+
     private RoleService roleService;
     private PlanService planService;
     private UserRepository userRepository;
@@ -30,9 +31,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
     private UserActivePlanService userActivePlanService;
+    private ConfirmationService confirmationService;
 
     @Autowired
-    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, TransactionService transactionService, CryptocurrencyService cryptocurrencyService, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserActivePlanService userActivePlanService) {
+    public UserServiceImpl(RoleService roleService, @Lazy PlanService planService, UserRepository userRepository, TransactionService transactionService, CryptocurrencyService cryptocurrencyService, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserActivePlanService userActivePlanService, ConfirmationService confirmationService) {
         this.roleService = roleService;
         this.planService = planService;
         this.userRepository = userRepository;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userActivePlanService = userActivePlanService;
+        this.confirmationService = confirmationService;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setRoles(Set.of(this.roleService.getRoleByName("USER")));
+        user.setRoles(Set.of(this.roleService.getRoleByName("UNCONFIRMED")));
 
         user.setRegisteredOn(LocalDateTime.now(ZoneId.systemDefault()));
         this.userRepository.save(user);
@@ -142,6 +145,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userWithUsername != null && !userWithUsername.getId().equals(main.getId())) {
             throw new DuplicatedUsernameException("User with this name already exists");
         }
+    }
+
+    @Override
+    public void sendConfirmationEmail(String username) {
+        String email=userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found")).getEmail();
+
+        String code=confirmationService.sendConfirmationEmail(email);
+
+
     }
 
     private void modifyUser(UserServiceModel modified, User main) {

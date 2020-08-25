@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security>
 
 <head th:insert="~{fragments/head}">
 
@@ -21,7 +22,19 @@
     <!--        </div>-->
     <!--    </div>-->
 
+    <div class="row">
+        <div class="col-12 alert alert-danger text-center" sec:authorize="hasAnyAuthority('UNCONFIRMED')">
+            Your account is not confirmed!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <button id="verificationBtn" class="btn btn-light ml-3 rounded-pill">Send verification code</button>
+            </button>
+
+        </div>
+    </div>
+
     <div class="form-row profile-row">
+
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -43,7 +56,7 @@
                         </div>
                     </div>
                     <hr>
-                    <h1 class="text-center" style="font-size: 25px;">Curent plan</h1>
+                    <h1 class="text-center" style="font-size: 25px;">Current plan</h1>
                     <div class="col">
 
                         <div th:if="${userEdit.plan==null}"><i class="fa fa-remove"></i>
@@ -72,6 +85,9 @@
                 </div>
             </div>
         </div>
+
+
+
         <div class="col-md-8">
             <h1 class="text-center" style="font-size: 25px;">Profile edit</h1>
             <form th:method="post" th:object="${userEdit}" th:action="@{/users/profile/{username}(username=${userEdit.username})}">

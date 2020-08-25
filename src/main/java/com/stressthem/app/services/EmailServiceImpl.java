@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+    private static final String  FROM_EMAIL="test-service@abv.bg";
+
     private JavaMailSender sender;
 
     @Autowired
@@ -17,12 +19,12 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendConfirmationEmail() {
+    public void sendConfirmationEmail(String to, String title, String description) {
             SimpleMailMessage msg=new SimpleMailMessage();
-            msg.setFrom("test-service@abv.bg");
-            msg.setTo("valeri125we@gmail.com");
-            msg.setSubject("Testing");
-            msg.setText("Kole poluchi li");
+            msg.setFrom(FROM_EMAIL);
+            msg.setTo(to);
+            msg.setSubject(title);
+            msg.setText(description);
             sender.send(msg);
     }
 }

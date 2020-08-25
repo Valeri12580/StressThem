@@ -2,5 +2,5 @@ package com.stressthem.app.services.interfaces;
 
 public interface EmailService {
 
-    void sendConfirmationEmail();
+    void sendConfirmationEmail(String to,String title,String description);
 }

@@ -9,6 +9,17 @@ VANTA.NET({
 })
 
 
+$("#verificationBtn").click(function () {
+   fetch("http://localhost:8080/users/profile/verification")
+       .then(r=>r.json())
+       .then(r=>alert(r.toString()))
+})
+
+
+
+
+
+
 $("#clearAttackHistory").click(function () {
     fetch("http://localhost:8080/home/launch/clear")
     $("#attackHistoryTBody").empty();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security>
 
 <head th:insert="~{fragments/head}">
 
@@ -16,6 +17,19 @@
     <div class="card-body">
         <div class="container">
             <div class="row">
+                <div class="col-12 alert alert-danger text-center" sec:authorize="hasAnyAuthority('UNCONFIRMED')">
+                    Your account is not confirmed!Click <a
+                        th:href="@{/users/profile/{username}(username=${#authentication.getName()})}">Here</a> to
+                    continue
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12 alert alert-danger text-center" th:if="${!hasUserActivePlan}">
                     You dont have active plan!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -24,18 +38,21 @@
 
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-7">
                     <div class="card-header">
                         <h3 class="card-title"><i class="si si-list"></i> History and managment <i
                                 style="display: none;" id="manage" class="zmdi zmdi-settings zmdi-hc-spin"></i></h3>
                         <div class="card-options">
-                            <button id="refreshAttackHistory"  class="btn btn-light"><i class="fa fa-refresh"></i> Refresh
+                            <button id="refreshAttackHistory" class="btn btn-light"><i class="fa fa-refresh"></i>
+                                Refresh
                             </button>
-                            <button id="clearAttackHistory" class="btn btn-light"><i class="fa fa-trash"></i> Clear</button>
+                            <button id="clearAttackHistory" class="btn btn-light"><i class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
-                    <table id="attackHistory"  class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="attackHistory" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>ID</th>

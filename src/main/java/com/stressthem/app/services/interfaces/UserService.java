@@ -31,5 +31,7 @@ public interface UserService {
 
     void validateUsers(String username, UserServiceModel modified);
 
+    void sendConfirmationEmail(String username);
+
 
 }

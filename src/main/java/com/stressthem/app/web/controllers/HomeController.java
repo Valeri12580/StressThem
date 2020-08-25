@@ -54,6 +54,7 @@ public class HomeController {
         return ResponseEntity.ok().build();
     }
 
+
     @PageTitle("Launch attack")
     @GetMapping("/launch")
     public String launch(Model model, Authentication authentication) {

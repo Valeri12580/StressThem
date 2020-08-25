@@ -26,8 +26,9 @@ public class RolesInit implements CommandLineRunner {
             Role root=new Role("ROOT");
             Role admin=new Role("ADMIN");
             Role user=new Role("USER");
+            Role unconfirmed=new Role("UNCONFIRMED");
 
-            this.roleRepository.saveAll(List.of(root,admin,user));
+            this.roleRepository.saveAll(List.of(root,admin,user,unconfirmed));
         }
     }
 }
