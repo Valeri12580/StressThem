@@ -33,5 +33,7 @@ public interface UserService {
 
     void sendConfirmationEmail(String username);
 
+    boolean confirmConfirmationCode(String code,String username);
+
 
 }

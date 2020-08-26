@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.security.Principal;
 
 @Controller
@@ -39,21 +38,23 @@ public class UserController {
 
     @GetMapping("/profile/verification")
     @ResponseBody
-    public ResponseEntity<Void> sendConfirmationCode(Principal principal){
+    public ResponseEntity<Void> sendConfirmationCode(Principal principal) {
         userService.sendConfirmationEmail(principal.getName());
 
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/profile/verification",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/profile/verification", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Void>confirmConfirmationCode(@RequestBody String code){
-        System.out.println();
+    public ResponseEntity<Void> confirmConfirmationCode(@RequestBody String code, Principal principal) {
 
+        if (userService.confirmConfirmationCode(code, principal.getName())) {
+            ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
-
 
 
     @PageTitle("Register")

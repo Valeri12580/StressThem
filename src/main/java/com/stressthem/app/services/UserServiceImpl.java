@@ -156,6 +156,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
+    @Override
+    public boolean confirmConfirmationCode(String code, String username) {
+        boolean isConfirmed = confirmationService.confirmConfirmationCode(code);
+        if( isConfirmed){
+            userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"))
+                    .setRoles(Set.of(roleService.getRoleByName("USER")));
+        }
+        return isConfirmed;
+    }
+
     private void modifyUser(UserServiceModel modified, User main) {
 
 

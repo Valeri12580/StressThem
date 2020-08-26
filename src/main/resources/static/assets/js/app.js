@@ -26,12 +26,21 @@ $("#submitVerificationCode").click(function () {
     fetch("http://localhost:8080/users/profile/verification",
         {
             method: "POST",
-            body: JSON.parse(code),
+            body: JSON.stringify(code),
             headers: {
                 'Content-Type': 'application/json'
             },
-        })
-        .then(e => alert("working!"))
+        }).then(e =>{
+            if(!e.ok){
+                $("#confirmationStatus").text("The code doesn't match the actual one")
+                $("#confirmationDiv").removeClass("alert-success").addClass("alert-warning")
+
+            }else{
+                $("#confirmationStatus").text("Your account is confirmed")
+                $("#confirmationDiv").removeClass("alert-warning").addClass("alert-success")
+                $("#inputConfirmationDiv").hide()
+            }
+    })
 
 })
 

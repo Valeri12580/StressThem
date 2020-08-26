@@ -34,14 +34,16 @@
             <button id="sendVerificationCodeBtn" class="btn btn-light ml-3 rounded-pill">Send verification code</button>
             <div id="inputCodeDiv" style="display: none">
 
-                      class=" d-flex justify-content-center input-group-sm form-group row mt-2">
-                    <div class="col-xs-3">
-                        <input name="code" id="verificationCode" type="text" class="form-control" placeholder="Enter the code"
-                               aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div id="inputConfirmationDiv" class="d-flex justify-content-center input-group-sm form-group row mt-2">
+                        <div class="col-xs-3 " >
+                            <input name="code" id="verificationCode" type="text" class="form-control" placeholder="Enter the code"
+                                   aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+
+                        <button id="submitVerificationCode" class="btn btn-light ml-3 rounded-pill" type="submit">Submit
+                        </button>
                     </div>
 
-                    <button id="submitVerificationCode" class="btn btn-light ml-3 rounded-pill" type="submit">Submit
-                    </button>
              
             </div>
 
