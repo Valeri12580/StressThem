@@ -19,7 +19,7 @@ public class ConfirmationServiceImpl implements ConfirmationService {
     @Override
     public String sendConfirmationEmail(String to) {
         String uuid= UUID.randomUUID().toString();
-        emailService.sendConfirmationEmail(to,"Confirm your account |StressThem",
+        emailService.sendConfirmationEmail(to,"Confirm your account | StressThem",
                 String.format("Please confirm your account to get full access to our features.." +
                         "Code -> %s",uuid));
 

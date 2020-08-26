@@ -9,15 +9,31 @@ VANTA.NET({
 })
 
 
-$("#verificationBtn").click(function () {
-   fetch("http://localhost:8080/users/profile/verification")
-       .then(r=>r.json())
-       .then(r=>alert(r.toString()))
+$("#sendVerificationCodeBtn").click(function () {
+    fetch("http://localhost:8080/users/profile/verification")
+        .then(r => {
+            if (r.ok) {
+                $("#confirmationStatus").text("Verification code is sent")
+                $("#confirmationDiv").removeClass("alert-danger").addClass("alert-success")
+                $("#inputCodeDiv").show()
+            }
+        })
 })
 
+$("#submitVerificationCode").click(function () {
+    let code = $("#verificationCode").val()
+    alert("test")
+    fetch("http://localhost:8080/users/profile/verification",
+        {
+            method: "POST",
+            body: JSON.parse(code),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(e => alert("working!"))
 
-
-
+})
 
 
 $("#clearAttackHistory").click(function () {
@@ -27,43 +43,43 @@ $("#clearAttackHistory").click(function () {
 
 
 $("#refreshAttackHistory").click(function () {
-let attacks=fetch("http://localhost:8080/home/launch/refresh")
-    .then(response=>response.json()).then(array=>{
-      $("#attackHistoryTBody").empty();
+    let attacks = fetch("http://localhost:8080/home/launch/refresh")
+        .then(response => response.json()).then(array => {
+            $("#attackHistoryTBody").empty();
 
-      array.forEach((e,i)=>{
+            array.forEach((e, i) => {
 
-        let tr=document.createElement("tr")
+                let tr = document.createElement("tr")
 
-          let index=document.createElement("td");
-          let host=document.createElement("td");
-          let port=document.createElement("td");
-          let method=document.createElement("td");
-          let servers=document.createElement("td");
-          let expires=document.createElement("td");
-          let status=document.createElement("td");
+                let index = document.createElement("td");
+                let host = document.createElement("td");
+                let port = document.createElement("td");
+                let method = document.createElement("td");
+                let servers = document.createElement("td");
+                let expires = document.createElement("td");
+                let status = document.createElement("td");
 
-          index.textContent=i+1;
-          host.textContent=e["host"];
-          port.textContent=e["port"];
-          method.textContent=e["method"];
-          servers.textContent=e["servers"];
-          expires.textContent=moment(e["expiresOn"]).format("DD-MM-YYYY HH:mm:ss");
-          status.textContent=moment().isAfter(moment(e["expiresOn"]))?"Inactive":"Active"
-
-
-          $(tr).append(index)
-          $(tr).append(host)
-          $(tr).append(port)
-          $(tr).append(method)
-          $(tr).append(servers)
-          $(tr).append(expires)
-          $(tr).append(status)
+                index.textContent = i + 1;
+                host.textContent = e["host"];
+                port.textContent = e["port"];
+                method.textContent = e["method"];
+                servers.textContent = e["servers"];
+                expires.textContent = moment(e["expiresOn"]).format("DD-MM-YYYY HH:mm:ss");
+                status.textContent = moment().isAfter(moment(e["expiresOn"])) ? "Inactive" : "Active"
 
 
-        $("#attackHistoryTBody").append(tr)
-      })
-    });
+                $(tr).append(index)
+                $(tr).append(host)
+                $(tr).append(port)
+                $(tr).append(method)
+                $(tr).append(servers)
+                $(tr).append(expires)
+                $(tr).append(status)
+
+
+                $("#attackHistoryTBody").append(tr)
+            })
+        });
 
 })
 
