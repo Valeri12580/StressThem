@@ -24,12 +24,12 @@ public class ServerConnectionImpl implements ServerConnection {
     @Value("${machine.passwordTwo}")
     private  final String PASSWORD_TWO=null;
 
-    private HttpClient httpClient= HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+    private HttpClient httpClient;
 
-//    @Autowired
-//    public ServerConnectionImpl(HttpClient httpClient) {
-//        this.httpClient = httpClient;
-//    }
+    @Autowired
+    public ServerConnectionImpl(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     @Override
     public void sendRequest(String targetIp, String port, String time, String method, int servers) throws URISyntaxException, IOException, InterruptedException {

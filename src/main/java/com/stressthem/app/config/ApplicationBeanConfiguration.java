@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.net.http.HttpClient;
+
 @Configuration
 public class ApplicationBeanConfiguration {
 
@@ -52,10 +54,10 @@ public class ApplicationBeanConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public HttpClient httpClient(){
-//        return httpClient().newBuilder().build();
-//    }
+    @Bean
+    public HttpClient httpClient(){
+        return HttpClient.newBuilder().build();
+    }
 
 
     @Bean
