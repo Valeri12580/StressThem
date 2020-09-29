@@ -1,6 +1,5 @@
 package com.stressthem.app.helpers;
 
-import com.stressthem.app.domain.entities.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component("userSecurityAccessChecker")
 public class UserSecurityAccessChecker {
 
-    public boolean canAccess(Authentication authentication, String userId){
+    public boolean canAccess(Authentication authentication, String userId) {
 
-        User user=(User)authentication.getPrincipal();
+        String username = authentication.getName();
 
-        return user.getId().equals(userId);
+        return username.equals(userId);
     }
 }

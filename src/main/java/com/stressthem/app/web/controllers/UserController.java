@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,6 +98,7 @@ public class UserController {
 
 
     @PageTitle("Profile")
+    @PreAuthorize("@userSecurityAccessChecker.canAccess(authentication,#username)")
     @GetMapping("/profile/{username}")
     public String profileEdit(@PathVariable String username, Model model) {
         ProfileEditViewModel profile = this.modelMapper.map(this.userService.getUserByUsername(username), ProfileEditViewModel.class);
@@ -132,6 +134,8 @@ public class UserController {
     }
 
 
+
+    @PreAuthorize("@userSecurityAccessChecker.canAccess(authentication,#id)")
     @GetMapping("/profile/delete/{id}")
     public String deleteProfile(@PathVariable String id, HttpSession session) {
 

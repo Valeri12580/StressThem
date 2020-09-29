@@ -1,20 +1,15 @@
 package com.stressthem.app.config;
 
-import com.stressthem.app.domain.models.service.AttackServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
-import com.stressthem.app.domain.models.view.AttackViewModel;
 import com.stressthem.app.domain.models.view.ProfileEditViewModel;
+import com.stressthem.app.helpers.UserConfirmationCode;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.net.http.HttpClient;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import org.springframework.web.context.annotation.SessionScope;
 
 @Configuration
 public class ApplicationBeanConfiguration {
@@ -24,7 +19,7 @@ public class ApplicationBeanConfiguration {
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
 
-        PropertyMap<UserServiceModel, ProfileEditViewModel>editMap= new PropertyMap<>() {
+        PropertyMap<UserServiceModel, ProfileEditViewModel> editMap = new PropertyMap<>() {
             @Override
             protected void configure() {
 
@@ -49,7 +44,6 @@ public class ApplicationBeanConfiguration {
         mapper.addMappings(editMap);
 
 
-
         return mapper;
     }
 
@@ -62,5 +56,12 @@ public class ApplicationBeanConfiguration {
 //    public HttpClient httpClient(){
 //        return httpClient().newBuilder().build();
 //    }
+
+
+    @Bean
+    @SessionScope
+    public UserConfirmationCode userConfirmationCode() {
+        return new UserConfirmationCode();
+    }
 
 }

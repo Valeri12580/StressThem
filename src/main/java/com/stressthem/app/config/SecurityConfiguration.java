@@ -20,7 +20,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/plans", "/articles", "/faq", "/contact", "/currencies").permitAll()
                 .antMatchers("/home/**","/users/profile/*")
                 .authenticated()
-                .antMatchers("/users/profile/{userId}").access("@userSecurityAccessChecker.canAccess(authentication,#userId)")
                 .antMatchers("/plans/**").hasAnyAuthority("USER")
                 .and()
                 .formLogin().loginPage("/users/login").loginProcessingUrl("/users/login")
