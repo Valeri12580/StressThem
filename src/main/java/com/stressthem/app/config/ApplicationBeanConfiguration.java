@@ -60,10 +60,6 @@ public class ApplicationBeanConfiguration {
     }
 
 
-    @Bean
-    @SessionScope
-    public UserConfirmationCode userConfirmationCode() {
-        return new UserConfirmationCode();
-    }
+
 
 }

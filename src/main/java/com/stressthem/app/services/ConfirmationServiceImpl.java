@@ -26,7 +26,7 @@ public class ConfirmationServiceImpl implements ConfirmationService {
                 String.format("Please confirm your account to get full access to our features.." +
                         "Code -> %s",uuid));
 
-        userConfirmationCode.setCode(uuid);
+       userConfirmationCode= userConfirmationCode.setCode(uuid);
         return uuid;
     }
 
