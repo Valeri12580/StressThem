@@ -71,7 +71,7 @@
                         <i class="fas fa-star"></i>
                     </th:block>
                     <p th:text="${comment.getDescription()}" class="font-weight-light mb-0"></p>
-                    <a class="btn btn-primary rounded-pill" type="button" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                    <a class="btn btn-primary rounded-pill mt-3" type="button" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
                     th:href="@{/about/comments/delete/{id}(id=${comment.getId()})}">Delete</a>
                 </div>
             </div>

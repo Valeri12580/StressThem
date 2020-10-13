@@ -7,4 +7,6 @@ import java.util.List;
 public interface CommentService {
 
     List<CommentServiceModel> getAllCommentsSortedByRatingDesc();
+
+    void deleteCommentById(String id);
 }
