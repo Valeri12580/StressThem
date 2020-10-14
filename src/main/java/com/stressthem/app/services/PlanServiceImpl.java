@@ -36,6 +36,7 @@ public class PlanServiceImpl implements PlanService {
     public PlanServiceModel register(PlanServiceModel planServiceModel,String username) {
 
         UserServiceModel author=this.userService.getUserByUsername(username);
+
         planServiceModel.setAuthor(author);
 
         Plan plan=this.modelMapper.map(planServiceModel,Plan.class);

@@ -65,12 +65,12 @@ public class AdminPanelControllerTest extends ControllerTestBase {
         User admin = new User("valeri12580", "12345678", "valeri125@dir.bg",
                 "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
                 LocalDateTime.now(ZoneId.systemDefault()), null, new HashSet<>(List.of(rootRole, adminRole, userRole)),
-                null, null, null, null, null);
+                null, null, null, null, null,null);
 
 
         User user = new User("test",
                 "test1234",
-                "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(userRole), null, null, null, null, null);
+                "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(userRole), null, null, null, null, null,null);
 
 
         userRepository.save(admin);

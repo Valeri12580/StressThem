@@ -75,6 +75,7 @@ public class UserController {
 
         System.out.println();
         if (result.hasErrors()) {
+
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/users/register";

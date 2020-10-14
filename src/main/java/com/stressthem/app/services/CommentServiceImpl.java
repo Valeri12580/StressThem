@@ -2,26 +2,28 @@ package com.stressthem.app.services;
 
 import com.stressthem.app.domain.entities.Comment;
 import com.stressthem.app.domain.models.service.CommentServiceModel;
+import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.repositories.CommentRepository;
 import com.stressthem.app.services.interfaces.CommentService;
+import com.stressthem.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
     private ModelMapper modelMapper;
+    private UserService userService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper, UserService userService) {
         this.commentRepository = commentRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     @Override
@@ -39,5 +41,21 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.delete(comment);
 
+    }
+
+    @Override
+    public void registerComment(CommentServiceModel commentServiceModel,String username) {
+        UserServiceModel user = this.userService.getUserByUsername(username);
+
+        commentServiceModel.setAuthor(user);
+
+        Comment comment=this.modelMapper.map(commentServiceModel,Comment.class);
+
+        commentRepository.save(comment);
+    }
+
+    @Override
+    public boolean hasUserAlreadyCommented(String username) {
+        return this.userService.getUserByUsername(username).getComment()!=null;
     }
 }

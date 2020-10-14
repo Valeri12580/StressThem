@@ -16,7 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserServiceModel extends BaseServiceModel {
 
-
     private String username;
 
     private String password;
@@ -37,4 +36,6 @@ public class UserServiceModel extends BaseServiceModel {
 
     //todo attackservicemodel here
     private List<Attack> attacks;
+
+    private CommentServiceModel comment;
 }

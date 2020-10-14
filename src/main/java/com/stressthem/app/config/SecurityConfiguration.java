@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anonymous()
                 .antMatchers("/admin/**","/plans/delete/**","/currencies/delete/**","/articles/delete/**","/about/comments/delete/**").hasAnyAuthority("ADMIN", "ROOT")
                 .antMatchers("/plans", "/articles", "/faq", "/contact", "/currencies").permitAll()
-                .antMatchers("/home/**","/users/profile/*")
+                .antMatchers("/home/**","/users/profile/*","/about/comments/create")
                 .authenticated()
                 .antMatchers("/plans/**").hasAnyAuthority("USER")
                 .and()

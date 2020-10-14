@@ -9,4 +9,8 @@ public interface CommentService {
     List<CommentServiceModel> getAllCommentsSortedByRatingDesc();
 
     void deleteCommentById(String id);
+
+    void registerComment(CommentServiceModel commentServiceModel,String username);
+
+    boolean hasUserAlreadyCommented(String username);
 }

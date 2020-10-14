@@ -41,16 +41,16 @@ public class UsersInit implements CommandLineRunner {
                     "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
                     LocalDateTime.now(ZoneId.systemDefault()), null,
                     new HashSet<>(this.roleService.getAllRoles().stream().filter(e->!e.getName().equals("UNCONFIRMED")).collect(Collectors.toSet())),
-                    null, null,null,null,null);
+                    null, null,null,null,null,null);
 
 
             User user = new User("test",
                     passwordEncoder.encode("test1234"),
                     "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(this.roleService.getRoleByName("USER")), null, null
-            ,null,null,null);
+            ,null,null,null,null);
 
             User unconfirmed=new User("unconfirmed_user",passwordEncoder.encode("12345678"),"valeri125we@gmail.com","",LocalDateTime.now(ZoneId.systemDefault()),null,Set.of(roleService.getRoleByName("UNCONFIRMED")),
-                    null,null,null,null,null);
+                    null,null,null,null,null,null);
 
 
             userRepository.save(admin);
