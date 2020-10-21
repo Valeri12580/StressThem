@@ -7,6 +7,8 @@ public interface TransactionService {
 
     void saveTransaction(TransactionServiceModel transactionServiceModel);
 
+    boolean hasUserTransactions(String username);
+
 
 
 }

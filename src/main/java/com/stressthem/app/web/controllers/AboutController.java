@@ -51,7 +51,8 @@ public class AboutController {
     }
 
     @PageTitle("Create comment")
-    @PreAuthorize("not @commentServiceImpl.hasUserAlreadyCommented(authentication.name)")
+    @PreAuthorize("(not @commentServiceImpl.hasUserAlreadyCommented(authentication.name))" +
+            " and @transactionServiceImpl.hasUserTransactions(authentication.name) ")
     @GetMapping("/comments/create")
     public String createComment(Model model){
         if(!model.containsAttribute("comment")){

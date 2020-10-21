@@ -28,4 +28,10 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     }
+
+    @Override
+    public boolean hasUserTransactions(String username) {
+
+        return  repository.getTransactionByUsername(username).isPresent();
+    }
 }

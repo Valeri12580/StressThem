@@ -5,9 +5,7 @@ import com.stressthem.app.domain.models.binding.AttackBindingModel;
 import com.stressthem.app.domain.models.service.AttackServiceModel;
 import com.stressthem.app.domain.models.view.AnnouncementViewModel;
 import com.stressthem.app.domain.models.view.AttackViewModel;
-import com.stressthem.app.services.interfaces.AnnouncementService;
-import com.stressthem.app.services.interfaces.AttackService;
-import com.stressthem.app.services.interfaces.UserService;
+import com.stressthem.app.services.interfaces.*;
 import com.stressthem.app.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +29,18 @@ public class HomeController {
     private AttackService attackService;
     private ModelMapper mapper;
     private AnnouncementService announcementService;
+    private CommentService commentService;
+    private TransactionService transactionService;
+
 
     @Autowired
-    public HomeController(UserService userService, AttackService attackService, ModelMapper mapper, AnnouncementService announcementService) {
+    public HomeController(UserService userService, AttackService attackService, ModelMapper mapper, AnnouncementService announcementService, CommentService commentService, TransactionService transactionService) {
         this.userService = userService;
         this.attackService = attackService;
         this.mapper = mapper;
         this.announcementService = announcementService;
+        this.commentService = commentService;
+        this.transactionService = transactionService;
     }
 
     @ResponseBody
@@ -67,6 +70,8 @@ public class HomeController {
                     .map(this.attackService.getAllAttacksForCurrentUser(username), AttackViewModel[].class)));
             model.addAttribute("availableAttacks", this.userService.getUserAvailableAttacks(username));
             model.addAttribute("userId", userId);
+            model.addAttribute("hasRated",commentService.hasUserAlreadyCommented(authentication.getName()));
+            model.addAttribute("hasTransaction",transactionService.hasUserTransactions(authentication.getName()));
         }
 
         if (!model.containsAttribute("attack")) {
