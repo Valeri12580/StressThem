@@ -32,6 +32,7 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
     @Mock
     private UserServiceImpl userService;
+
     @InjectMocks
     private ArticleServiceImpl articleService;
 

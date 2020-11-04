@@ -28,8 +28,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentServiceModel> getAllCommentsSortedByRatingDesc() {
-        List<CommentServiceModel> tt = List.of(this.modelMapper.map(commentRepository.findAllByOrderByRateDesc()
-                , CommentServiceModel[].class));
+        List<Comment> comments = commentRepository.findAllByOrderByRateDesc();
+        CommentServiceModel[] mapped = this.modelMapper.map(comments
+                , CommentServiceModel[].class);
+        List<CommentServiceModel> tt = List.of(mapped);
         return tt;
     }
 
