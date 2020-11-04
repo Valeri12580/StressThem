@@ -1388,6 +1388,16 @@
     font-weight: 600;
   }
 
+  .join-now{
+    border-bottom: 5px double black;
+    border-top: 5px double black;
+    padding:  40px 0px 85px 0px;
+  }
+
+  .callout{
+    margin-top: -135px;
+  }
+
 /*.fas.fa-star:hover{*/
 /*  color: #ff0000;*/
 /*}*/

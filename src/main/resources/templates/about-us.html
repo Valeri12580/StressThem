@@ -14,7 +14,7 @@
     <div class="container my-auto text-center" style="color: white;font-family: Catamaran">
         <h1 class="mb-1" style="font-size: 60px">StressThem</h1>
         <h4 class="mb-5">&nbsp;The&nbsp;№ 1 stresser on the market<br><br></h4><a
-            class="btn btn-primary btn-xl js-scroll-trigger" role="button" href="#about">Find Out More</a>
+            class="btn btn-primary btn-xl js-scroll-trigger rounded-pill" role="button" href="#about">Find Out More</a>
         <div class="overlay"></div>
     </div>
 </header>
@@ -64,15 +64,17 @@
         <h2 class="mb-5">What people are saying...</h2>
         <div class="row">
             <div class="col-lg-4" th:each="comment:${@commentServiceImpl.getAllCommentsSortedByRatingDesc()}">
-                <div class="mx-auto testimonial-item mb-5 mb-lg-0" ><img style="width: 150px!important;height: 150px!important;" class="rounded-circle img-fluid mb-3"
-                                                                        th:src="${comment.getAuthor().getImageUrl() == '' ? '/assets/img/no_image.png' : comment.getAuthor().getImageUrl()}"/>
+                <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img
+                        style="width: 150px!important;height: 150px!important;" class="rounded-circle img-fluid mb-3"
+                        th:src="${comment.getAuthor().getImageUrl() == '' ? '/assets/img/no_image.png' : comment.getAuthor().getImageUrl()}"/>
                     <h5 th:text="${comment.getAuthor().getUsername()}"></h5>
                     <th:block th:each="number:${#numbers.sequence(1,comment.getRate())}">
                         <i class="fas fa-star"></i>
                     </th:block>
                     <p th:text="${comment.getDescription()}" class="font-weight-light mb-0"></p>
-                    <a class="btn btn-primary rounded-pill mt-3" type="button" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
-                    th:href="@{/about/comments/delete/{id}(id=${comment.getId()})}">Delete</a>
+                    <a class="btn btn-primary rounded-pill mt-3" type="button"
+                       sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                       th:href="@{/about/comments/delete/{id}(id=${comment.getId()})}">Delete</a>
                 </div>
             </div>
 
@@ -80,12 +82,11 @@
     </div>
 </section>
 
-<section class="callout"
-         style="background-image: url(/assets/img/servers-join-us.jpg);">
-    <div class="container text-center">
-        <h2 class="mx-auto mb-5"><span>Join us&nbsp;</span>
-        </h2><a class="btn btn-primary btn-xl" role="button"
-                href="#">Sign up</a></div>
+<section class="callout">
+    <div class="container text-center join-now">
+        <h1 class="mx-auto mb-3"><span>Join us&nbsp;</span>
+        </h1><a class="btn btn-primary lg rounded-pill pb-2 pt-2 pl-5 pr-5" role="button"
+                th:href="@{/users/login}">Sign up</a></div>
 </section>
 
 
