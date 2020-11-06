@@ -5,13 +5,15 @@ import com.stressthem.app.domain.models.service.TransactionServiceModel;
 import com.stressthem.app.repositories.TransactionRepository;
 import com.stressthem.app.services.TransactionServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
     @Mock
     private TransactionRepository repository;

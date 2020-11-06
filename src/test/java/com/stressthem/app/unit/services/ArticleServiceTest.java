@@ -8,22 +8,23 @@ import com.stressthem.app.exceptions.ArticleNotFoundException;
 import com.stressthem.app.repositories.ArticleRepository;
 import com.stressthem.app.services.ArticleServiceImpl;
 import com.stressthem.app.services.UserServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
 
     @Mock
@@ -75,39 +76,39 @@ public class ArticleServiceTest {
 
     @Test
     @WithMockUser(roles = {"ROOT", "ADMIN"})
-    public void deleteArticleByIdShouldWork(){
+    public void deleteArticleByIdShouldWork() {
         this.articleService.deleteArticleById("1");
 
         Mockito.verify(articleRepository).deleteById("1");
     }
 
     @Test
-    public void getArticleByIdShouldReturnArticle_IdCorrect(){
+    public void getArticleByIdShouldReturnArticle_IdCorrect() {
         Mockito.when(articleRepository.findById("1")).thenReturn(Optional.of(articleOne));
-        Mockito.when(modelMapper.map(articleRepository.findById("1").get(),ArticleServiceModel.class))
+        Mockito.when(modelMapper.map(articleRepository.findById("1").get(), ArticleServiceModel.class))
                 .thenReturn(articleServiceModel);
-        ArticleServiceModel actual=articleService.getArticleById("1");
-        assertEquals(articleServiceModel,actual);
+        ArticleServiceModel actual = articleService.getArticleById("1");
+        assertEquals(articleServiceModel, actual);
 
     }
 
     @Test
-    public void getArticleByIdShouldReturnException_IdIncorrect(){
+    public void getArticleByIdShouldReturnException_IdIncorrect() {
         Mockito.when(articleRepository.findById("2")).thenReturn(Optional.empty());
 
-        assertThrows(ArticleNotFoundException.class,()->{
+        assertThrows(ArticleNotFoundException.class, () -> {
             this.articleService.getArticleById("2");
         });
     }
 
     @Test
-    public void registerArticleShouldWork(){
+    public void registerArticleShouldWork() {
         Mockito.when(userService.getUserByUsername("valeri")).thenReturn(new UserServiceModel());
 
-        Mockito.when(modelMapper.map(new UserServiceModel(),User.class)).thenReturn(user);
-        Mockito.when(modelMapper.map(articleServiceModel,Article.class)).thenReturn(articleOne);
+        Mockito.when(modelMapper.map(new UserServiceModel(), User.class)).thenReturn(user);
+        Mockito.when(modelMapper.map(articleServiceModel, Article.class)).thenReturn(articleOne);
 
-        this.articleService.registerArticle(articleServiceModel,"valeri");
+        this.articleService.registerArticle(articleServiceModel, "valeri");
         Mockito.verify(articleRepository).save(articleOne);
 
     }

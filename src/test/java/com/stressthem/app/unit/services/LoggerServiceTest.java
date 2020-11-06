@@ -7,16 +7,18 @@ import com.stressthem.app.repositories.LoggerRepository;
 import com.stressthem.app.services.LoggerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class LoggerServiceTest {
     @Mock
     private ModelMapper modelMapper;

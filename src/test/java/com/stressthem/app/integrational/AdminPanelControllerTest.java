@@ -154,6 +154,7 @@ public class AdminPanelControllerTest extends ControllerTestBase {
 
     }
 
+    //todo exceptions
     @Test
     @WithMockUser(username = "valeri12580",authorities = {"ADMIN","ROOT","USER"})
     public void testAddArticle_LoadPage() throws Exception {

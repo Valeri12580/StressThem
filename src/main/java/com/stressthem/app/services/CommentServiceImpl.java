@@ -3,6 +3,7 @@ package com.stressthem.app.services;
 import com.stressthem.app.domain.entities.Comment;
 import com.stressthem.app.domain.models.service.CommentServiceModel;
 import com.stressthem.app.domain.models.service.UserServiceModel;
+import com.stressthem.app.exceptions.CommentNotFoundException;
 import com.stressthem.app.repositories.CommentRepository;
 import com.stressthem.app.services.interfaces.CommentService;
 import com.stressthem.app.services.interfaces.UserService;
@@ -31,14 +32,13 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = commentRepository.findAllByOrderByRateDesc();
         CommentServiceModel[] mapped = this.modelMapper.map(comments
                 , CommentServiceModel[].class);
-        List<CommentServiceModel> tt = List.of(mapped);
-        return tt;
+        return List.of(mapped);
     }
 
     @Override
     public void deleteCommentById(String id) {
         Comment comment=commentRepository.findById(id).orElseThrow(()->{
-         throw new EntityNotFoundException("The comment is already deleted!");
+         throw new CommentNotFoundException("The comment is not found!");
         });
 
         commentRepository.delete(comment);
