@@ -16,8 +16,13 @@ import java.net.http.HttpResponse;
 public class ServerConnectionImpl implements ServerConnection {
 
     @Value("${machine.ip}")
-    private final String MACHINE_IP = null;
+    private  final String MACHINE_IP =null;
 
+    @Value("${machine.passwordOne}")
+    private  final String PASSWORD_ONE=null;
+
+    @Value("${machine.passwordTwo}")
+    private  final String PASSWORD_TWO=null;
 
     private HttpClient httpClient;
 
@@ -27,13 +32,21 @@ public class ServerConnectionImpl implements ServerConnection {
     }
 
     @Override
-    public void sendRequest(String targetIp, String port, String time, String method, int servers,String token) throws URISyntaxException, IOException, InterruptedException {
-        //todo token
-        //v1
-        String url = String.format("%s?target=%s&port=%s&time=%s&method=%s&token=%s", MACHINE_IP, targetIp
-                , port, time, method, token);
+    public void sendRequest(String targetIp, String port, String time, String method, int servers) throws URISyntaxException, IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).uri(new URI(url)).build();
+        //v1
+        String url = String.format("%s?ip=%s&port=%s&time=%s&method=%s&pass=%s&pass2=%s",MACHINE_IP,targetIp
+                ,port,time,method,PASSWORD_ONE,PASSWORD_TWO);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).build();
+
+        //v2
+//        String url = MACHINE_IP;
+//        HttpRequest request = HttpRequest.newBuilder().
+//                headers("targetIp",targetIp,"port",port,"time",time,"method",method,"servers",String.valueOf(servers)
+//                ,"pass",PASSWORD_ONE,"pass2",PASSWORD_TWO)
+//                .uri(new URI(url))
+//                .build();
 
 
         httpClient.send(request, HttpResponse.BodyHandlers.discarding());

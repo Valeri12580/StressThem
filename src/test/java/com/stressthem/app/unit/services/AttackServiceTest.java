@@ -66,7 +66,7 @@ public class AttackServiceTest {
 
     @BeforeEach
     public void init() {
-//        plan=new Plan("VIP", BigDecimal.valueOf(15),15,50,15,2,LocalDateTime.now(ZoneId.systemDefault()));
+        plan=new Plan("VIP", BigDecimal.valueOf(15),15,50,15,2,LocalDateTime.now(ZoneId.systemDefault()));
         userEntity = new User();
         userEntity.setId("1");
         userEntity.setUsername("valeri");
@@ -118,21 +118,21 @@ public class AttackServiceTest {
         assertEquals(2,actual.size());
     }
 
-//    @Test
-//    public void launchAttackShouldLaunchAttack(){
-//        AttackServiceModel attackServiceModel=new AttackServiceModel();
-//        attackServiceModel.setId("1");
-//
-//        Mockito.when(modelMapper.map(attackServiceModel,Attack.class)).thenReturn(attack);
-//
-//        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
-//
-//        Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(userEntity);
-//
-//        attackService.launchAttack(attackServiceModel,"valeri");
-//
-//        Mockito.verify(attackRepository).save(attack);
-//    }
+    @Test
+    public void launchAttackShouldLaunchAttack(){
+        AttackServiceModel attackServiceModel=new AttackServiceModel();
+        attackServiceModel.setId("1");
+
+        Mockito.when(modelMapper.map(attackServiceModel,Attack.class)).thenReturn(attack);
+
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+
+        Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(userEntity);
+
+        attackService.launchAttack(attackServiceModel,"valeri");
+
+        Mockito.verify(attackRepository).save(attack);
+    }
 
     @Test
     public void validateAttackShouldValidate(){
