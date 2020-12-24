@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AttackService {
 
-    AttackServiceModel launchAttack(AttackServiceModel attackServiceModel,String username);
+    AttackServiceModel launchAttack(AttackServiceModel attackServiceModel,String username,String token);
 
     List<AttackServiceModel>getAllAttacksForCurrentUser(String username);
 

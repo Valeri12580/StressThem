@@ -39,10 +39,10 @@ public class AttackServiceImpl implements AttackService {
     }
 
     @Override
-    public AttackServiceModel launchAttack(AttackServiceModel attackServiceModel, String username) {
+    public AttackServiceModel launchAttack(AttackServiceModel attackServiceModel, String username,String token) {
 
         try {
-            serverConnection.sendRequest(attackServiceModel.getHost(),attackServiceModel.getPort(),String.valueOf(15),String.valueOf(2),2);
+            serverConnection.sendRequest(attackServiceModel.getHost(),attackServiceModel.getPort(),String.valueOf(15),String.valueOf(2),2,token);
         } catch (URISyntaxException e) {
 
             System.out.println("ERR");

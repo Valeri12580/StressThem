@@ -1,5 +1,6 @@
 package com.stressthem.app.domain.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,14 +48,20 @@ public class Plan extends BaseEntity {
     @PositiveOrZero
     private int servers;
 
+
+
     @Column
     private LocalDateTime createdOn;
+
+    @Column
+    private String token;
 
     @ManyToOne
     @JoinColumn(name = "creator_id",referencedColumnName = "id")
     private User author;
 
-    public Plan(@NotNull String type, @Positive @NotNull BigDecimal price, @NotNull @Positive int durationInDays, @NotNull @Positive double maxBootTimeInSeconds, @NotNull @Positive int maxBootsPerDay, @NotNull @PositiveOrZero int servers, LocalDateTime createdOn) {
+    public Plan(@NotNull String type, @Positive @NotNull BigDecimal price, @NotNull @Positive int durationInDays, @NotNull @Positive double maxBootTimeInSeconds, @NotNull @Positive int maxBootsPerDay, @NotNull @PositiveOrZero int servers, LocalDateTime createdOn
+    ,String token) {
         this.type = type;
         this.price = price;
         this.durationInDays = durationInDays;
@@ -62,5 +69,6 @@ public class Plan extends BaseEntity {
         this.maxBootsPerDay = maxBootsPerDay;
         this.servers = servers;
         this.createdOn=createdOn;
+        this.token=token;
     }
 }

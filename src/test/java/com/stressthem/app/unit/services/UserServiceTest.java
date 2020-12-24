@@ -70,33 +70,33 @@ public class UserServiceTest {
     private Role rootRole;
     private Role userRole;
 
-
-    @BeforeEach
-    public void init() {
-        adminRole = new Role("ADMIN");
-        rootRole = new Role("ROOT");
-        userRole=new Role("User");
-
-        user = new User();
-        user.setId("1");
-        user.setUsername("valeri");
-        user.setRoles(new HashSet<>(List.of(adminRole,userRole)));
-
-
-        userServiceModel = new UserServiceModel();
-        userServiceModel.setId("1");
-        userServiceModel.setUsername("valeri");
-        userServiceModel.setUserActivePlan(user.getUserActivePlan());
-
-        plan = new Plan("Starter",
-                new BigDecimal("15"), 30, 200, 45, 1,
-                LocalDateTime.now(ZoneId.systemDefault()));
-
-        cryptocurrency = new Cryptocurrency("Bitcoin",
-                "Bitcoin was the first cryptocurrency to successfully record transactions on a secure, decentralized blockchain-based network. Launched in early 2009 by its pseudonymous creator Satoshi Nakamoto, Bitcoin is the largest cryptocurrency measured by market capitalization and amount of data stored on its blockchain.",
-                user, LocalDateTime.now(ZoneId.systemDefault()), "https://static.coindesk.com/wp-content/uploads/2018/11/dark-bitcoin-scaled.jpg");
-
-    }
+//
+//    @BeforeEach
+//    public void init() {
+//        adminRole = new Role("ADMIN");
+//        rootRole = new Role("ROOT");
+//        userRole=new Role("User");
+//
+//        user = new User();
+//        user.setId("1");
+//        user.setUsername("valeri");
+//        user.setRoles(new HashSet<>(List.of(adminRole,userRole)));
+//
+//
+//        userServiceModel = new UserServiceModel();
+//        userServiceModel.setId("1");
+//        userServiceModel.setUsername("valeri");
+//        userServiceModel.setUserActivePlan(user.getUserActivePlan());
+//
+//        plan = new Plan("Starter",
+//                new BigDecimal("15"), 30, 200, 45, 1,
+//                LocalDateTime.now(ZoneId.systemDefault()));
+//
+//        cryptocurrency = new Cryptocurrency("Bitcoin",
+//                "Bitcoin was the first cryptocurrency to successfully record transactions on a secure, decentralized blockchain-based network. Launched in early 2009 by its pseudonymous creator Satoshi Nakamoto, Bitcoin is the largest cryptocurrency measured by market capitalization and amount of data stored on its blockchain.",
+//                user, LocalDateTime.now(ZoneId.systemDefault()), "https://static.coindesk.com/wp-content/uploads/2018/11/dark-bitcoin-scaled.jpg");
+//
+//    }
 
     @Test
     public void findUserByIdShouldReturnUser() {

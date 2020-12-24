@@ -108,7 +108,9 @@ public class HomeController {
         AttackServiceModel attackServiceModel = this.mapper.map(attackBindingModel, AttackServiceModel.class);
         attackServiceModel = this.attackService.setAttackExpiredOn(attackBindingModel.getTime(), attackServiceModel);
 
-        this.attackService.launchAttack(attackServiceModel, principal.getName());
+        //todo optimize
+        String token=userService.getUserByUsername(principal.getName()).getUserActivePlan().getPlan().getToken();
+        this.attackService.launchAttack(attackServiceModel, principal.getName(),token);
 
         return "redirect:/home/launch";
     }

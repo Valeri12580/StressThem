@@ -5,5 +5,5 @@ import java.net.URISyntaxException;
 
 public interface ServerConnection {
 
-    void sendRequest(String targetIp,String targetPort,String time,String method,int servers) throws URISyntaxException, IOException, InterruptedException;
+    void sendRequest(String targetIp,String targetPort,String time,String method,int servers,String token) throws URISyntaxException, IOException, InterruptedException;
 }

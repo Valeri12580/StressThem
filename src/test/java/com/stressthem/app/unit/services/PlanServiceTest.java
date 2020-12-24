@@ -52,28 +52,28 @@ public class PlanServiceTest {
     private PlanServiceModel expectedTwo;
 
 
-    @BeforeEach
-    public void init() {
-        this.planOne = new Plan("Starter",
-                new BigDecimal("15"), 30, 200, 45, 1, LocalDateTime.now(ZoneId.systemDefault()));
-        this.planOne.setId("1");
-
-        this.planTwo = new Plan("Standart", new BigDecimal("30"), 60, 400, 90, 1, LocalDateTime.now(ZoneId.systemDefault()));
-        this.planTwo.setId("2");
-
-
-        this.expectedOne = new PlanServiceModel("Starter",
-                new BigDecimal("15"), 30, 200, 45, LocalDateTime.now(ZoneId.systemDefault()), 1);
-        this.expectedOne.setId("1");
-
-        this.expectedTwo = new PlanServiceModel("Standart", new BigDecimal("30"), 60, 400, 90, LocalDateTime.now(ZoneId.systemDefault()), 1);
-        this.expectedTwo.setId("2");
-
-
-        this.user = new UserServiceModel();
-        user.setId("1");
-        user.setUsername("valeri");
-    }
+//    @BeforeEach
+//    public void init() {
+//        this.planOne = new Plan("Starter",
+//                new BigDecimal("15"), 30, 200, 45, 1, LocalDateTime.now(ZoneId.systemDefault()));
+//        this.planOne.setId("1");
+//
+//        this.planTwo = new Plan("Standart", new BigDecimal("30"), 60, 400, 90, 1, LocalDateTime.now(ZoneId.systemDefault()));
+//        this.planTwo.setId("2");
+//
+//
+//        this.expectedOne = new PlanServiceModel("Starter",
+//                new BigDecimal("15"), 30, 200, 45, LocalDateTime.now(ZoneId.systemDefault()), 1);
+//        this.expectedOne.setId("1");
+//
+//        this.expectedTwo = new PlanServiceModel("Standart", new BigDecimal("30"), 60, 400, 90, LocalDateTime.now(ZoneId.systemDefault()), 1);
+//        this.expectedTwo.setId("2");
+//
+//
+//        this.user = new UserServiceModel();
+//        user.setId("1");
+//        user.setUsername("valeri");
+//    }
 
     @Test
     public void getPlanByIdShouldReturnCorrect_WhenDataIsValid() {
