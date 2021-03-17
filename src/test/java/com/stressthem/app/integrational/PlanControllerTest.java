@@ -28,6 +28,7 @@ public class PlanControllerTest extends ControllerTestBase {
 
 
     @Test
+    @WithMockUser(username = "valeri12580")
     public void testALlPlans() throws Exception {
 
 

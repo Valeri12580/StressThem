@@ -26,6 +26,7 @@ public class CurrencyControllerTest extends ControllerTestBase {
 
 
     @Test
+    @WithMockUser(username = "valeri12580")
     public void testAllCurrencies() throws Exception {
         Mockito.when(this.cryptocurrencyService.getAllCryptocurrencies()).thenReturn(List.of(new CryptocurrencyServiceModel(), new CryptocurrencyServiceModel()));
         Mockito.when(modelMapper.map(this.cryptocurrencyService.getAllCryptocurrencies(), CryptocurrencyViewModel[].class)).thenReturn(
