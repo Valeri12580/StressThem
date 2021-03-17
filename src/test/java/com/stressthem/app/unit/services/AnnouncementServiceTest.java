@@ -31,6 +31,9 @@ public class AnnouncementServiceTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 
+    @Mock
+    private UserService userService;
+
 
 
     @InjectMocks
@@ -41,6 +44,7 @@ public class AnnouncementServiceTest {
     private AnnouncementServiceModel announcementServiceModel;
 
     private User user;
+    private UserServiceModel userServiceModel;
 
     @BeforeEach
     public void init(){
@@ -55,6 +59,8 @@ public class AnnouncementServiceTest {
         this.user=new User();
         user.setId("1");
         user.setUsername("valeri");
+
+        userServiceModel=new UserServiceModel();
 
     }
 
@@ -79,7 +85,8 @@ public class AnnouncementServiceTest {
 
     @Test
     public void registerAnnouncementShouldRegisterNewAnnouncements(){
-        Mockito.when(modelMapper.map(new UserServiceModel(),User.class)).thenReturn(user);
+        Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(user);
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
         Mockito.when(modelMapper.map(announcementServiceModel,Announcement.class)).thenReturn(announcementEntity);
 
         announcementService.registerAnnouncement(announcementServiceModel,"valeri");

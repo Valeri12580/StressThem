@@ -31,6 +31,8 @@ public class LoggerServiceTest {
 
     private User user;
 
+    private UserServiceModel userServiceModel;
+
 
     @BeforeEach
     public void init(){
@@ -41,8 +43,8 @@ public class LoggerServiceTest {
 
     @Test
     public void loggerShouldWorkCorrect(){
-        Mockito.when(modelMapper.map(new UserServiceModel(),User.class)).thenReturn(user);
-        this.loggerService.log(Action.CREATE,"Test",new UserServiceModel(), LocalDateTime.now());
+        Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(user);
+        this.loggerService.log(Action.CREATE,"Test",userServiceModel, LocalDateTime.now());
 
         Mockito.verify(loggerRepository).save(ArgumentMatchers.any());
     }

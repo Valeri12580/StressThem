@@ -43,6 +43,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public AnnouncementServiceModel registerAnnouncement(AnnouncementServiceModel announcementServiceModel, String username) {
 
         User user=this.modelMapper.map(this.userService.getUserByUsername(username),User.class);
+
         Announcement announcement=this.modelMapper.map(announcementServiceModel,Announcement.class);
 
         announcement.setAddedOn(LocalDateTime.now(ZoneId.systemDefault()));

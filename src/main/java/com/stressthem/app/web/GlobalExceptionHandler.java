@@ -12,13 +12,13 @@ import java.net.http.HttpResponse;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(Throwable.class)
-    @PageTitle("Oops...")
-    public ModelAndView handle(Throwable ex, HttpServletResponse response){
-        ModelAndView modelAndView=new ModelAndView("error");
-
-        modelAndView.addObject("message",ex.getMessage());
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return modelAndView;
-    }
+//    @ExceptionHandler(Throwable.class)
+//    @PageTitle("Oops...")
+//    public ModelAndView handle(Throwable ex, HttpServletResponse response){
+//        ModelAndView modelAndView=new ModelAndView("error");
+//
+//        modelAndView.addObject("message",ex.getMessage());
+//        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//        return modelAndView;
+//    }
 }

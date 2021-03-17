@@ -42,7 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")//todo fix this,doesnt show the correct registration time
     private LocalDateTime registeredOn;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
     private UserActivePlan userActivePlan;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -69,7 +69,7 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
     private List<Cryptocurrency>cryptocurrencies;
 
-    @OneToOne(mappedBy = "author")
+    @OneToOne(mappedBy = "author",cascade = CascadeType.REMOVE,orphanRemoval = true)
     private Comment comment;
 
 

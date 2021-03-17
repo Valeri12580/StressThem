@@ -41,16 +41,16 @@ public class AttackServiceImpl implements AttackService {
     @Override
     public AttackServiceModel launchAttack(AttackServiceModel attackServiceModel, String username) {
 
-        try {
-            serverConnection.sendRequest(attackServiceModel.getHost(),attackServiceModel.getPort(),String.valueOf(15),String.valueOf(2),2);
-        } catch (URISyntaxException e) {
-
-            System.out.println("ERR");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            serverConnection.sendRequest(attackServiceModel.getHost(),attackServiceModel.getPort(),String.valueOf(15),String.valueOf(2),2);
+//        } catch (URISyntaxException e) {
+//
+//            System.out.println("ERR");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         Attack attack = this.modelMapper.map(attackServiceModel, Attack.class);
 

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -27,7 +28,7 @@ public class HomeControllerTest extends ControllerTestBase {
     @Autowired
     private AnnouncementRepository announcementRepository;
 
-    @Autowired
+    @MockBean
     private AttackService attackService;
 
     @Autowired
@@ -63,7 +64,7 @@ public class HomeControllerTest extends ControllerTestBase {
         User user = userRepository.findUserByUsername("valeri12580").get();
 
         attackRepository.save(new Attack("111.256.132.123", "3306", MethodType.UDP, 2, LocalDateTime.now(), user));
-        System.out.println();
+
 
         super.mockMvc.perform(get("/home/launch/refresh").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].host").value("111.256.132.123"))

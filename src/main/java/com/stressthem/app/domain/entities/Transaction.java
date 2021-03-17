@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
+@AllArgsConstructor
 public class Transaction extends BaseEntity {
 
     @NotNull

@@ -248,26 +248,16 @@ public class UserServiceTest {
 
     @Test
     public void loadUserByUsernameShouldThrowUserNotFoundException_InvalidUser() {
-        Mockito.when(this.userRepository.findUserByUsername("emtpy")).thenReturn(Optional.empty());
+        Mockito.when(this.userRepository.findUserByUsername("test")).thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class, () -> {
             userService.loadUserByUsername("test");
         });
     }
 
-    //todo fix this
 
-//    @Test
-//    public void updateUserShouldUpdateCurrentUser() {
-//        UserServiceModel userServiceModel = new UserServiceModel();
-//        userServiceModel.setUsername("modified");
-//        userServiceModel.setId("1");
-//        Mockito.when(this.userRepository.findById("1")).thenReturn(Optional.of(user));
-//        Mockito.when(modelMapper.map(user, UserServiceModel.class)).thenReturn(userServiceModel);
-//
-//        assertEquals(userServiceModel, userService.updateUser(username, userServiceModel));
-//        Mockito.verify(userRepository).save(user);
-//    }
+
+
 
     @Test
     public void changeUserRoleShouldThrowChangeRoleException_SameUser() {

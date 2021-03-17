@@ -10,6 +10,7 @@ import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.repositories.AttackRepository;
 import com.stressthem.app.services.AttackServiceImpl;
 import com.stressthem.app.services.UserActivePlanServiceImpl;
+import com.stressthem.app.services.interfaces.ServerConnection;
 import com.stressthem.app.services.interfaces.UserActivePlanService;
 import com.stressthem.app.services.interfaces.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -52,6 +53,9 @@ public class AttackServiceTest {
 
     @Mock
     private UserActivePlanServiceImpl userActivePlanService;
+
+    @Mock
+    private ServerConnection serverConnection;
 
     @InjectMocks
     private AttackServiceImpl attackService;
@@ -134,10 +138,7 @@ public class AttackServiceTest {
         Mockito.verify(attackRepository).save(attack);
     }
 
-    @Test
-    public void validateAttackShouldValidate(){
-        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
-    }
+
 
     @Test
     public void validateAttackShouldNotThrowError_DataValid(){

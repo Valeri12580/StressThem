@@ -9,9 +9,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -24,6 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 
 public class UserControllerTest extends ControllerTestBase {
@@ -39,36 +44,29 @@ public class UserControllerTest extends ControllerTestBase {
     @BeforeEach
     public void init() {
 
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-
-        Role rootRole = new Role("ROOT");
-        Role adminRole = new Role("ADMIN");
-        Role userRole = new Role("USER");
-
-        roleRepository.saveAll(List.of(rootRole, adminRole, userRole));
-
-        User admin = new User("valeri12580", "12345678", "valeri125@dir.bg",
-                "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
-                LocalDateTime.now(ZoneId.systemDefault()), null, new HashSet<>(List.of(rootRole, adminRole, userRole)),
-                null, null, null, null, null, null);
-
-
-        User user = new User("test",
-                "test1234",
-                "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(userRole), null, null, null, null, null, null);
-
-
-        userRepository.save(admin);
-        userRepository.save(user);
+//        Role rootRole = new Role("ROOT");
+//        Role adminRole = new Role("ADMIN");
+//        Role userRole = new Role("USER");
+//
+//        roleRepository.saveAll(List.of(rootRole, adminRole, userRole));
+//
+//        User admin = new User("valeri12580", "12345678", "valeri125@dir.bg",
+//                "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg",
+//                LocalDateTime.now(ZoneId.systemDefault()), null, new HashSet<>(List.of(rootRole, adminRole, userRole)),
+//                null, null, null, null, null, null);
+//
+//
+//        User user = new User("test",
+//                "test1234",
+//                "test@dir.bg", "", LocalDateTime.now(ZoneId.systemDefault()), null, Set.of(userRole), null, null, null, null, null, null);
+//
+//
+//        userRepository.save(admin);
+//        userRepository.save(user);
 
     }
 
-    @AfterEach
-    public void clean() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-    }
+
 
     @Test
     public void testRegister_Successful() throws Exception {
@@ -94,7 +92,7 @@ public class UserControllerTest extends ControllerTestBase {
         ).andExpect(status().is3xxRedirection());
 
         //assert
-        Assertions.assertEquals(2, this.userRepository.count());
+        Assertions.assertEquals(3, this.userRepository.count());
     }
 
     @Test
@@ -126,10 +124,11 @@ public class UserControllerTest extends ControllerTestBase {
     public void testDeleteProfile() throws Exception {
         String userID = userRepository.
                 findUserByUsername("valeri12580").get().getId();
+
         super.mockMvc.perform(get("/users/profile/delete/{id}", userID))
                 .andExpect(status().is3xxRedirection());
 
-        assertEquals(1, userRepository.count());
+        assertEquals(2, userRepository.count());
 
     }
 

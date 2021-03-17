@@ -43,6 +43,7 @@ public class ArticleServiceTest {
     private User user;
 
     private ArticleServiceModel articleServiceModel;
+    private UserServiceModel userServiceModel;
 
     @BeforeEach
     public void init() {
@@ -60,6 +61,7 @@ public class ArticleServiceTest {
         this.articleServiceModel.setId("1");
         this.articleServiceModel.setTitle("Test");
         this.articleServiceModel.setAuthor(user);
+        this.userServiceModel=new UserServiceModel();
 
 
     }
@@ -105,9 +107,10 @@ public class ArticleServiceTest {
 
     @Test
     public void registerArticleShouldWork() {
-        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(new UserServiceModel());
 
-        Mockito.when(modelMapper.map(new UserServiceModel(), User.class)).thenReturn(user);
+        Mockito.when(userService.getUserByUsername("valeri")).thenReturn(userServiceModel);
+
+        Mockito.when(modelMapper.map(userServiceModel, User.class)).thenReturn(user);
         Mockito.when(modelMapper.map(articleServiceModel, Article.class)).thenReturn(articleOne);
 
         this.articleService.registerArticle(articleServiceModel, "valeri");

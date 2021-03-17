@@ -137,7 +137,7 @@ public class UserController {
 
 
 
-    @PreAuthorize("@userSecurityAccessChecker.canAccess(authentication,#id)")
+//    @PreAuthorize("@userSecurityAccessChecker.canAccess(authentication,#id)")
     @GetMapping("/profile/delete/{id}")
     public String deleteProfile(@PathVariable String id, HttpSession session) {
 
