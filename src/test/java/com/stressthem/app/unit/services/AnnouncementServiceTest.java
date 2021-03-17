@@ -31,8 +31,7 @@ public class AnnouncementServiceTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 
-    @Mock
-    private UserService userService;
+
 
     @InjectMocks
     private AnnouncementServiceImpl announcementService;
