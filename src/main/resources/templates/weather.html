@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head}">
+
+</head>
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button"
+     th:insert="~{fragments/nav}">
+
+</nav>
+
+<div>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <form th:action="@{/weatherAPI}" th:method="post" th:object="${weatherBindingModel}" class="col-md-8 col-lg-6 col-xl-4">
+                    <h3 class="mb-4 pb-2 fw-normal">Check the weather forecast</h3>
+                    <div class="input-group rounded mb-3">
+                        <input th:field ="*{cityName}" type="search" class="form-control rounded" placeholder="City" aria-label="Search"
+                               aria-describedby="search-addon"/>
+                            <button class="btn btn-primary btn-block" type="submit">Check!</button>
+                        <small  th:if="${#fields.hasErrors('cityName')}" th:errors="*{cityName}" class="form-text text-danger"></small>
+                    </div>
+                    <div class="mb-4 pb-2">
+                        <div class="form-check form-check-inline" th:each="model : ${T(com.stressthem.app.domain.TempUnit).values()}">
+                            <input th:field = "*{unit}" th:value="${model}"
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="unit"
+                            />
+                            <label th:text="${model}" class="form-check-label" ></label>
+                        </div>
+                        <small  th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}" class="form-text text-danger"></small>
+
+                    </div>
+
+                    <div class="card shadow-0 border" th:if = "${weatherViewModel != null}">
+                        <div class="card-body p-4">
+
+                            <h4 class="mb-1 sfw-normal" th:text="${weatherViewModel.name}"></h4>
+                            <p class="mb-2">Current temperature: <strong th:text="${weatherViewModel.main.temp} + '°C'"></strong></p>
+                            <p>Feels like: <strong th:text="${weatherViewModel.main.feelsLike} + '°C'"></strong></p>
+                            <p>Max: <strong th:text="${weatherViewModel.main.tempMax} + '°C'"></strong>, Min: <strong th:text="${weatherViewModel.main.tempMin} + '°C'" ></strong></p>
+
+                            <div class="d-flex flex-row align-items-center">
+                                <p class="mb-0 me-4">Scattered Clouds</p>
+                                <i class="fas fa-cloud fa-3x" style="color: #eee;"></i>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+</html>

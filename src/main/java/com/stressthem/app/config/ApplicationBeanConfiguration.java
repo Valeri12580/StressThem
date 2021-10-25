@@ -1,14 +1,17 @@
 package com.stressthem.app.config;
 
+import com.google.gson.Gson;
 import com.stressthem.app.domain.models.service.UserServiceModel;
 import com.stressthem.app.domain.models.view.ProfileEditViewModel;
 import com.stressthem.app.helpers.UserConfirmationCode;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.net.http.HttpClient;
@@ -57,6 +60,16 @@ public class ApplicationBeanConfiguration {
     @Bean
     public HttpClient httpClient(){
         return HttpClient.newBuilder().build();
+    }
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder){
+        return builder.build();
+    }
+
+    @Bean
+    public Gson gson(){
+        return new Gson();
     }
 
 
