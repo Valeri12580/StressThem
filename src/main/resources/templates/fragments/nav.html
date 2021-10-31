@@ -21,7 +21,15 @@
                 <li class="nav-item" role="presentation"><a class="nav-link" th:href="@{/faq}">FAQ</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" th:href="@{/contact}">Contact Us</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" th:href="@{/about}">About Us</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" th:href="@{/weatherAPI}">Weather API</a></li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" role="presentation"><a class="nav-link"
+                                                                                              th:href="@{/weatherAPI}">Weather
+                    API</a></li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" role="presentation"><a class="nav-link"
+                                                                                              th:href="@{/adviceAPI}">Get
+                    free advice</a></li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" role="presentation"><a class="nav-link"
+                                                                                              th:href="@{/newsAPI}">Get
+                    news</a></li>
             </ul>
             <th:block>
 

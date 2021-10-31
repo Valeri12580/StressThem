@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head}">
+
+</head>
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button"
+     th:insert="~{fragments/nav}">
+
+</nav>
+
+<div>
+    <section>
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <form th:action="@{/adviceAPI}" th:method="post" class="col-md-8 col-lg-6 col-xl-4">
+                    <h3 class="mb-4 pb-2 fw-normal">Generate random advice</h3>
+                    <div class="input-group rounded mb-3">
+                        <button class="btn btn-primary btn-block" type="submit">Generate!</button>
+                    </div>
+                    <div class="card shadow-0 border" th:if="${advice != null}">
+                        <div class="card-body p-4">
+                            <h4 class="mb-1 sfw-normal" th:text="${advice}"></h4>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+</html>

@@ -47,12 +47,24 @@ public class WeatherController {
     public String postWeatherPage(@Valid @ModelAttribute WeatherBindingModel model,
                                   BindingResult result, RedirectAttributes redirect){
         if(result.hasErrors()){
-            redirect.addFlashAttribute("org.springframework.validation.BindingResult.weatherBindingModel",result);
-            redirect.addFlashAttribute("weatherBindingModel",redirect);
+            redirect.addFlashAttribute("org.springframework.validation.BindingResult.weatherBindingModel", result);
+            redirect.addFlashAttribute("weatherBindingModel", model);
 
-        }else{
-            WeatherViewModel weatherResult = this.service.getWeatherInformation(model.getCityName(), model.getUnit());
-            redirect.addFlashAttribute("weatherViewModel",weatherResult);
+        }else {
+            try {
+                WeatherViewModel weatherResult = this.service.getWeatherInformation(model.getCityName(), model.getUnit());
+                redirect.addFlashAttribute("weatherViewModel", weatherResult);
+            } catch (Exception ex) {
+                result.rejectValue("cityName", "cityError", "City not found");
+
+            }
+            if (result.hasErrors()) {
+                redirect.addFlashAttribute("org.springframework.validation.BindingResult.weatherBindingModel", result);
+                redirect.addFlashAttribute("weatherBindingModel", redirect);
+
+            }
+
+
         }
 
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'
+>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="article-list">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Get the latest news by keyword!</h2>
+            <p class="text-center">Search through millions of articles from over 80,000 large and small news sources and
+                blogs.</p>
+        </div>
+
+        <form style="margin: 0 auto" th:action="@{/newsAPI/news}" th:method="get" th:object="${newsBindingModel}"
+              class="col-md-8 col-lg-6 col-xl-4">
+            <div class="input-group rounded mb-3">
+                <input th:field="*{keyword}" type="search" class="form-control rounded" placeholder="keyword"
+                       aria-label="Search"
+                       aria-describedby="search-addon"/>
+                <button class="btn btn-primary btn-block" type="submit">Get</button>
+                <small th:if="${#fields.hasErrors('keyword')}" th:errors="*{keyword}"
+                       class="form-text text-danger"></small>
+            </div>
+        </form>
+
+
+        <div class="row articles" th:if="${newsViewModel}">
+            <div th:each="news:${newsViewModel}" class="col-sm-6 col-md-4 item">
+                <a th:href="${'' + news.url}" target="_blank">
+                    <img class="img-fluid" style="width: 240px ;height: 160px"
+                         th:src="${news.urlToImage ?: '\assets\img\no_image.png'}">
+                </a>
+                <h3 class="name" th:text="${news.title}"></h3>
+                <p class="description" th:text="${news.description}"></p>
+                <p class="text-center" th:text="${news.publishedAt}"></p>
+                <a class="action" th:href="${'' + news.url}" target="_blank"><i
+                        class="fa fa-arrow-circle-right"></i></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer.html}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>
